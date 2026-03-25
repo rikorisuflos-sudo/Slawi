@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
+    [SerializeField]private Rigidbody2D rb;
+    
 
     float move = 0f;
 
@@ -15,50 +15,44 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float walkForce;//速度の上昇値
     private bool isGrounded = true;//地面に触れているかいないか
 
+    private Keyboard keyboard = Keyboard.current;
+
     private void Awake()
     {
         //初期化
         Application.targetFrameRate = 60;
-        this.spriteRenderer = GetComponent<SpriteRenderer>();
-        this.rb = GetComponent<Rigidbody2D>();
     }
 
 
     void Update()
     {
-        var keyboard = Keyboard.current;
+
         if (keyboard == null) return;
+        move = 0f;
 
-
+        ////Aが押されたとき左に移動
         if (keyboard.aKey.isPressed)
         {
-            move = -1f;
+            move = keyboard.shiftKey.isPressed ? -1.5f : -1f;
         }
+        // //Dが押されたとき右に移動
         if (keyboard.dKey.isPressed)
         {
-            move = 1f;
-        }
+                move = keyboard.shiftKey.isPressed ? 1.5f : 1f;
+                 }
+       
+       
+    }
+
+    void FixedUpdate()
+    {
+        Walk();
         //Spaceが押されたとき
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (keyboard.spaceKey.wasPressedThisFrame)
         {
             Jump();
             Debug.Log("ジャンプ");
         }
-        // //Dが押されたとき右に移動
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    Walk(this.walkForce);
-        //    Debug.Log("右");
-        //}
-
-        ////Aが押されたとき左に移動
-        //if (aKey.isPressed)
-        //{
-        //    Walk(-this.walkForce);
-        //    Debug.Log("左");
-        //}
-        Walk();
-        move = 0f;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -83,10 +77,6 @@ public class PlayerController : MonoBehaviour
         
     }
 
-   
-
-    
-
     /// <summary>
     /// 歩く
     /// </summary>
@@ -102,7 +92,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded)
         {
-            //this.rb.AddForce(transform.up * this.jumpForce);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             DebugLogger.Log("ジャンプ");
         }
