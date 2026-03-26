@@ -2,5 +2,15 @@ using UnityEngine;
 
 public class SlimeController : MonoBehaviour
 {
-   
+    [SerializeField] private GameObject player;//í«Ç¢Ç©ÇØÇÈëŒè€
+
+    private void AttackStart()
+    {
+       
+    }
+
+    private void AttackEnd()
+    {
+        
+    }
 }

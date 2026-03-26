@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
         if (keyboard.spaceKey.wasPressedThisFrame)
         {
             Jump();
-            Debug.Log("ジャンプ");
         }
     }
 
@@ -60,7 +59,7 @@ public class PlayerController : MonoBehaviour
         //地面と接触しているかいないか
         if (collision.gameObject.CompareTag("Ground"))
         {
-            DebugLogger.Log("地面についた");
+            //DebugLogger.Log("地面についた");
             isGrounded = true;
         }
 
@@ -70,7 +69,7 @@ public class PlayerController : MonoBehaviour
         //地面から離れたかどうか
         if (collision.gameObject.CompareTag("Ground"))
         {
-            DebugLogger.Log("地面から離れた");
+            //DebugLogger.Log("地面から離れた");
             isGrounded = false;
         }
         
@@ -93,7 +92,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            DebugLogger.Log("ジャンプ");
+            //DebugLogger.Log("ジャンプ");
         }
     }
 
