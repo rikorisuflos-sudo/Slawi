@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 387031429}
   - component: {fileID: 387031432}
   - component: {fileID: 387031431}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 461895245}
   - component: {fileID: 461895246}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NormalAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 982115731}
   - component: {fileID: 982115730}
   - component: {fileID: 982115729}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,6 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b08a9f8c1b7f44f864869bc5dd88e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!114 &982115730
 MonoBehaviour:
   m_ObjectHideFlags: 0
