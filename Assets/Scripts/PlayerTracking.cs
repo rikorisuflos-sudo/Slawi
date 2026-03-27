@@ -1,9 +1,11 @@
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
-public class SlimeDirecter : MonoBehaviour
+public class PlayerTracking : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;
+    private Rigidbody2D parentRd;//親オブジェクトのものを取得
     [SerializeField] private GameObject player;//追いかける対象
+    private PlayerController playerController;
 
     [SerializeField] private float walkForce;//速度の上昇値
     [SerializeField] private float jumpForce;//ジャンプの高さ
@@ -13,39 +15,58 @@ public class SlimeDirecter : MonoBehaviour
     [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
     private bool isGrounded = true;//地面に触れているかいないか
-    private bool isWall= false;//地面に触れているかいないか
 
-    private void FixedUpdate()
+    float targetX = 0f;//目標座標
+    float heightDiff;
+    private void Start()
+    {
+        playerController = player.GetComponent<PlayerController>();
+        parentRd = GetComponentInParent<Rigidbody2D>();
+    }
+
+    private void Update()
     {
         //自分とプレイヤーがどれだけ離れているか
         float distance = Vector2.Distance(transform.position, player.transform.position);
+        //自分とプレイヤー高さの差
+        heightDiff = player.transform.position.y - transform.position.y;
 
-        float targetX = 0f;//移動距離
-
+        //一定距離離れたら追いかける
         if (distance > followDistance)
         {
+            float move = Mathf.Abs(playerController.Move);
             float dir = Mathf.Sign(player.transform.position.x - transform.position.x);
-            targetX = dir * walkForce;
+            targetX = dir * walkForce * move;
+            
         }
         else if (distance < stopDistance)
         {
             targetX = 0f;
         }
+    }
+
+    private void FixedUpdate()
+    {
+      
         // 今のY速度はそのまま維持！
-        float newX = Mathf.Lerp(rb.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-        rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
+        float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+        parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
 
 
         //一定距離離れたらプレイヤーのところにワープする
         if (Vector2.Distance(transform.position, player.transform.position) > warpDistance)
         {
-            transform.position = player.transform.position;
+            float dir = Mathf.Sign(player.transform.position.x - transform.position.x);
+            Vector2 warpPos = player.transform.position + new Vector3(-dir * 1.5f, 0, 0);
+
+            parentRd.position = warpPos;
+            parentRd.linearVelocity = Vector2.zero;
         }
 
         // 壁に当たってたらジャンプ
-        if (isGrounded && isWall)
+        if (isGrounded && heightDiff > 0.5f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            parentRd.linearVelocity = new Vector2(parentRd.linearVelocity.x, jumpForce);
         }
     }
 
@@ -58,24 +79,16 @@ public class SlimeDirecter : MonoBehaviour
             {
                 isGrounded = true;
                 DebugLogger.Log("地面についた");
-            }
-
-            // 横から接触 → 壁
-            if (Mathf.Abs(contact.normal.x) > 0.5f)
-            {
-                isWall = true;
-            }
+            } 
         }
 
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        //地面・壁から離れたかどうか
+        //地面から離れたかどうか
         if (collision.gameObject.CompareTag("Ground"))
         {           
                 isGrounded = false;          
-                isWall = false;
-
         }
     }
 }

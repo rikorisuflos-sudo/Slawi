@@ -1,16 +1,29 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SlimeController : MonoBehaviour
 {
-    [SerializeField] private GameObject player;//追いかける対象
 
-    private void AttackStart()
+    private Mouse mouse;
+
+    [SerializeField] GameObject normalAttack;
+    private SlimeNormalAttack normalAttackScript;
+    private void Awake()
     {
-       
+        mouse = Mouse.current;
     }
 
-    private void AttackEnd()
+    private void Start()
     {
-        
+        normalAttackScript = normalAttack.GetComponent<SlimeNormalAttack>();
+    }
+
+    private void Update()
+    {
+        if (mouse.leftButton.wasPressedThisFrame)
+        {
+            normalAttack.SetActive(true); // オブジェクトを有効化
+            normalAttackScript.Attack();
+        }
     }
 }

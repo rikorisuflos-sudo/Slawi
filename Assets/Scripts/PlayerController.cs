@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System.Xml.Linq;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,17 +11,22 @@ public class PlayerController : MonoBehaviour
     
 
     float move = 0f;
+    public float Move
+    {
+        get { return move; } // getterの部分
+    }
 
     [SerializeField] private float jumpForce;//ジャンプの高さ
     [SerializeField] private float walkForce;//速度の上昇値
     private bool isGrounded = true;//地面に触れているかいないか
 
-    private Keyboard keyboard = Keyboard.current;
+    private Keyboard keyboard;
 
     private void Awake()
     {
         //初期化
         Application.targetFrameRate = 60;
+        keyboard = Keyboard.current;
     }
 
 
@@ -38,8 +44,8 @@ public class PlayerController : MonoBehaviour
         // //Dが押されたとき右に移動
         if (keyboard.dKey.isPressed)
         {
-                move = keyboard.shiftKey.isPressed ? 1.5f : 1f;
-                 }
+            move = keyboard.shiftKey.isPressed ? 1.5f : 1f;
+        }
        
        
     }
