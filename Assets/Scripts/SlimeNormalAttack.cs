@@ -6,16 +6,19 @@ public class SlimeNormalAttack : MonoBehaviour
 {
     private Rigidbody2D parentRd;//親オブジェクトのものを取得
     [SerializeField] private GameObject player;//プレイヤー
-    [SerializeField] private float smooth = 5f;           // ぬるっと具合
+    //[SerializeField] private float smooth = 5f;           // ぬるっと具合
 
     [SerializeField] private float dashDistance = 20f;//攻撃距離
     [SerializeField] private float dashSpeed = 20f;//攻撃速度
+    float dashDir = 0;
 
     bool enable = false;//有効になったか
     bool hasWarped = false;//プレイヤーの前にワープしたか
     private Vector2 dashStartPos; // 突進開始位置
     private bool isDashing = false;//突進してもいいのか
 
+    [SerializeField] private float wallCheckDistance = 0.5f;//壁の探索範囲
+    [SerializeField] private LayerMask groundLayer; // 地面レイヤー
     void OnEnable()
     {
         enable = true;
@@ -42,12 +45,14 @@ public class SlimeNormalAttack : MonoBehaviour
 
     public void Attack()
     {
-            float dir = Mathf.Sign(player.transform.position.x - transform.position.x);
+        
         //ワープは1度まで
         if (!hasWarped)
         {
+            dashDir = Mathf.Sign(player.transform.position.x - transform.position.x);
+            if (dashDir == 0) dashDir = 1;
             // プレイヤーの前にワープ
-            Vector2 warpPos = player.transform.position + new Vector3(dir * 1.5f, 0, 0);
+            Vector2 warpPos = player.transform.position + new Vector3(dashDir * 1.5f, 0, 0);
 
             parentRd.position = warpPos;
             parentRd.linearVelocity = Vector2.zero;
@@ -61,20 +66,37 @@ public class SlimeNormalAttack : MonoBehaviour
         //突進
         if (isDashing)
         {
-            float targetX = dir * dashSpeed;
+            //float targetX = dashDir * dashSpeed;
 
-            float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-            parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
+            //float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+            //parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
+            parentRd.linearVelocity = new Vector2(dashDir * dashSpeed, parentRd.linearVelocity.y);
 
+            // 壁チェック（進行方向にRay）
+            Vector2 origin = parentRd.position;
+            Vector2 direction = new Vector2(dashDir, 0);
+
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, wallCheckDistance, groundLayer);
+
+            if (hit.collider != null)
+            {
+                EndAttack();
+            }
             // 移動距離チェック
             float distance = Vector2.Distance(parentRd.position, dashStartPos);
 
             if (distance >= dashDistance)
             {
-                isDashing = false;
-                parentRd.linearVelocity = Vector2.zero;
-                this.gameObject.SetActive(false);
+                EndAttack();
             }
         }
+    }
+
+    void EndAttack()
+    {
+        isDashing = false;
+        enable = false;
+        parentRd.linearVelocity = Vector2.zero;
+        gameObject.SetActive(false);
     }
 }
