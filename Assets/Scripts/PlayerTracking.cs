@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerTracking : MonoBehaviour
 {
     private Rigidbody2D parentRd;//親オブジェクトのものを取得
+    private Transform parentTr;
     [SerializeField] private GameObject player;//追いかける対象
     private PlayerController playerController;
 
@@ -18,39 +19,54 @@ public class PlayerTracking : MonoBehaviour
 
     float targetX = 0f;//目標座標
     float heightDiff;
+
+    bool canMove = true;//追従処理のON.OFF
+    public bool CanMove
+    {
+        set { canMove = value; }
+    }
     private void Start()
     {
         playerController = player.GetComponent<PlayerController>();
         parentRd = GetComponentInParent<Rigidbody2D>();
+        parentTr = transform.parent;
     }
 
     private void Update()
     {
+        if (!canMove) return;
+
         //自分とプレイヤーがどれだけ離れているか
         float distance = Vector2.Distance(transform.position, player.transform.position);
         //自分とプレイヤー高さの差
         heightDiff = player.transform.position.y - transform.position.y;
 
+           
         //一定距離離れたら追いかける
         if (distance > followDistance)
         {
             float move = Mathf.Abs(playerController.Move);
             float dir = Mathf.Sign(player.transform.position.x - transform.position.x);
             targetX = dir * walkForce * move;
-            
+            if (dir == 0) dir = 1;
+            parentTr.localScale = new Vector3(dir, 1, 1);
+            //DebugLogger.Log(distance);
         }
         else if (distance < stopDistance)
         {
             targetX = 0f;
+            //DebugLogger.Log(distance);
         }
     }
 
     private void FixedUpdate()
     {
-      
+        if (!canMove) return;
+
         // 今のY速度はそのまま維持！
         float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
         parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
+        
 
 
         //一定距離離れたらプレイヤーのところにワープする

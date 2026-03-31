@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Xml.Linq;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,11 +41,13 @@ public class PlayerController : MonoBehaviour
         if (keyboard.aKey.isPressed)
         {
             move = keyboard.shiftKey.isPressed ? -1.5f : -1f;
+            transform.localScale = new Vector3(-1,1,0);
         }
         // //Dが押されたとき右に移動
         if (keyboard.dKey.isPressed)
         {
             move = keyboard.shiftKey.isPressed ? 1.5f : 1f;
+            transform.localScale = new Vector3(1, 1, 0);
         }
        
        

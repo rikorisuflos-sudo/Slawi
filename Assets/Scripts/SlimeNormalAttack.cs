@@ -6,7 +6,7 @@ public class SlimeNormalAttack : MonoBehaviour
 {
     private Rigidbody2D parentRd;//親オブジェクトのものを取得
     [SerializeField] private GameObject player;//プレイヤー
-    //[SerializeField] private float smooth = 5f;           // ぬるっと具合
+    [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
     [SerializeField] private float dashDistance = 20f;//攻撃距離
     [SerializeField] private float dashSpeed = 20f;//攻撃速度
@@ -19,20 +19,28 @@ public class SlimeNormalAttack : MonoBehaviour
 
     [SerializeField] private float wallCheckDistance = 0.5f;//壁の探索範囲
     [SerializeField] private LayerMask groundLayer; // 地面レイヤー
+
+    //[SerializeField] PlayerTracking playerTracking;
+    [SerializeField] GameObject playerTracking;
     void OnEnable()
     {
+        playerTracking.SetActive(false);
         enable = true;
     }
 
-    private void OnDisable()
-    {
-        enable = false;
-        hasWarped = false;
-    }
+    //private void OnDisable()
+    //{
+    //    playerTracking.CanMove = true;
+    //    hasWarped = false;
+    //    enable = false;
+    //}
 
     private void Awake()
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
+        //playerTracking = GetComponentInParent<PlayerTracking>();
+        //if (playerTracking != null)
+        //    playerTracking.CanMove = false;
     }
 
     private void FixedUpdate()
@@ -49,8 +57,12 @@ public class SlimeNormalAttack : MonoBehaviour
         //ワープは1度まで
         if (!hasWarped)
         {
-            dashDir = Mathf.Sign(player.transform.position.x - transform.position.x);
+            // プレイヤーの向き（右=1、左=-1）
+            dashDir = Mathf.Sign(player.transform.localScale.x);
             if (dashDir == 0) dashDir = 1;
+            DebugLogger.Log(dashDir);
+
+
             // プレイヤーの前にワープ
             Vector2 warpPos = player.transform.position + new Vector3(dashDir * 1.5f, 0, 0);
 
@@ -66,11 +78,11 @@ public class SlimeNormalAttack : MonoBehaviour
         //突進
         if (isDashing)
         {
-            //float targetX = dashDir * dashSpeed;
+            float targetX = dashDir * dashSpeed;
 
-            //float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-            //parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
-            parentRd.linearVelocity = new Vector2(dashDir * dashSpeed, parentRd.linearVelocity.y);
+            float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+            parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
+            //parentRd.linearVelocity = new Vector2(dashDir * dashSpeed, parentRd.linearVelocity.y);
 
             // 壁チェック（進行方向にRay）
             Vector2 origin = parentRd.position;
@@ -80,6 +92,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
             if (hit.collider != null)
             {
+                DebugLogger.Log("壁に当たった");
                 EndAttack();
             }
             // 移動距離チェック
@@ -87,6 +100,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
             if (distance >= dashDistance)
             {
+                DebugLogger.Log("壁に当たった");
                 EndAttack();
             }
         }
@@ -94,6 +108,10 @@ public class SlimeNormalAttack : MonoBehaviour
 
     void EndAttack()
     {
+        //if (playerTracking != null)
+        //playerTracking.CanMove = true;
+        playerTracking.SetActive(true);
+        hasWarped = false;
         isDashing = false;
         enable = false;
         parentRd.linearVelocity = Vector2.zero;
