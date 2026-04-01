@@ -10,8 +10,8 @@ public class PlayerTracking : MonoBehaviour
 
     [SerializeField] private float walkForce;//速度の上昇値
     [SerializeField] private float jumpForce;//ジャンプの高さ
-    [SerializeField] private float followDistance = 2.5f; // この距離より離れたら追う
-    [SerializeField] private float stopDistance = 1.5f;   // この距離まで来たら止まる
+    [SerializeField] private float followDistance ; // この距離より離れたら追う
+    [SerializeField] private float stopDistance;   // この距離まで来たら止まる
     [SerializeField] private float warpDistance; // この距離より離れたら追う
     [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
@@ -45,9 +45,16 @@ public class PlayerTracking : MonoBehaviour
         //一定距離離れたら追いかける
         if (distance > followDistance)
         {
+            //プレイヤーが走っているか歩いているか
             float move = Mathf.Abs(playerController.Move);
+            //プレイヤーが動いていなくても、最低速度は保証する
+            float minimumSpeed = Mathf.Max(move, 0.5f);
+            //プレイヤーの位置をもとに移動方向を決める
             float dir = Mathf.Sign(player.transform.position.x - transform.position.x);
-            targetX = dir * walkForce * move;
+
+            targetX = dir * walkForce * minimumSpeed;
+
+            //オブジェクト反転
             if (dir == 0) dir = 1;
             parentTr.localScale = new Vector3(dir, 1, 1);
             //DebugLogger.Log(distance);

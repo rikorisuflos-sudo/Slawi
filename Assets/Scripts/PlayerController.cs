@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private Rigidbody2D rb;
     
 
-    float move = 0f;
+    float move = 0f;//走っていたら1.5、歩いていたら1.0
     public float Move
     {
         get { return move; } // getterの部分

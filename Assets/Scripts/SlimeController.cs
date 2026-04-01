@@ -23,7 +23,7 @@ public class SlimeController : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
             normalAttack.SetActive(true); // オブジェクトを有効化
-            normalAttackScript.Attack();
+            normalAttackScript.StartAttack();
         }
     }
 }

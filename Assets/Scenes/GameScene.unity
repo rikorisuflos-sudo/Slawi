@@ -458,8 +458,8 @@ MonoBehaviour:
   player: {fileID: 387031426}
   walkForce: 5
   jumpForce: 10
-  followDistance: 1.5
-  stopDistance: 0.5
+  followDistance: 2.5
+  stopDistance: 1.5
   warpDistance: 15
   smooth: 5
 --- !u!61 &510386263
