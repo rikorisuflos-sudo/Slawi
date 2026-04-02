@@ -2,37 +2,58 @@ using UnityEngine;
 
 public class CameraDirector : MonoBehaviour
 {
-    [Header("追いかける対象")]
-    public Transform player;
+    private GameObject player;
 
-    [Header("追従スピード (X軸)")]
-    [Range(0, 1)]
-    public float smoothSpeed = 0.125f;
+    [Header("追従スピード")]
+    [SerializeField, Range(0, 1)] private float smoothSpeed;
 
     [Header("上下操作の設定 (W/S)")]
-    public float verticalSpeed = 10f; // 上下移動の速さ
-    private float currentY;           // 現在のカメラの高さ
+    [SerializeField] private float verticalSpeed = 10f;
+    [SerializeField] private float maxManualYOffset;
 
-    void Start()
+    private float manualYOffset = 0f; // 手動Y移動のオフセット
+
+    public void SetPlayer(GameObject p)
     {
-        // 起動時のカメラのY座標を初期位置として保存
-        currentY = transform.position.y;
+        player = p;
     }
+
 
     void LateUpdate()
     {
-        // 1. プレイヤーのX軸追従
-        float targetX = transform.position.x;
-        if (player != null)
+        if (player == null) return;
+
+        //プレイヤー追従
+        float targetX = Mathf.Lerp(
+            transform.position.x,
+            player.transform.position.x,
+            smoothSpeed
+        );
+
+        float targetY = Mathf.Lerp(
+            transform.position.y,
+            player.transform.position.y,
+            smoothSpeed
+        );
+
+        // W/S入力
+        float vInput = Input.GetAxis("Vertical");
+
+        if (vInput != 0)
         {
-            targetX = Mathf.Lerp(transform.position.x, player.position.x, smoothSpeed);
+            manualYOffset += vInput * verticalSpeed * Time.deltaTime;
+            manualYOffset = Mathf.Clamp(manualYOffset, -maxManualYOffset, maxManualYOffset);
+        }
+        else
+        {
+            manualYOffset = 0;
         }
 
-        // 2. W/Sキーによる上下操作 (Vertical = W/S または 上下矢印キー)
-        float vInput = Input.GetAxis("Vertical");
-        currentY += vInput * verticalSpeed * Time.deltaTime;
-
-        // 3. 最終的な位置を適用 (Zは現在の値を維持)
-        transform.position = new Vector3(targetX, currentY, transform.position.z);
+        //  最終位置
+        transform.position = new Vector3(
+            targetX,
+            targetY + manualYOffset,
+            -10f
+        );
     }
 }

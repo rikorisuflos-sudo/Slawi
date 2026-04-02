@@ -405,6 +405,8 @@ MonoBehaviour:
   smooth: 10
   dashDistance: 2
   dashSpeed: 15
+  chargeTime: 0.3
+  recoveryTime: 0.3
   wallCheckDistance: 0.5
   groundLayer:
     serializedVersion: 2
@@ -990,9 +992,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3694eaa55d7b541ad9d9e68dd9a287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 387031428}
   smoothSpeed: 0.125
   verticalSpeed: 10
+  maxManualYOffset: 5
 --- !u!1001 &3954866267449029529
 PrefabInstance:
   m_ObjectHideFlags: 0

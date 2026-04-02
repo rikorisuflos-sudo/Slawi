@@ -12,7 +12,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
     [SerializeField] private float dashDistance = 20f;//UŒ‚‹——£
     [SerializeField] private float dashSpeed = 20f;//UŒ‚‘¬“x
-    float dashDir = 0;
+    float dashDir = 0;//ƒ_ƒbƒVƒ…•ûŒü
 
     [SerializeField] private float chargeTime = 0.3f;   // —­‚ßŠÔ
     [SerializeField] private float recoveryTime = 0.3f; // d’¼ŠÔ
@@ -93,6 +93,8 @@ public class SlimeNormalAttack : MonoBehaviour
             Vector2 direction = new Vector2(dashDir, 0);
 
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, wallCheckDistance, groundLayer);
+            Debug.DrawRay(origin, direction, Color.red);
+
 
             if (hit.collider != null)
             {
