@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraDirector : MonoBehaviour
 {
-    private GameObject player;
+    [SerializeField]private GameObject player;
 
     [Header("追従スピード")]
     [SerializeField, Range(0, 1)] private float smoothSpeed;
@@ -12,11 +12,6 @@ public class CameraDirector : MonoBehaviour
     [SerializeField] private float maxManualYOffset;
 
     private float manualYOffset = 0f; // 手動Y移動のオフセット
-
-    public void SetPlayer(GameObject p)
-    {
-        player = p;
-    }
 
 
     void LateUpdate()

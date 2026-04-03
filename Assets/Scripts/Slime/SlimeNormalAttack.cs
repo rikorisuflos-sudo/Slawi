@@ -26,6 +26,7 @@ public class SlimeNormalAttack : MonoBehaviour
     [SerializeField] private LayerMask groundLayer; // 地面レイヤー
 
     [SerializeField] GameObject playerTracking;
+    private float timer = 0;
     void OnEnable()
     {
         playerTracking.SetActive(false);
@@ -46,12 +47,12 @@ public class SlimeNormalAttack : MonoBehaviour
         }
     }
 
-    public void StartAttack()
-    {
-        StartCoroutine(AttackRoutine());
-    }
+    //public void StartAttack()
+    //{
+    //    StartCoroutine(AttackRoutine());
+    //}
 
-    IEnumerator AttackRoutine()
+    private void AttackRoutine()
     {
         enable = false;
         isDashing = false;
@@ -60,19 +61,19 @@ public class SlimeNormalAttack : MonoBehaviour
 
         //溜め
         parentRd.linearVelocity = Vector2.zero;
-        yield return new WaitForSeconds(chargeTime);
+        //yield return new WaitForSeconds(chargeTime);
 
 
         // 突進（終了待ち）
         while (isDashing)
         {
             Attack();
-            yield return null;
+            //yield return null;
         }
 
         // 硬直
         parentRd.linearVelocity = Vector2.zero;
-        yield return new WaitForSeconds(recoveryTime);
+        //yield return new WaitForSeconds(recoveryTime);
 
         // 終了
         gameObject.SetActive(false);
