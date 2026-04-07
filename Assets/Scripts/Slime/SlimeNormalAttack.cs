@@ -17,133 +17,126 @@ public class SlimeNormalAttack : MonoBehaviour
     [SerializeField] private float chargeTime = 0.3f;   // 溜め時間
     [SerializeField] private float recoveryTime = 0.3f; // 硬直時間
 
-    bool enable = false;//有効になったか
-    bool hasWarped = false;//プレイヤーの前にワープしたか
+
     private Vector2 dashStartPos; // 突進開始位置
-    private bool isDashing = false;//突進してもいいのか
 
     [SerializeField] private float wallCheckDistance = 0.5f;//壁の探索範囲
     [SerializeField] private LayerMask groundLayer; // 地面レイヤー
 
     [SerializeField] GameObject playerTracking;
     private float timer = 0;
-    void OnEnable()
+    enum State
     {
-        playerTracking.SetActive(false);
-        enable = true;
+        Idle,//待機
+        Charge,//攻撃前の溜め
+        Dash,//突進
+        Recovery//硬直
     }
 
-    private void Awake()
+    State currentState = State.Idle;
+
+    void Awake()
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
         parentTr = transform.parent;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        if (enable)
+        switch (currentState)
         {
-            Attack();
+            case State.Charge:
+                Charge();
+                break;
+
+            case State.Dash:
+                Dash();
+                break;
+
+            case State.Recovery:
+                Recovery();
+                break;
         }
     }
-
-    //public void StartAttack()
-    //{
-    //    StartCoroutine(AttackRoutine());
-    //}
-
-    private void AttackRoutine()
+    //プレイヤーの前に移動
+    void Warp()
     {
-        enable = false;
-        isDashing = false;
+        //ワープさせる
+        Vector2 warpPos = player.transform.position + new Vector3(dashDir * 1.5f, 0, 0);
 
-        Warp();
+        //ワープしたときに突進方向を向くようにする
+        parentTr.localScale = new Vector3(dashDir, 1, 1);
 
-        //溜め
-        parentRd.linearVelocity = Vector2.zero;
-        //yield return new WaitForSeconds(chargeTime);
-
-
-        // 突進（終了待ち）
-        while (isDashing)
-        {
-            Attack();
-            //yield return null;
-        }
-
-        // 硬直
-        parentRd.linearVelocity = Vector2.zero;
-        //yield return new WaitForSeconds(recoveryTime);
-
-        // 終了
-        gameObject.SetActive(false);
-        playerTracking.SetActive(true);
-    }
-    private void Attack()
-    {
-        //突進
-        if (isDashing)
-        {
-            float targetX = dashDir * dashSpeed;
-
-            float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-            parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
-
-            // 壁チェック（進行方向にRay）
-            Vector2 origin = parentRd.position;
-            Vector2 direction = new Vector2(dashDir, 0);
-
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, wallCheckDistance, groundLayer);
-            Debug.DrawRay(origin, direction, Color.red);
-
-
-            if (hit.collider != null)
-            {
-                DebugLogger.Log("壁に当たった");
-                EndAttack();
-            }
-            // 移動距離チェック
-            float distance = Vector2.Distance(parentRd.position, dashStartPos);
-
-            if (distance >= dashDistance)
-            {
-                DebugLogger.Log("移動距離が一定に達した");
-                EndAttack();
-            }
-        }
+        parentRd.position = warpPos;
+        dashStartPos = parentRd.position;
     }
 
-    private void Warp()
+    //プレイヤー追従処理OFF
+    //突進方向の確定、タイマーの初期化
+    public void StartAttack()
     {
-        //ワープ（1度まで）
-        if (!hasWarped)
-        {
-            // プレイヤーの向き（右=1、左=-1）
-            dashDir = Mathf.Sign(player.transform.localScale.x);
-            if (dashDir == 0) dashDir = 1;
+        playerTracking.SetActive(false);
 
-            // プレイヤーの前にワープ
-            Vector2 warpPos = player.transform.position + new Vector3(dashDir * 1.5f, 0, 0);
-            //ワープしたときに突進方向を向くようにする
-            parentTr.localScale = new Vector3(dashDir, 1, 1);
+        dashDir = Mathf.Sign(player.transform.localScale.x);
+        if (dashDir == 0) dashDir = 1;
 
-
-            parentRd.position = warpPos;
-            parentRd.linearVelocity = Vector2.zero;
-
-            hasWarped = true;
-            isDashing = true;
-            dashStartPos = parentRd.position;
-            return; // このフレームはここで終了
-        }
+        timer = 0;
+        currentState = State.Charge;
     }
-
-    void EndAttack()
+    //攻撃前の溜め
+    void Charge()
     {
-        hasWarped = false;
-        isDashing = false;
-        enable = false;
+        timer += Time.fixedDeltaTime;
+
         parentRd.linearVelocity = Vector2.zero;
 
+        if (timer >= chargeTime)
+        {
+            timer = 0;
+            Warp();
+            currentState = State.Dash;
+        }
+    }
+    //突進
+    void Dash()
+    {
+        parentRd.linearVelocity = new Vector2(dashDir * dashSpeed, parentRd.linearVelocity.y);
+
+        // 壁チェック
+        RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
+        Debug.DrawRay(parentRd.position, new Vector2(dashDir, 0), Color.red);
+        if (hit.collider != null)
+        {
+            EndDash();
+            return;
+        }
+
+        // 距離チェック（Xだけ）
+        float distance = Mathf.Abs(parentRd.position.x - dashStartPos.x);
+        if (distance >= dashDistance)
+        {
+            EndDash();
+        }
+    }
+
+    //突進終了
+    void EndDash()
+    {
+        timer = 0;
+        currentState = State.Recovery;
+    }
+
+    //攻撃後の硬直
+    void Recovery()
+    {
+        timer += Time.fixedDeltaTime;
+
+        parentRd.linearVelocity = Vector2.zero;
+
+        if (timer >= recoveryTime)
+        {
+            currentState = State.Idle;
+            playerTracking.SetActive(true);
+        }
     }
 }
