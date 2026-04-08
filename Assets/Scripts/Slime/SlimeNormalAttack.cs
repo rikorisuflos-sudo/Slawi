@@ -7,6 +7,7 @@ public class SlimeNormalAttack : MonoBehaviour
 {
     private Rigidbody2D parentRd;//親オブジェクトのものを取得
     private Transform parentTr;
+    private SlimeController slimeController;
     [SerializeField] private GameObject player;//プレイヤー
     [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
@@ -39,6 +40,7 @@ public class SlimeNormalAttack : MonoBehaviour
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
         parentTr = transform.parent;
+        slimeController = FindFirstObjectByType<SlimeController>();
     }
 
     void FixedUpdate()
@@ -76,7 +78,7 @@ public class SlimeNormalAttack : MonoBehaviour
     public void StartAttack()
     {
         playerTracking.SetActive(false);
-
+        slimeController.enabled = false;
         dashDir = Mathf.Sign(player.transform.localScale.x);
         if (dashDir == 0) dashDir = 1;
 
@@ -136,7 +138,9 @@ public class SlimeNormalAttack : MonoBehaviour
         if (timer >= recoveryTime)
         {
             currentState = State.Idle;
+            slimeController.enabled = true;
             playerTracking.SetActive(true);
+            gameObject.SetActive(false);
         }
     }
 }

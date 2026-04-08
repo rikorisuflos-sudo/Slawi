@@ -87,7 +87,7 @@ public class PlayerTracking : MonoBehaviour
         }
 
         // •Ç‚É“–‚½‚Á‚Ä‚½‚çƒWƒƒƒ“ƒv
-        if (isGrounded && heightDiff > 0.5f)
+        if (isGrounded && heightDiff > 1f)
         {
             parentRd.linearVelocity = new Vector2(parentRd.linearVelocity.x, jumpForce);
         }
