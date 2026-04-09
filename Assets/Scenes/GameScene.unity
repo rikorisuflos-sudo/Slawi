@@ -167,7 +167,7 @@ MonoBehaviour:
   player: {fileID: 387031426}
   smooth: 5
   dropSpeed: 20
-  dropDistance: 10
+  stompDistance: 30
   chargeTime: 0.3
   recoveryTime: 0.3
   wallCheckDistance: 0.5

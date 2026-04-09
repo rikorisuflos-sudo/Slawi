@@ -12,7 +12,7 @@ public class SkillAttack : MonoBehaviour
     [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
     [SerializeField] private float dropSpeed = 20f;//攻撃速度
-    [SerializeField] private float dropDistance= 30f;//プレイヤーの位置よりどれだけ上にワープするか
+    [SerializeField] private float stompDistance= 30f;//プレイヤーの位置よりどれだけ上にワープするか
     float dashDir = 0;//ダッシュ方向
 
     [SerializeField] private float chargeTime = 0.3f;   // 溜め時間
@@ -77,7 +77,7 @@ public class SkillAttack : MonoBehaviour
     {
         GameObject tagetEnemy = serchTag();
         //ワープさせる
-        Vector2 warpPos = tagetEnemy.transform.position + new Vector3(0, dropDistance, 0);
+        Vector2 warpPos = tagetEnemy.transform.position + new Vector3(0, stompDistance, 0);
 
         parentRd.position = warpPos;
         dropStartPos = parentRd.position;
