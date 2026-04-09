@@ -11,8 +11,8 @@ public class SlimeNormalAttack : MonoBehaviour
     [SerializeField] private GameObject player;//プレイヤー
     [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
-    [SerializeField] private float dashDistance = 20f;//攻撃距離
-    [SerializeField] private float dashSpeed = 20f;//攻撃速度
+    [SerializeField] private float rushDistance = 20f;//攻撃距離
+    [SerializeField] private float rushSpeed = 20f;//攻撃速度
     float dashDir = 0;//ダッシュ方向
 
     [SerializeField] private float chargeTime = 0.3f;   // 溜め時間
@@ -102,7 +102,7 @@ public class SlimeNormalAttack : MonoBehaviour
     //突進
     void Dash()
     {
-        parentRd.linearVelocity = new Vector2(dashDir * dashSpeed, parentRd.linearVelocity.y);
+        parentRd.linearVelocity = new Vector2(dashDir * rushSpeed, parentRd.linearVelocity.y);
 
         // 壁チェック
         RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
@@ -115,7 +115,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
         // 距離チェック（Xだけ）
         float distance = Mathf.Abs(parentRd.position.x - dashStartPos.x);
-        if (distance >= dashDistance)
+        if (distance >= rushDistance)
         {
             EndDash();
         }

@@ -11,7 +11,7 @@ public class SkillAttack : MonoBehaviour
     [SerializeField] private GameObject player;//プレイヤー
     [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
-    [SerializeField] private float dropSpeed = 20f;//攻撃速度
+    [SerializeField] private float stompSpeed = 20f;//攻撃速度
     [SerializeField] private float stompDistance= 30f;//プレイヤーの位置よりどれだけ上にワープするか
     float dashDir = 0;//ダッシュ方向
 
@@ -112,7 +112,7 @@ public class SkillAttack : MonoBehaviour
     //突進
     void Drop()
     {
-        parentRd.linearVelocity = new Vector2(parentRd.linearVelocityX, -dropSpeed);
+        parentRd.linearVelocity = new Vector2(parentRd.linearVelocityX, -stompSpeed);
 
         //// 壁チェック
         //RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
