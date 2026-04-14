@@ -5,30 +5,33 @@ using static UnityEngine.GraphicsBuffer;
 
 public class SlimeNormalAttack : MonoBehaviour
 {
-    private Rigidbody2D parentRd;//親オブジェクトのものを取得
-    private Transform parentTr;
-    private SlimeController slimeController;
-    [SerializeField] private GameObject player;//プレイヤー
-    [SerializeField] private float smooth = 5f;           // ぬるっと具合
+   //親オブジェクトのものを取得
+    Rigidbody2D parentRd;
+    Transform parentTr;
+    Animator parentAnimator;
 
-    [SerializeField] private float rushDistance = 20f;//攻撃距離
-    [SerializeField] private float rushSpeed = 20f;//攻撃速度
+    SlimeController slimeController;
+    [SerializeField]  GameObject player;//プレイヤー
+
+    [SerializeField]  float rushDistance = 20f;//攻撃距離
+    [SerializeField]  float rushSpeed = 20f;//攻撃速度
     float dashDir = 0;//ダッシュ方向
 
-    [SerializeField] private float chargeTime = 0.3f;   // 溜め時間
-    [SerializeField] private float recoveryTime = 0.3f; // 硬直時間
+    [SerializeField]  float chargeTime = 0.3f;   // 溜め時間
+    [SerializeField]  float recoveryTime = 0.3f; // 硬直時間
 
 
-    private Vector2 dashStartPos; // 突進開始位置
+     Vector2 dashStartPos; // 突進開始位置
 
-    [SerializeField] private float wallCheckDistance = 0.5f;//壁の探索範囲
-    [SerializeField] private LayerMask groundLayer; // 地面レイヤー
+    [SerializeField]  float wallCheckDistance = 0.5f;//壁の探索範囲
+    [SerializeField]  LayerMask groundLayer; // 地面レイヤー
 
     [SerializeField] GameObject playerTracking;
-    private float timer = 0;
+     float timer = 0;
     enum State
     {
         Idle,//待機
+        Warp,//ワープ
         Charge,//攻撃前の溜め
         Dash,//突進
         Recovery//硬直
@@ -40,6 +43,7 @@ public class SlimeNormalAttack : MonoBehaviour
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
         parentTr = transform.parent;
+        parentAnimator = GetComponentInParent<Animator>();
         slimeController = FindFirstObjectByType<SlimeController>();
     }
 
@@ -47,6 +51,9 @@ public class SlimeNormalAttack : MonoBehaviour
     {
         switch (currentState)
         {
+            case State.Warp:
+                Warp();
+                break;
             case State.Charge:
                 Charge();
                 break;
@@ -71,6 +78,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
         parentRd.position = warpPos;
         dashStartPos = parentRd.position;
+        currentState = State.Charge;
     }
 
     //プレイヤー追従処理OFF
@@ -83,7 +91,7 @@ public class SlimeNormalAttack : MonoBehaviour
         if (dashDir == 0) dashDir = 1;
 
         timer = 0;
-        currentState = State.Charge;
+        currentState = State.Warp;
     }
     //攻撃前の溜め
     void Charge()
@@ -92,10 +100,12 @@ public class SlimeNormalAttack : MonoBehaviour
 
         parentRd.linearVelocity = Vector2.zero;
 
+        
+
         if (timer >= chargeTime)
         {
             timer = 0;
-            Warp();
+            parentAnimator.SetBool("StartRush",true);
             currentState = State.Dash;
         }
     }
@@ -124,6 +134,7 @@ public class SlimeNormalAttack : MonoBehaviour
     //突進終了
     void EndDash()
     {
+        parentAnimator.SetBool("EndRush",true );
         timer = 0;
         currentState = State.Recovery;
     }
@@ -137,6 +148,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
         if (timer >= recoveryTime)
         {
+            parentAnimator.SetBool("StartRush", false);
             currentState = State.Idle;
             slimeController.enabled = true;
             playerTracking.SetActive(true);

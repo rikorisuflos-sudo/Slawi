@@ -165,7 +165,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 387031426}
-  smooth: 5
   stompSpeed: 20
   stompDistance: 30
   chargeTime: 0.3
@@ -531,10 +530,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 387031426}
-  smooth: 10
-  rushDistance: 20
+  rushDistance: 5
   rushSpeed: 20
-  chargeTime: 0.3
+  chargeTime: 0.5
   recoveryTime: 0.3
   wallCheckDistance: 0.5
   groundLayer:

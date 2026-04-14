@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     
 
     float move = 0f;//走っていたら1.5、歩いていたら1.0
+    const float MoveRun = 1.5f;
+    const float MoveWalk = 1f;
     public float Move
     {
         get { return move; } // getterの部分
@@ -40,13 +42,13 @@ public class PlayerController : MonoBehaviour
         ////Aが押されたとき左に移動
         if (keyboard.aKey.isPressed)
         {
-            move = keyboard.shiftKey.isPressed ? -1.5f : -1f;
+            move = keyboard.shiftKey.isPressed ? MoveRun : MoveWalk;
             transform.localScale = new Vector3(-1,1,0);
         }
         // //Dが押されたとき右に移動
         if (keyboard.dKey.isPressed)
         {
-            move = keyboard.shiftKey.isPressed ? 1.5f : 1f;
+            move = keyboard.shiftKey.isPressed ? MoveRun : MoveWalk;
             transform.localScale = new Vector3(1, 1, 0);
         }
        

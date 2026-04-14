@@ -9,7 +9,6 @@ public class SkillAttack : MonoBehaviour
     //private Transform parentTr;
     private SlimeController slimeController;
     [SerializeField] private GameObject player;//プレイヤー
-    [SerializeField] private float smooth = 5f;           // ぬるっと具合
 
     [SerializeField] private float stompSpeed = 20f;//攻撃速度
     [SerializeField] private float stompDistance= 30f;//プレイヤーの位置よりどれだけ上にワープするか
