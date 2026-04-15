@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         ////Aが押されたとき左に移動
         if (keyboard.aKey.isPressed)
         {
-            move = keyboard.shiftKey.isPressed ? MoveRun : MoveWalk;
+            move = keyboard.shiftKey.isPressed ? -MoveRun : -MoveWalk;
             transform.localScale = new Vector3(-1,1,0);
         }
         // //Dが押されたとき右に移動

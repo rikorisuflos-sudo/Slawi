@@ -1,4 +1,6 @@
 using System.Collections;
+using Unity.Profiling;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.GraphicsBuffer;
@@ -100,9 +102,12 @@ public class SlimeNormalAttack : MonoBehaviour
 
         parentRd.linearVelocity = Vector2.zero;
 
-        
+        //アニメーションの再生位置を示す（開始0,終了１）
+        float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-        if (timer >= chargeTime)
+
+
+        if (broadcastTime >= 1)
         {
             timer = 0;
             parentAnimator.SetBool("StartRush",true);
