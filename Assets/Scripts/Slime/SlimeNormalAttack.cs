@@ -9,11 +9,9 @@ public class SlimeNormalAttack : MonoBehaviour
 {
    //親オブジェクトのものを取得
     Rigidbody2D parentRd;
-    Transform parentTr;
-    Animator parentAnimator;
 
-    SlimeController slimeController;
-    [SerializeField]  GameObject player;//プレイヤー
+    [SerializeField] SlimeController slimeController;
+    [SerializeField]  Transform playerTr;//プレイヤー
 
     [SerializeField]  float rushDistance = 20f;//攻撃距離
     [SerializeField]  float rushSpeed ;//攻撃速度
@@ -45,9 +43,6 @@ public class SlimeNormalAttack : MonoBehaviour
     void Awake()
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
-        parentTr = transform.parent;
-        parentAnimator = GetComponentInParent<Animator>();
-        slimeController = FindFirstObjectByType<SlimeController>();
     }
 
     void FixedUpdate()
@@ -74,10 +69,10 @@ public class SlimeNormalAttack : MonoBehaviour
     void Warp()
     {
         //ワープさせる
-        Vector2 warpPos = player.transform.position + new Vector3(dashDir * 1.5f, 0, 0);
+        Vector2 warpPos = playerTr.transform.position + new Vector3(dashDir * 1.5f, 0, 0);
 
         //ワープしたときに突進方向を向くようにする
-        parentTr.localScale = new Vector3(dashDir, 1, 1);
+        transform.localScale = new Vector3(dashDir, 1, 1);
 
         parentRd.position = warpPos;
         dashStartPos = parentRd.position;
@@ -90,7 +85,7 @@ public class SlimeNormalAttack : MonoBehaviour
     {
         playerTracking.SetActive(false);
         slimeController.enabled = false;
-        dashDir = Mathf.Sign(player.transform.localScale.x);
+        dashDir = Mathf.Sign(playerTr.transform.localScale.x);
         if (dashDir == 0) dashDir = 1;
 
         //timer = 0;
@@ -104,16 +99,16 @@ public class SlimeNormalAttack : MonoBehaviour
         parentRd.linearVelocity = Vector2.zero;
 
         //アニメーションの再生位置を示す（開始0,終了１）
-        float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        //float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
 
 
-        if (broadcastTime >= 1)
-        {
-            //timer = 0;
-            parentAnimator.SetBool("StartRush",true);
-            currentState = State.Dash;
-        }
+        //if (broadcastTime >= 1)
+        //{
+        //    //timer = 0;
+        //    parentAnimator.SetBool("StartRush",true);
+        //    currentState = State.Dash;
+        //}
     }
     //突進
     void Dash()
@@ -122,32 +117,32 @@ public class SlimeNormalAttack : MonoBehaviour
         DebugLogger.Log("ダッシュ");
 
         //アニメーションの再生位置を示す（開始0,終了１）
-        float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        //float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         // 壁チェック
         RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
         Debug.DrawRay(parentRd.position, new Vector2(dashDir, 0), Color.red);
-        if (!hasEndedDash && hit.collider != null && broadcastTime >= 1)
-        {
-            EndDash();
-            hasEndedDash = true;
-            return;
-        }
+        //if (!hasEndedDash && hit.collider != null && broadcastTime >= 1)
+        //{
+        ////    EndDash();
+        //    hasEndedDash = true;
+        //    return;
+        //}
 
         // 距離チェック（Xだけ）
         float distance = Mathf.Abs(parentRd.position.x - dashStartPos.x);
-        if (!hasEndedDash && distance >= rushDistance && broadcastTime >= 1)
-        {
-            EndDash();
-            hasEndedDash = true;
-            return;
-        }
+        //if (!hasEndedDash && distance >= rushDistance && broadcastTime >= 1)
+        //{
+        //    EndDash();
+        //    hasEndedDash = true;
+        //    return;
+        //}
     }
 
     //突進終了
     void EndDash()
     {
-        parentAnimator.SetBool("EndRush",true );
+        //parentAnimator.SetBool("EndRush",true );
         //timer = 0;
         hasEndedDash = false;
         currentState = State.Recovery;
@@ -158,18 +153,18 @@ public class SlimeNormalAttack : MonoBehaviour
     {
         //timer += Time.fixedDeltaTime;
         //アニメーションの再生位置を示す（開始0,終了１）
-        float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        //float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         parentRd.linearVelocity = Vector2.zero;
 
         //if (timer >= recoveryTime)
-        if (broadcastTime >= 1)
-        {
-            parentAnimator.SetBool("StartRush", false);
-            currentState = State.Idle;
-            slimeController.enabled = true;
-            playerTracking.SetActive(true);
-            gameObject.SetActive(false);
-        }
+        //if (broadcastTime >= 1)
+        //{
+        //    parentAnimator.SetBool("StartRush", false);
+        //    currentState = State.Idle;
+        //    slimeController.enabled = true;
+        //    playerTracking.SetActive(true);
+        //    gameObject.SetActive(false);
+        //}
     }
 }

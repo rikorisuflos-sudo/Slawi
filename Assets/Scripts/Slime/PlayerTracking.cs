@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class PlayerTracking : MonoBehaviour
 {
-    private Rigidbody2D parentRd;//親オブジェクトのものを取得
-    private Transform parentTr;
-    [SerializeField] private GameObject player;//追いかける対象
-    private PlayerController playerController;
+    Rigidbody2D parentRd;//親オブジェクトのものを取得
+    //Transform parentTr;
+    [SerializeField] Transform playerTr;//追いかける対象
+    [SerializeField] PlayerController playerController;
 
-    [SerializeField] private float walkForce;//速度の上昇値
-    [SerializeField] private float jumpForce;//ジャンプの高さ
-    [SerializeField] private float followDistance ; // この距離より離れたら追う
-    [SerializeField] private float stopDistance;   // この距離まで来たら止まる
-    [SerializeField] private float warpDistance; // この距離より離れたら追う
-    [SerializeField] private float smooth = 5f;           // ぬるっと具合
+    [SerializeField]  float walkForce;//速度の上昇値
+    [SerializeField]  float jumpForce;//ジャンプの高さ
+    [SerializeField]  float followDistance ; // この距離より離れたら追う
+    [SerializeField] float stopDistance;   // この距離まで来たら止まる
+    [SerializeField] float warpDistance; // この距離より離れたら追う
+    [SerializeField] float smooth = 5f;           // ぬるっと具合
 
     private bool isGrounded = true;//地面に触れているかいないか
 
@@ -27,9 +27,7 @@ public class PlayerTracking : MonoBehaviour
     }
     private void Start()
     {
-        playerController = player.GetComponent<PlayerController>();
         parentRd = GetComponentInParent<Rigidbody2D>();
-        parentTr = transform.parent;
     }
 
     private void Update()
@@ -37,9 +35,9 @@ public class PlayerTracking : MonoBehaviour
         if (!canMove) return;
 
         //自分とプレイヤーがどれだけ離れているか
-        float distance = Vector2.Distance(transform.position, player.transform.position);
+        float distance = Vector2.Distance(transform.position, playerTr.position);
         //自分とプレイヤー高さの差
-        heightDiff = player.transform.position.y - transform.position.y;
+        heightDiff = playerTr.position.y - transform.position.y;
 
            
         //一定距離離れたら追いかける
@@ -50,13 +48,14 @@ public class PlayerTracking : MonoBehaviour
             //プレイヤーが動いていなくても、最低速度は保証する
             float minimumSpeed = Mathf.Max(move, 0.5f);
             //プレイヤーの位置をもとに移動方向を決める
-            float dir = Mathf.Sign(player.transform.position.x - transform.position.x);
+            float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
 
             targetX = dir * walkForce * minimumSpeed;
 
             //オブジェクト反転
             if (dir == 0) dir = 1;
-            parentTr.localScale = new Vector3(dir, 1, 1);
+            //parentTr.localScale = new Vector3(dir, 1, 1);
+            transform.localScale = new Vector3(dir, 1, 1);
             //DebugLogger.Log(distance);
         }
         else if (distance < stopDistance)
@@ -77,10 +76,10 @@ public class PlayerTracking : MonoBehaviour
 
 
         //一定距離離れたらプレイヤーのところにワープする
-        if (Vector2.Distance(transform.position, player.transform.position) > warpDistance)
+        if (Vector2.Distance(transform.position, playerTr.position) > warpDistance)
         {
-            float dir = Mathf.Sign(player.transform.position.x - transform.position.x);
-            Vector2 warpPos = player.transform.position + new Vector3(-dir * 1.5f, 0, 0);
+            float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
+            Vector2 warpPos = playerTr.position + new Vector3(-dir * 1.5f, 0, 0);
 
             parentRd.position = warpPos;
             parentRd.linearVelocity = Vector2.zero;
