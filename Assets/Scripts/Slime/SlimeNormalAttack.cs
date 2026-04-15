@@ -16,7 +16,7 @@ public class SlimeNormalAttack : MonoBehaviour
     [SerializeField]  GameObject player;//プレイヤー
 
     [SerializeField]  float rushDistance = 20f;//攻撃距離
-    [SerializeField]  float rushSpeed = 20f;//攻撃速度
+    [SerializeField]  float rushSpeed ;//攻撃速度
     float dashDir = 0;//ダッシュ方向
 
     [SerializeField]  float chargeTime = 0.3f;   // 溜め時間
@@ -29,7 +29,8 @@ public class SlimeNormalAttack : MonoBehaviour
     [SerializeField]  LayerMask groundLayer; // 地面レイヤー
 
     [SerializeField] GameObject playerTracking;
-     float timer = 0;
+    //float timer = 0;
+    bool hasEndedDash = false;
     enum State
     {
         Idle,//待機
@@ -92,13 +93,13 @@ public class SlimeNormalAttack : MonoBehaviour
         dashDir = Mathf.Sign(player.transform.localScale.x);
         if (dashDir == 0) dashDir = 1;
 
-        timer = 0;
+        //timer = 0;
         currentState = State.Warp;
     }
     //攻撃前の溜め
     void Charge()
     {
-        timer += Time.fixedDeltaTime;
+        //timer += Time.fixedDeltaTime;
 
         parentRd.linearVelocity = Vector2.zero;
 
@@ -109,7 +110,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
         if (broadcastTime >= 1)
         {
-            timer = 0;
+            //timer = 0;
             parentAnimator.SetBool("StartRush",true);
             currentState = State.Dash;
         }
@@ -118,21 +119,28 @@ public class SlimeNormalAttack : MonoBehaviour
     void Dash()
     {
         parentRd.linearVelocity = new Vector2(dashDir * rushSpeed, parentRd.linearVelocity.y);
+        DebugLogger.Log("ダッシュ");
+
+        //アニメーションの再生位置を示す（開始0,終了１）
+        float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         // 壁チェック
         RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
         Debug.DrawRay(parentRd.position, new Vector2(dashDir, 0), Color.red);
-        if (hit.collider != null)
+        if (!hasEndedDash && hit.collider != null && broadcastTime >= 1)
         {
             EndDash();
+            hasEndedDash = true;
             return;
         }
 
         // 距離チェック（Xだけ）
         float distance = Mathf.Abs(parentRd.position.x - dashStartPos.x);
-        if (distance >= rushDistance)
+        if (!hasEndedDash && distance >= rushDistance && broadcastTime >= 1)
         {
             EndDash();
+            hasEndedDash = true;
+            return;
         }
     }
 
@@ -140,18 +148,22 @@ public class SlimeNormalAttack : MonoBehaviour
     void EndDash()
     {
         parentAnimator.SetBool("EndRush",true );
-        timer = 0;
+        //timer = 0;
+        hasEndedDash = false;
         currentState = State.Recovery;
     }
 
     //攻撃後の硬直
     void Recovery()
     {
-        timer += Time.fixedDeltaTime;
+        //timer += Time.fixedDeltaTime;
+        //アニメーションの再生位置を示す（開始0,終了１）
+        float broadcastTime = parentAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         parentRd.linearVelocity = Vector2.zero;
 
-        if (timer >= recoveryTime)
+        //if (timer >= recoveryTime)
+        if (broadcastTime >= 1)
         {
             parentAnimator.SetBool("StartRush", false);
             currentState = State.Idle;

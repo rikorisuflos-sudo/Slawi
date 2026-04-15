@@ -23,7 +23,6 @@ public class EnemySearch : MonoBehaviour
         //  距離チェック
         if (distance > viewDistance)
         {
-            DebugLogger.Log("探索距離外にいる");
             return false;
         }
 
@@ -31,7 +30,6 @@ public class EnemySearch : MonoBehaviour
         float angle = Vector2.Angle(transform.right, direction);
         if (angle > viewAngle / 2f)
         {
-            DebugLogger.Log("探索角度が適正じゃなかった");
             return false;
         }
 
@@ -42,7 +40,6 @@ public class EnemySearch : MonoBehaviour
         // 何かに当たったら＝壁に遮られている
         if (hit.collider != null)
         {
-            DebugLogger.Log("障害物を見つけた");
             return false;
 
         }
