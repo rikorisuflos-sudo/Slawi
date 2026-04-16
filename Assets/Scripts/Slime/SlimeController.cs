@@ -11,6 +11,7 @@ public class SlimeController : MonoBehaviour
 
     [SerializeField] Animator animator;
     const float NormalizedTime = 0f;
+    const int Layer = -1;
 
     [SerializeField] GameObject normalAttack;
     private SlimeNormalAttack normalAttackScript;
@@ -32,7 +33,8 @@ public class SlimeController : MonoBehaviour
     {
         if (mouse.leftButton.wasPressedThisFrame)
         {
-            Animator.Play(stateName, layer, normalizedTime);
+            string animationName = "Rush";
+            animator.Play(animationName, Layer, NormalizedTime);
             normalAttack.SetActive(true); // オブジェクトを有効化
             normalAttackScript.StartAttack();
         }

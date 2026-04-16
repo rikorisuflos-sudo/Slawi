@@ -18,8 +18,8 @@ public class SlimeNormalAttack : MonoBehaviour
     [SerializeField]  float rushSpeed ;//攻撃速度
     float dashDir = 0;//ダッシュ方向
 
-    [SerializeField]  float chargeTime = 0.3f;   // 溜め時間
-    [SerializeField]  float recoveryTime = 0.3f; // 硬直時間
+    //[SerializeField]  float chargeTime = 0.3f;   // 溜め時間
+    //[SerializeField]  float recoveryTime = 0.3f; // 硬直時間
 
 
      Vector2 dashStartPos; // 突進開始位置
@@ -123,21 +123,21 @@ public class SlimeNormalAttack : MonoBehaviour
         // 壁チェック
         RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
         Debug.DrawRay(parentRd.position, new Vector2(dashDir, 0), Color.red);
-        //if (!hasEndedDash && hit.collider != null && broadcastTime >= 1)
-        //{
-        ////    EndDash();
-        //    hasEndedDash = true;
-        //    return;
-        //}
+        if (!hasEndedDash && hit.collider != null)
+        {
+            //    EndDash();
+            hasEndedDash = true;
+            return;
+        }
 
         // 距離チェック（Xだけ）
         float distance = Mathf.Abs(parentRd.position.x - dashStartPos.x);
-        //if (!hasEndedDash && distance >= rushDistance && broadcastTime >= 1)
-        //{
-        //    EndDash();
-        //    hasEndedDash = true;
-        //    return;
-        //}
+        if (!hasEndedDash && distance >= rushDistance)
+        {
+            EndDash();
+            hasEndedDash = true;
+            return;
+        }
     }
 
     //突進終了

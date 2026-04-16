@@ -1053,6 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b08a9f8c1b7f44f864869bc5dd88e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeController
+  animator: {fileID: 680007744}
   normalAttack: {fileID: 680007742}
   skillAttack1: {fileID: 1829696915}
 --- !u!1 &680007742
@@ -1074,7 +1075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &680007743
 Transform:
   m_ObjectHideFlags: 0
@@ -1488,6 +1489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b08a9f8c1b7f44f864869bc5dd88e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   normalAttack: {fileID: 461895244}
   skillAttack1: {fileID: 143120768}
 --- !u!95 &982115736
@@ -1727,7 +1729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1829696916
 Transform:
   m_ObjectHideFlags: 0
