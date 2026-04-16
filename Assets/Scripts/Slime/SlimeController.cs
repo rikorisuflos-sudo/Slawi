@@ -1,11 +1,16 @@
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class SlimeController : MonoBehaviour
 {
 
     private Mouse mouse;
     private Keyboard keyboard;
+
+    [SerializeField] Animator animator;
+    const float NormalizedTime = 0f;
 
     [SerializeField] GameObject normalAttack;
     private SlimeNormalAttack normalAttackScript;
@@ -27,6 +32,7 @@ public class SlimeController : MonoBehaviour
     {
         if (mouse.leftButton.wasPressedThisFrame)
         {
+            Animator.Play(stateName, layer, normalizedTime);
             normalAttack.SetActive(true); // オブジェクトを有効化
             normalAttackScript.StartAttack();
         }

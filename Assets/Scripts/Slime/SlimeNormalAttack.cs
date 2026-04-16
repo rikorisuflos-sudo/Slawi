@@ -12,6 +12,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
     [SerializeField] SlimeController slimeController;
     [SerializeField]  Transform playerTr;//プレイヤー
+    //[SerializeField] Animator animator;
 
     [SerializeField]  float rushDistance = 20f;//攻撃距離
     [SerializeField]  float rushSpeed ;//攻撃速度
@@ -76,7 +77,7 @@ public class SlimeNormalAttack : MonoBehaviour
 
         parentRd.position = warpPos;
         dashStartPos = parentRd.position;
-        currentState = State.Charge;
+        //currentState = State.Charge;
     }
 
     //プレイヤー追従処理OFF

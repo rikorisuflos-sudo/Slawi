@@ -20,23 +20,23 @@ AnimationClip:
   m_PPtrCurves:
   - serializedVersion: 2
     curve:
-    - time: 0
+    - time: 0.016666668
       value: {fileID: 2405298125304543658, guid: 614da3679fef3ff4e89e841661ef31a3, type: 3}
-    - time: 0.13333334
+    - time: 0.1
       value: {fileID: -4323552616911908993, guid: 72bfa925734144341b5dceb1e662fd78, type: 3}
+    - time: 0.18333334
+      value: {fileID: -2978632412454319583, guid: c8b223e6bcf84df4ba54d039f5b44524, type: 3}
     - time: 0.26666668
-      value: {fileID: -2978632412454319583, guid: c8b223e6bcf84df4ba54d039f5b44524, type: 3}
-    - time: 0.35
       value: {fileID: 21300000, guid: 8abe81ce581f06c40a0604c535738446, type: 3}
-    - time: 0.43333334
+    - time: 0.35
       value: {fileID: 21300000, guid: ed4471c3076385e4b92f11c82d1b797f, type: 3}
-    - time: 0.51666665
+    - time: 0.43333334
       value: {fileID: 21300000, guid: 33cce7392b0278e408160c02e6bd28b3, type: 3}
-    - time: 0.5833333
+    - time: 0.51666665
       value: {fileID: -2978632412454319583, guid: c8b223e6bcf84df4ba54d039f5b44524, type: 3}
-    - time: 0.6666667
+    - time: 0.6
       value: {fileID: -4323552616911908993, guid: 72bfa925734144341b5dceb1e662fd78, type: 3}
-    - time: 0.75
+    - time: 0.68333334
       value: {fileID: 2405298125304543658, guid: 614da3679fef3ff4e89e841661ef31a3, type: 3}
     attribute: m_Sprite
     path: 
@@ -74,7 +74,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.76666665
+    m_StopTime: 0.7
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -101,22 +101,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.26666668
+  - time: 0.016666668
     functionName: Charge
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.51666665
-    functionName: 
+  - time: 0.26666668
+    functionName: Dash
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.75
-    functionName: 
+  - time: 0.51666665
+    functionName: Recovery
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
