@@ -11,7 +11,7 @@ public class CameraDirector : MonoBehaviour
     [SerializeField] private float verticalSpeed = 10f;
     [SerializeField] private float maxManualYOffset;
 
-    //private float manualYOffset = 0f; // 手動Y移動のオフセット
+    private float manualYOffset = 0f; // 手動Y移動のオフセット
 
 
     void LateUpdate()
@@ -44,11 +44,11 @@ public class CameraDirector : MonoBehaviour
         //    manualYOffset = 0;
         //}
 
-        ////  最終位置
-        //transform.position = new Vector3(
-        //    targetX,
-        //    targetY + manualYOffset,
-        //    -10f
-        //);
+        //  最終位置
+        transform.position = new Vector3(
+            targetX,
+            targetY + manualYOffset,
+            -10f
+        );
     }
 }

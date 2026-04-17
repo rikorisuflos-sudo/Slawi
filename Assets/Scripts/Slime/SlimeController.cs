@@ -33,8 +33,6 @@ public class SlimeController : MonoBehaviour
     {
         if (mouse.leftButton.wasPressedThisFrame)
         {
-            string animationName = "Rush";
-            animator.Play(animationName, Layer, NormalizedTime);
             normalAttack.SetActive(true); // オブジェクトを有効化
             normalAttackScript.StartAttack();
         }
