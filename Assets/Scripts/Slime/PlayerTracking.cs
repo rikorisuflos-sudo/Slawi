@@ -15,6 +15,7 @@ public class PlayerTracking : MonoBehaviour
     [SerializeField] float warpDistance; // ‚±‚Ì‹——£‚æ‚è—£‚ê‚½‚ç’Ç‚¤
     [SerializeField] float smooth = 5f;           // ‚Ê‚é‚Á‚Æ‹ï‡
 
+    const float GroundCatch=0.5f;
     private bool isGrounded = true;//’n–Ê‚ÉG‚ê‚Ä‚¢‚é‚©‚¢‚È‚¢‚©
 
     float targetX = 0f;//–Ú•WÀ•W
@@ -97,7 +98,7 @@ public class PlayerTracking : MonoBehaviour
         foreach (ContactPoint2D contact in collision.contacts)//ÚG“_‚ÌŽæ“¾
         {
             // ‰º‚©‚çÚG ¨ ’n–Ê
-            if (contact.normal.y > 0.5f)
+            if (contact.normal.y > GroundCatch)
             {
                 isGrounded = true;
                 DebugLogger.Log("’n–Ê‚É‚Â‚¢‚½");

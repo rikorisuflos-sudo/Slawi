@@ -973,7 +973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 327580feecc9f6f41a851cb2e74226c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySearch
-  target: {fileID: 387031428}
+  player: {fileID: 387031428}
   viewDistance: 5
   viewAngle: 60
   obstacleLayer:
@@ -992,7 +992,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyIdleMove
   rigid2D: {fileID: 518314786}
-  transform: {fileID: 518314783}
   enemyMileage: 10
   walkForce: 5
   checkDistance: 5
@@ -1025,7 +1024,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &583328090
 GameObject:
   m_ObjectHideFlags: 0
