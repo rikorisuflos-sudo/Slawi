@@ -26,6 +26,7 @@ public class EnemyIdleMove : MonoBehaviour
     private void Awake()
     {
         playerFind = false;
+        stepFind = false;
         enemyDir = 1f;
 
         if (transform != null)
