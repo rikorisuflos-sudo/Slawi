@@ -23,6 +23,9 @@ public class SkillAttack : MonoBehaviour
 
     [SerializeField] GameObject playerTracking;
 
+    [SerializeField] float searchRange = 10f;
+    [SerializeField] LayerMask enemyLayer;
+
     enum State
     {
         Idle,//待機
@@ -132,29 +135,25 @@ public class SkillAttack : MonoBehaviour
 
     //指定されたタグの中で最も近いものを取得
     GameObject serchTag()
+{
+    Collider2D[] hits = Physics2D.OverlapCircleAll(player.position, searchRange, enemyLayer);
+
+    float nearDis = Mathf.Infinity;
+    GameObject targetObj = null;
+
+    foreach (Collider2D hit in hits)
     {
-        float tmpDis = 0;           //距離用一時変数
-        float nearDis = 0;          //最も近いオブジェクトの距離
-        GameObject targetObj = null; //オブジェクト
+        float tmpDis = Vector2.Distance(hit.transform.position, player.position);
 
-        //タグ指定されたオブジェクトを配列で取得する
-        foreach (GameObject obs in GameObject.FindGameObjectsWithTag("Enemy"))
+        if (tmpDis < nearDis)
         {
-            //自身と取得したオブジェクトの距離を取得
-            tmpDis = Vector3.Distance(obs.transform.position, player.position);
-
-            //オブジェクトの距離が近いか、距離0であればオブジェクト名を取得
-            //一時変数に距離を格納
-            if (nearDis == 0 || nearDis > tmpDis)
-            {
-                nearDis = tmpDis;
-                targetObj = obs;
-            }
-
+            nearDis = tmpDis;
+            targetObj = hit.gameObject;
         }
-        //最も近かったオブジェクトを返す
-        return targetObj;
     }
+
+    return targetObj;
+}
 
     public void CastEnum(string input)
     {
