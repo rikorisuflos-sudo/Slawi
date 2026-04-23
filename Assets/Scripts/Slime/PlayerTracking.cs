@@ -1,3 +1,4 @@
+using System.Threading;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
@@ -8,14 +9,16 @@ public class PlayerTracking : MonoBehaviour
     [SerializeField] Transform playerTr;//追いかける対象
     [SerializeField] PlayerController playerController;
 
-    [SerializeField]  float walkForce;//速度の上昇値
-    [SerializeField]  float jumpForce;//ジャンプの高さ
-    [SerializeField]  float followDistance ; // この距離より離れたら追う
+    [SerializeField] float walkForce;//速度の上昇値
+    [SerializeField] float jumpForce;//ジャンプの高さ
+    [SerializeField] float jampDelay;
+    float nextJumpTime = 0f;
+    [SerializeField] float followDistance; // この距離より離れたら追う
     [SerializeField] float stopDistance;   // この距離まで来たら止まる
     [SerializeField] float warpDistance; // この距離より離れたら追う
     [SerializeField] float smooth = 5f;           // ぬるっと具合
 
-    const float GroundCatch=0.5f;
+    const float GroundCatch = 0.5f;
     private bool isGrounded = true;//地面に触れているかいないか
 
     float targetX = 0f;//目標座標
@@ -40,7 +43,7 @@ public class PlayerTracking : MonoBehaviour
         //自分とプレイヤー高さの差
         heightDiff = playerTr.position.y - transform.position.y;
 
-           
+
         //一定距離離れたら追いかける
         if (distance > followDistance)
         {
@@ -73,7 +76,7 @@ public class PlayerTracking : MonoBehaviour
         // 今のY速度はそのまま維持！
         float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
         parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
-        
+
 
 
         //一定距離離れたらプレイヤーのところにワープする
@@ -87,11 +90,13 @@ public class PlayerTracking : MonoBehaviour
         }
 
         // 壁に当たってたらジャンプ
-        if (isGrounded && heightDiff > 1f)
+        if (isGrounded && heightDiff > 1f && Time.time >= nextJumpTime)
         {
             parentRd.linearVelocity = new Vector2(parentRd.linearVelocity.x, jumpForce);
+            nextJumpTime = Time.time + jampDelay;
         }
     }
+    
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -102,7 +107,7 @@ public class PlayerTracking : MonoBehaviour
             {
                 isGrounded = true;
                 DebugLogger.Log("地面についた");
-            } 
+            }
         }
 
     }
@@ -110,8 +115,8 @@ public class PlayerTracking : MonoBehaviour
     {
         //地面から離れたかどうか
         if (collision.gameObject.CompareTag("Ground"))
-        {           
-                isGrounded = false;          
+        {
+            isGrounded = false;
         }
     }
 }

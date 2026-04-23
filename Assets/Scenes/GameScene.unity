@@ -192,6 +192,7 @@ MonoBehaviour:
   playerController: {fileID: 387031430}
   walkForce: 5
   jumpForce: 10
+  jampDelay: 1
   followDistance: 2.5
   stopDistance: 1.5
   warpDistance: 15
