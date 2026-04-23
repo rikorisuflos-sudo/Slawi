@@ -23,7 +23,7 @@ public class EnemyIdleMove : MonoBehaviour
     // --- メソッド定義  ---
 
     // playerFindやenemyDirなどの初期化を行なう 
-    private void Awake()
+    private void OnEnable()
     {
         playerFind = false;
         stepFind = false;
