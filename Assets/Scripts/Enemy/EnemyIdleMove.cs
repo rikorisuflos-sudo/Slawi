@@ -7,7 +7,7 @@ public class EnemyIdleMove : MonoBehaviour
 {
     // --- 変数定義  ---
     [SerializeField] private Rigidbody2D rigid2D; // エネミーのRigidbody2Dを取得 
-    //[SerializeField] private new Transform transform; // エネミーのTransformを取得
+    //[SerializeField] private Transform transform; // エネミーのTransformを取得
     //[SerializeField] private Transform enemyTr; 
     [SerializeField] private float enemyMileage; // エネミーの移動距離 
     private float enemyDir = 1f; // エネミーの向き (初期値1) 
