@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
     
 
     float move = 0f;//走っていたら1.5、歩いていたら1.0
-    const float MoveRun = 1.5f;
-    const float MoveWalk = 1f;
+    const float MoveRun = 1.0f;
+    const float MoveWalk = 0.5f;
     public float Move
     {
         get { return move; } // getterの部分
