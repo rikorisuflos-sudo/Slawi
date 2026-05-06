@@ -1423,6 +1423,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1894763151}
+  - {fileID: 1809482712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1578675772
@@ -1484,6 +1485,51 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1809482711
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1809482712}
+  - component: {fileID: 1809482713}
+  m_Layer: 9
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1809482712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809482711}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1578675771}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1809482713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809482711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade661d620fbeaf478ef599fa4d52a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::shot
+  fireBall: {fileID: 8804492111596663323, guid: abeb94cbef5859e4f94c4e2e9768f806, type: 3}
 --- !u!1 &1828434224
 GameObject:
   m_ObjectHideFlags: 0
@@ -1933,7 +1979,7 @@ MonoBehaviour:
   enemyMileage: 10
   walkForce: 5
   smooth: 5
-  minimumSpeed: 0.5
+  minimumSpeed: 1
   checkDistance: 5
   wallCheckDistance: 0.5
   groundLayer:
@@ -1951,7 +1997,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1894763151}
-  - component: {fileID: 1894763152}
   m_Layer: 9
   m_Name: GameObject
   m_TagString: Untagged
@@ -1974,23 +2019,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1578675771}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1894763152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894763150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ece115949583354896d24dcf3626057, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireBall
-  playerTr: {fileID: 0}
-  rushDistance: 20
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!1001 &1978269247
 PrefabInstance:
   m_ObjectHideFlags: 0

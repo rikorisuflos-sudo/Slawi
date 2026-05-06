@@ -59,7 +59,7 @@ public class EnemyMove : MonoBehaviour
             float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
 
             float targetX = dir * walkForce * minimumSpeed;
-            float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+            float newX = Mathf.MoveTowards(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
             parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
         }
     }
