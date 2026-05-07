@@ -25,6 +25,7 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] float viewDistance = 5f;//視界距離（扇形の半径）
     [SerializeField] float viewAngle = 60f;//視野角(見える角度）
 
+    
     private void OnEnable()
     {
         playerFind = false;
@@ -33,6 +34,7 @@ public class EnemyMove : MonoBehaviour
 
     private void Start()
     {
+        enemyDir = Mathf.Sign(transform.localScale.x);
         //エネミーの初期位置を取得
         if (transform != null)
         {
@@ -44,7 +46,6 @@ public class EnemyMove : MonoBehaviour
     // 移動処理を呼び出す 
     private void FixedUpdate()
     {
-        //enemyDir = Mathf.Sign(transform.localScale.x);
         playerFind = PlayerSearch();
         // プレイヤーを発見したら、待機状態を解除する（＝移動を停止する） 
         if (!playerFind)
@@ -96,7 +97,6 @@ public class EnemyMove : MonoBehaviour
         Debug.DrawRay(parentRd.position, new Vector2(enemyDir, 0), Color.red);
         if (wallFind.collider != null)
         {
-            Debug.Log("壁");
             return true;
         }
 
@@ -148,4 +148,5 @@ public class EnemyMove : MonoBehaviour
         // すべてクリア → 見えてる
         return true;
     }
+
 }
