@@ -106,7 +106,6 @@ public class PlayerTracking : MonoBehaviour
             if (contact.normal.y > GroundCatch)
             {
                 isGrounded = true;
-                DebugLogger.Log("’n–Ê‚É‚Â‚¢‚½");
             }
         }
 

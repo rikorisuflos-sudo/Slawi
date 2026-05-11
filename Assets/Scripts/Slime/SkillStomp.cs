@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.GraphicsBuffer;
 
-public class SkillAttack : MonoBehaviour
+public class SkillStomp : MonoBehaviour
 {
     Rigidbody2D parentRd;//親オブジェクトのものを取得
     //private Transform parentTr;

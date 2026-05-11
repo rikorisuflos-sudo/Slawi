@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.GraphicsBuffer;
 
-public class SlimeNormalAttack : MonoBehaviour
+public class SkillRush : MonoBehaviour
 {
    //親オブジェクトのものを取得
     Rigidbody2D parentRd;
@@ -27,6 +27,8 @@ public class SlimeNormalAttack : MonoBehaviour
 
     [SerializeField]  float wallCheckDistance = 0.5f;//壁の探索範囲
     [SerializeField]  LayerMask groundLayer; // 地面レイヤー
+
+    [SerializeField] LayerMask enemyLayer; // 地面レイヤー
 
     [SerializeField] GameObject playerTracking;
     bool hasWarped = false;
@@ -70,6 +72,15 @@ public class SlimeNormalAttack : MonoBehaviour
         }
         //Debug.Log(currentState);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+        {
+            Debug.Log("対象レイヤーにヒット");
+        }
+    }
+
     //プレイヤー追従処理OFF
     //突進方向の確定、タイマーの初期化
     public void StartAttack()
@@ -79,7 +90,6 @@ public class SlimeNormalAttack : MonoBehaviour
         slimeController.enabled = false;
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
         if (dashDir == 0) dashDir = 1;
-        Debug.Log("スタート");
         currentState = State.Warp;
     }
 
@@ -97,7 +107,6 @@ public class SlimeNormalAttack : MonoBehaviour
 
         parentRd.position = warpPos;
         dashStartPos = parentRd.position;
-        Debug.Log("ワープ");
         currentState = State.Charge;
     }
 
@@ -111,7 +120,6 @@ public class SlimeNormalAttack : MonoBehaviour
     void Rush()
     {
         parentRd.linearVelocity = new Vector2(dashDir * rushSpeed, parentRd.linearVelocity.y);
-        DebugLogger.Log("ダッシュ");
 
     }
 
@@ -165,12 +173,11 @@ public class SlimeNormalAttack : MonoBehaviour
 
     public void CastEnum(string input)
     {
-        Debug.Log("CastEnum呼ばれた: " + input);
 
         if (Enum.TryParse(input, out State state))
         {
             currentState = state;
-            Debug.Log(currentState);
+            //Debug.Log(currentState);
         }
     }
 }

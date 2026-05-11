@@ -14,9 +14,9 @@ public class SlimeController : MonoBehaviour
     const int Layer = -1;
 
     [SerializeField] GameObject normalAttack;
-    private SlimeNormalAttack normalAttackScript;
+    private SkillRush normalAttackScript;
     [SerializeField] GameObject skillAttack1;
-    private SkillAttack skillAttack1Script;
+    private SkillStomp skillAttack1Script;
     private void Awake()
     {
         mouse = Mouse.current;
@@ -25,8 +25,8 @@ public class SlimeController : MonoBehaviour
 
     private void Start()
     {
-        normalAttackScript = normalAttack.GetComponent<SlimeNormalAttack>();
-        skillAttack1Script = skillAttack1.GetComponent<SkillAttack>();
+        normalAttackScript = normalAttack.GetComponent<SkillRush>();
+        skillAttack1Script = skillAttack1.GetComponent<SkillStomp>();
     }
 
     private void Update()
