@@ -17,7 +17,7 @@ public class FireBall : MonoBehaviour
     [SerializeField] LayerMask playerLayer; // 地面レイヤー
     [SerializeField] float checkDistance;
 
-    private void Start()
+    void Start()
     {
         // 重力の影響を無効化
         rb.gravityScale = 0f;
@@ -26,7 +26,7 @@ public class FireBall : MonoBehaviour
         //
         //moveStartPos = transform.position;
     }
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         Move();
         EndMove();

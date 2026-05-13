@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraDirector : MonoBehaviour
 {
-    [SerializeField]private GameObject player;
+    [SerializeField]GameObject player;
 
     [Header("追従スピード")]
     [SerializeField, Range(0, 1)] private float smoothSpeed;

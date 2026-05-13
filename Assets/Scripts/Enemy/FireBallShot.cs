@@ -7,8 +7,11 @@ public class FireBallShot : MonoBehaviour
     [SerializeField] Transform enemyTr;
     
 
-    private void OnEnable()
+    void OnEnable()
     {
-        Instantiate(fireBall, enemyTr.position, Quaternion.identity);
+        GameObject newFireBoal = Instantiate(fireBall, enemyTr.position, Quaternion.identity);
+
+        fireBallSc = newFireBoal.GetComponent<FireBall>();
+        fireBallSc.EnemyTr = enemyTr;
     }
 }
