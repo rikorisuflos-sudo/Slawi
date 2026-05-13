@@ -11,7 +11,7 @@ public class EnemyMove : MonoBehaviour
     float enemyDir = 1f; // エネミーの向き (初期値1) 
     [SerializeField] float walkForce; // エネミーの移動速度 
     [SerializeField] float smooth = 5f;           // ぬるっと具合
-    [SerializeField]float minimumSpeed = 0.5f;//最低速度保障
+    [SerializeField] float minimumSpeed = 0.5f;//最低速度保障
     bool playerFind = false; // プレイヤーを見つけたか (初期値false) 
     bool turnAround;
     [SerializeField] float checkDistance; // 地面検知範囲 
@@ -25,7 +25,7 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] float viewDistance = 5f;//視界距離（扇形の半径）
     [SerializeField] float viewAngle = 60f;//視野角(見える角度）
 
-    
+
     private void OnEnable()
     {
         playerFind = false;
@@ -55,7 +55,7 @@ public class EnemyMove : MonoBehaviour
         else
         {
             //移動先をエネミーの初期位置に
-            if (movPosition != startPosition ) movPosition = startPosition;
+            if (movPosition != startPosition) movPosition = startPosition;
             //プレイヤーの位置をもとに移動方向を決める
             float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
 
@@ -77,13 +77,12 @@ public class EnemyMove : MonoBehaviour
         if (currentDistance >= enemyMileage || turnAround)
         {
             enemyDir *= -1;
-            movPosition = transform.position; // 反転地点を起点に更新
+            //movPosition = transform.position; // 反転地点を起点に更新
 
-            // 見た目の向きを反転させる処理
-            Vector3 scale = transform.localScale;
-            scale.x = Mathf.Abs(scale.x) * enemyDir;
-            transform.localScale = scale;
         }
+
+        // 見た目の向きを反転させる処理
+        transform.localScale = new Vector3(enemyDir, 1, 1);
 
         // linearVelocityによる移動処理 
         parentRd.linearVelocity = new Vector2(enemyDir * walkForce, parentRd.linearVelocity.y);
