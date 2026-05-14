@@ -5,42 +5,55 @@ using static UnityEngine.GraphicsBuffer;
 public class EnemyMove : MonoBehaviour
 {
     [SerializeField] Rigidbody2D parentRd; // エネミーのRigidbody2Dを取得 
-    //[SerializeField] private new Transform transform; // エネミーのTransformを取得
-    //[SerializeField] private Transform enemyTr; 
+    [SerializeField] Transform parentTr;
+    [SerializeField] Enemy enemyStatus;//エネミーのScriptableObject
+    [SerializeField] GameObject Attack;
+
     [SerializeField] float enemyMileage; // エネミーの移動範囲 
-    float enemyDir = 1f; // エネミーの向き (初期値1) 
-    [SerializeField] float walkForce; // エネミーの移動速度 
-    [SerializeField] float smooth = 5f;           // ぬるっと具合
+    float enemyDir; // エネミーの向き (初期値1) 
+    float walkForce; // エネミーの移動速度 
+    [SerializeField] float smooth = 5f;// ぬるっと具合
     [SerializeField] float minimumSpeed = 0.5f;//最低速度保障
-    bool playerFind = false; // プレイヤーを見つけたか (初期値false) 
-    bool turnAround;
+
     [SerializeField] float checkDistance; // 地面検知範囲 
     [SerializeField] float wallCheckDistance;//壁検知範囲
     [SerializeField] LayerMask groundLayer; // 地面レイヤー 
+    bool turnAround = false; //待機移動中に方向転換するか
 
     Vector2 startPosition;//エネミー初期位置
     Vector2 movPosition;//待機状態時の移動用変数
 
     [SerializeField] Transform playerTr;//検知対象（プレイヤー）
-    [SerializeField] float viewDistance = 5f;//視界距離（扇形の半径）
-    [SerializeField] float viewAngle = 60f;//視野角(見える角度）
+    float viewDistance = 5f;//視界距離（扇形の半径）
+    float viewAngle = 60f;//視野角(見える角度）
+    bool playerFind = false; // プレイヤーを見つけたか (初期値false) 
 
 
     private void OnEnable()
     {
-        playerFind = false;
-        enemyDir = 1f;
+        //playerFind = false;
+        enemyDir = Mathf.Sign(parentTr.localScale.x);
     }
 
     private void Start()
     {
-        enemyDir = Mathf.Sign(transform.localScale.x);
+        //エネミーの方向を取得
+        enemyDir = Mathf.Sign(parentTr.localScale.x);
         //エネミーの初期位置を取得
         if (transform != null)
         {
-            startPosition = transform.position;
+            startPosition = parentTr.position;
+            movPosition = startPosition;
         }
-        movPosition = startPosition;
+
+        //ScriptableObjectの値を変数に格納
+        if (enemyStatus != null)
+        {
+            walkForce = enemyStatus.WalkForce;
+            viewDistance = enemyStatus.ViewDistance;
+            viewAngle = enemyStatus.ViewAngle;
+        }
+        Debug.Log(walkForce+","+enemyStatus.WalkForce);
     }
 
     // 移動処理を呼び出す 
@@ -51,13 +64,15 @@ public class EnemyMove : MonoBehaviour
         if (!playerFind)
         {
             Walk();
+            Attack.SetActive(false);
         }
         else
         {
+            Attack.SetActive(true);
             //移動先をエネミーの初期位置に
             if (movPosition != startPosition) movPosition = startPosition;
             //プレイヤーの位置をもとに移動方向を決める
-            float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
+            float dir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
 
             float targetX = dir * walkForce * minimumSpeed;
             float newX = Mathf.MoveTowards(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
@@ -70,7 +85,7 @@ public class EnemyMove : MonoBehaviour
     {
         turnAround = CheckTurn();
         // 現在の移動距離を計算
-        float currentDistance = Vector3.Distance(movPosition, transform.position);
+        float currentDistance = Vector3.Distance(movPosition, parentTr.position);
 
         // 往復および落下防止の判定
         // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
@@ -82,7 +97,7 @@ public class EnemyMove : MonoBehaviour
         }
 
         // 見た目の向きを反転させる処理
-        transform.localScale = new Vector3(enemyDir, 1, 1);
+        parentTr.localScale = new Vector3(enemyDir, 1, 1);
 
         // linearVelocityによる移動処理 
         parentRd.linearVelocity = new Vector2(enemyDir * walkForce, parentRd.linearVelocity.y);
@@ -115,7 +130,7 @@ public class EnemyMove : MonoBehaviour
         if (playerTr == null) return false;
 
         //プレイヤーの方向を取得
-        Vector2 direction = (playerTr.position - transform.position);
+        Vector2 direction = (playerTr.position - parentTr.position);
         //プレイヤーまでの距離を算出
         float distance = direction.magnitude;
         //  距離チェック
@@ -135,8 +150,8 @@ public class EnemyMove : MonoBehaviour
         }
 
         //  Raycast（壁チェック）
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, distance, groundLayer);
-        Debug.DrawRay(transform.position, direction.normalized * distance, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(parentTr.position, direction.normalized, distance, groundLayer);
+        //Debug.DrawRay(transform.position, direction.normalized * distance, Color.red);
 
         // 何かに当たったら＝壁に遮られている
         if (hit.collider != null)

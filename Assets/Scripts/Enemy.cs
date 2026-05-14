@@ -3,9 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Enemy", menuName = "Scriptable Objects/Enemy")]
 public class Enemy : ScriptableObject
 {
+    //インスペクターから値の設定
     //基本情報
     [SerializeField] string enemyName;//エネミーの名前
-    [SerializeField] int Hp;//最大Hp
+    [SerializeField] bool repop;//リポップする、しない
+    [SerializeField] int hp;//最大Hp
     [SerializeField] int attackPower;//攻撃力
     [SerializeField] float walkForce;//移動速度
 
@@ -16,4 +18,16 @@ public class Enemy : ScriptableObject
     //攻撃が当たる距離までプレイヤー近づいたか調べるための値
     [SerializeField] float attackDistance;
     [SerializeField] float attackAngle;
+
+    //get-only
+    public string EnemyName => enemyName;
+    public bool Repop => repop;
+    public int Hp => hp;
+    public int AttackPower => attackPower;
+    public float WalkForce => walkForce;
+    public float ViewDistance => viewDistance;
+    public float ViewAngle => viewAngle;
+    public float AttackDistance => attackDistance;
+    public float AttackAngle => attackAngle;
+
 }

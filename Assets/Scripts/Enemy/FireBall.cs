@@ -5,8 +5,6 @@ using static UnityEngine.GraphicsBuffer;
 public class FireBall : MonoBehaviour
 {
     [SerializeField] Rigidbody2D rb;
-    Transform enemyTr;
-    public Transform EnemyTr{ set { enemyTr = value; } }
 
     [SerializeField] float movwForce; // オブジェクトの移動速度
     [SerializeField] float smooth;//ヌルっと感を出す
@@ -17,14 +15,18 @@ public class FireBall : MonoBehaviour
     [SerializeField] LayerMask playerLayer; // 地面レイヤー
     [SerializeField] float checkDistance;
 
+    int attackPower;
+
     void Start()
     {
         // 重力の影響を無効化
         rb.gravityScale = 0f;
-        //飛ぶ方向を指定
-        dir = Mathf.Sign(enemyTr.lossyScale.x);
-        //
-        //moveStartPos = transform.position;
+    }
+
+    public void SetParameter(int attackPower, float dir)
+    {
+        this.attackPower = attackPower;
+        this.dir = dir;
     }
     void FixedUpdate()
     {

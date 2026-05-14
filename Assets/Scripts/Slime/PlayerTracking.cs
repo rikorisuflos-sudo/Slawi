@@ -29,12 +29,12 @@ public class PlayerTracking : MonoBehaviour
     {
         set { canMove = value; }
     }
-    private void Start()
+    void Start()
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
     }
 
-    private void Update()
+    void Update()
     {
         if (!canMove) return;
 
@@ -69,7 +69,7 @@ public class PlayerTracking : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (!canMove) return;
 
@@ -98,7 +98,7 @@ public class PlayerTracking : MonoBehaviour
     }
     
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         foreach (ContactPoint2D contact in collision.contacts)//ê⁄êGì_ÇÃéÊìæ
         {
@@ -110,7 +110,7 @@ public class PlayerTracking : MonoBehaviour
         }
 
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         //ínñ Ç©ÇÁó£ÇÍÇΩÇ©Ç«Ç§Ç©
         if (collision.gameObject.CompareTag("Ground"))
