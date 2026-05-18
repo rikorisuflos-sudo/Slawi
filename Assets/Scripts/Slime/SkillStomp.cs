@@ -77,6 +77,13 @@ public class SkillStomp : MonoBehaviour
             }
         }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+        {
+            Debug.Log("対象レイヤーにヒット");
+        }
+    }
     //プレイヤー追従処理OFF
     public void StartAttack()
     {

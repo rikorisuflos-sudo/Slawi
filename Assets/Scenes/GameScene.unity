@@ -1407,7 +1407,6 @@ GameObject:
   - component: {fileID: 1578675772}
   - component: {fileID: 1578675773}
   - component: {fileID: 1578675775}
-  - component: {fileID: 1578675774}
   m_Layer: 9
   m_Name: Lizard
   m_TagString: Enemy
@@ -1518,18 +1517,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1578675774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578675770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ece904c4a0fc34418ea09ee9474d02c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHit
 --- !u!61 &1578675775
 BoxCollider2D:
   m_ObjectHideFlags: 0

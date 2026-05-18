@@ -12,10 +12,12 @@ public class FireBall : MonoBehaviour
     //Vector2 moveStartPos;
     float dir = 1;
     [SerializeField] LayerMask groundLayer; // 地面レイヤー
-    [SerializeField] LayerMask playerLayer; // 地面レイヤー
+    [SerializeField] LayerMask playerLayer; // プレイヤーレイヤー
     [SerializeField] float checkDistance;
 
     int attackPower;
+
+    bool isHit = false;
 
     void Start()
     {
@@ -32,6 +34,18 @@ public class FireBall : MonoBehaviour
     {
         Move();
         EndMove();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isHit) return;
+
+        if (((1 << collision.gameObject.layer) & playerLayer) != 0)
+        {
+            isHit = true;
+            gameObject.SetActive(false);
+            Debug.Log("対象レイヤーにヒット");
+        }
     }
 
     void Move()
