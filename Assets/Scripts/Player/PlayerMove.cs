@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using System.Xml.Linq;
 using UnityEngine.UIElements;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     [SerializeField]private Rigidbody2D rb;
     
@@ -19,13 +19,13 @@ public class PlayerController : MonoBehaviour
         get { return move; } // getterの部分
     }
 
-    [SerializeField] private float jumpForce;//ジャンプの高さ
-    [SerializeField] private float walkForce;//速度の上昇値
-    private bool isGrounded = true;//地面に触れているかいないか
+    [SerializeField] float jumpForce;//ジャンプの高さ
+    [SerializeField] float walkForce;//速度の上昇値
+    bool isGrounded = true;//地面に触れているかいないか
 
-    private Keyboard keyboard;
+    Keyboard keyboard;
 
-    private void Awake()
+    void Awake()
     {
         //初期化
         Application.targetFrameRate = 60;
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         //地面と接触しているかいないか
         if (collision.gameObject.CompareTag("Ground"))
@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         //地面から離れたかどうか
         if (collision.gameObject.CompareTag("Ground"))
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 歩く
     /// </summary>
-    private void Walk()
+    void Walk()
     {
         rb.linearVelocity = new Vector2(move * walkForce, rb.linearVelocity.y);
     }
@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// ジャンプする
     /// </summary>
-    private void Jump()
+    void Jump()
     {
         if (isGrounded)
         {

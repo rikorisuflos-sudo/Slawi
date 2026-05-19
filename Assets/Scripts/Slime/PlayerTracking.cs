@@ -7,7 +7,7 @@ public class PlayerTracking : MonoBehaviour
     Rigidbody2D parentRd;//親オブジェクトのものを取得
     //Transform parentTr;
     [SerializeField] Transform playerTr;//追いかける対象
-    [SerializeField] PlayerController playerController;
+    [SerializeField] PlayerMove playerMove;
 
     [SerializeField] float walkForce;//速度の上昇値
     [SerializeField] float jumpForce;//ジャンプの高さ
@@ -48,7 +48,7 @@ public class PlayerTracking : MonoBehaviour
         if (distance > followDistance)
         {
             //プレイヤーが走っているか歩いているか
-            float move = Mathf.Abs(playerController.Move);
+            float move = Mathf.Abs(playerMove.Move);
             //プレイヤーが動いていなくても、最低速度は保証する
             float minimumSpeed = Mathf.Max(move, 0.5f);
             //プレイヤーの位置をもとに移動方向を決める
