@@ -43,6 +43,8 @@ public class FireBall : MonoBehaviour
         if (((1 << collision.gameObject.layer) & playerLayer) != 0)
         {
             isHit = true;
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null) damageable.Damage(attackPower);
             gameObject.SetActive(false);
             Debug.Log("対象レイヤーにヒット");
         }

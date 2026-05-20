@@ -53,7 +53,7 @@ public class EnemyMove : MonoBehaviour
             viewDistance = enemyStatus.ViewDistance;
             viewAngle = enemyStatus.ViewAngle;
         }
-        Debug.Log(walkForce+","+enemyStatus.WalkForce);
+        //Debug.Log(walkForce+","+enemyStatus.WalkForce);
     }
 
     // ˆÚ“®ˆ—‚ğŒÄ‚Ño‚· 

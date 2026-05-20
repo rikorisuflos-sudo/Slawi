@@ -14,6 +14,7 @@ public class SkillRush : MonoBehaviour
     [SerializeField] SlimeController slimeController;
     [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Animator animator;
+    [SerializeField] Player playerStatus;
 
     [SerializeField]  float rushDistance = 20f;//攻撃距離
     [SerializeField]  float rushSpeed ;//攻撃速度
@@ -33,7 +34,7 @@ public class SkillRush : MonoBehaviour
     [SerializeField] GameObject playerTracking;
     bool hasWarped = false;
     //float timer = 0;
-    bool hasEndedDash = false;
+    bool isHit;
     enum State
     {
         Idle,//待機
@@ -77,7 +78,16 @@ public class SkillRush : MonoBehaviour
     {
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
-            Debug.Log("対象レイヤーにヒット");
+            if (isHit) return;
+
+            if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+            {
+                isHit = true;
+                IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+                if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+                gameObject.SetActive(false);
+
+            }
         }
     }
 

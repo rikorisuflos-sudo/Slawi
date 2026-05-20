@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyName: Frog
   repop: 1
-  hp: 100
+  hp: 40
   attackPower: 5
+  defensePower: 5
   walkForce: 5
   viewDistance: 5
   viewAngle: 60

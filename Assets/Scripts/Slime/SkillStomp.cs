@@ -11,6 +11,7 @@ public class SkillStomp : MonoBehaviour
     SlimeController slimeController;
     [SerializeField] Animator animator;
     [SerializeField] Transform player;//プレイヤー
+    [SerializeField] Player playerStatus;
 
     [SerializeField] float stompSpeed = 20f;//攻撃速度
     [SerializeField] float stompDistance = 30f;//プレイヤーの位置よりどれだけ上にワープするか
@@ -25,6 +26,8 @@ public class SkillStomp : MonoBehaviour
 
     [SerializeField] float searchRange = 10f;
     [SerializeField] LayerMask enemyLayer;
+
+    bool isHit;
 
     enum State
     {
@@ -46,7 +49,6 @@ public class SkillStomp : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(currentState);
         switch (currentState)
         {
             case State.Warp:
@@ -81,7 +83,16 @@ public class SkillStomp : MonoBehaviour
     {
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
-            Debug.Log("対象レイヤーにヒット");
+            if (isHit) return;
+
+            if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+            {
+                isHit = true;
+                IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+                if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+                gameObject.SetActive(false);
+                Debug.Log("対象レイヤーにヒット");
+            }
         }
     }
     //プレイヤー追従処理OFF

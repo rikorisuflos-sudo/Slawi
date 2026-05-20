@@ -9,6 +9,7 @@ public class Enemy : ScriptableObject
     [SerializeField] bool repop;//リポップする、しない
     [SerializeField] int hp;//最大Hp
     [SerializeField] int attackPower;//攻撃力
+    [SerializeField] int defensePower;
     [SerializeField] float walkForce;//移動速度
 
     //プレイヤー検知のための値
@@ -24,6 +25,7 @@ public class Enemy : ScriptableObject
     public bool Repop => repop;
     public int Hp => hp;
     public int AttackPower => attackPower;
+    public int DefensePower => defensePower;
     public float WalkForce => walkForce;
     public float ViewDistance => viewDistance;
     public float ViewAngle => viewAngle;

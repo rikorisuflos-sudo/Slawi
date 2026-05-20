@@ -19,7 +19,7 @@ public class FireBallShot : MonoBehaviour
 
     void Start()
     {
-        enemyDir = enemyDir = Mathf.Sign(parentTr.localScale.x);
+        enemyDir = Mathf.Sign(parentTr.localScale.x);
         if (enemyStatus != null)
         {
             this.attackDistance = enemyStatus.AttackDistance;
@@ -65,7 +65,6 @@ public class FireBallShot : MonoBehaviour
         //angle‚ª‹–ìŠp“à‚Éû‚Ü‚é‚©‚Ç‚¤‚©
         if (angle > attackAngle / 2f)
         {
-            Debug.Log(attackAngle);
             return false;
         }
 
@@ -76,7 +75,6 @@ public class FireBallShot : MonoBehaviour
         // ‰½‚©‚É“–‚½‚Á‚½‚ç•Ç‚ÉÕ‚ç‚ê‚Ä‚¢‚é
         if (hit.collider != null)
         {
-            Debug.Log("•Ç‚ª‚ ‚é");
             return false;
 
         }
