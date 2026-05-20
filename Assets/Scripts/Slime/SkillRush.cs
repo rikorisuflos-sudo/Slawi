@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class SkillRush : MonoBehaviour
 {
-   //親オブジェクトのものを取得
+    //親オブジェクトのものを取得
     Rigidbody2D parentRd;
 
     [SerializeField] SlimeController slimeController;
@@ -16,18 +16,18 @@ public class SkillRush : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] Player playerStatus;
 
-    [SerializeField]  float rushDistance = 20f;//攻撃距離
-    [SerializeField]  float rushSpeed ;//攻撃速度
+    [SerializeField] float rushDistance = 20f;//攻撃距離
+    [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
 
     //[SerializeField]  float chargeTime = 0.3f;   // 溜め時間
     //[SerializeField]  float recoveryTime = 0.3f; // 硬直時間
     float broadcastTime = 0f;
 
-     Vector2 dashStartPos; // 突進開始位置
+    Vector2 dashStartPos; // 突進開始位置
 
-    [SerializeField]  float wallCheckDistance = 0.5f;//壁の探索範囲
-    [SerializeField]  LayerMask groundLayer; // 地面レイヤー
+    [SerializeField] float wallCheckDistance = 0.5f;//壁の探索範囲
+    [SerializeField] LayerMask groundLayer; // 地面レイヤー
 
     [SerializeField] LayerMask enemyLayer; // 地面レイヤー
 
@@ -76,18 +76,14 @@ public class SkillRush : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (isHit) return;
+
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
-            if (isHit) return;
-
-            if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
-            {
-                isHit = true;
-                IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-                if (damageable != null) damageable.Damage(playerStatus.AttackPower);
-                gameObject.SetActive(false);
-
-            }
+            isHit = true;
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+            gameObject.SetActive(false);
         }
     }
 
@@ -126,6 +122,7 @@ public class SkillRush : MonoBehaviour
         if (currentState != State.Charge) return;
         parentRd.linearVelocity = Vector2.zero;
     }
+
     //突進
     void Rush()
     {
@@ -154,10 +151,6 @@ public class SkillRush : MonoBehaviour
             currentState = State.Recovery;
             return;
         }
-        //animator.SetBool("EndRush",true );
-        ////timer = 0;
-        //hasEndedDash = false;
-        //currentState = State.Recovery;
     }
 
     //攻撃後の硬直
@@ -168,26 +161,23 @@ public class SkillRush : MonoBehaviour
 
         parentRd.linearVelocity = Vector2.zero;
 
-        //if (timer >= recoveryTime)
-        if (broadcastTime >= 1)
+        if (broadcastTime >= 1.0f)
         {
             animator.SetBool("EndRush", false);
             animator.SetBool("StartRush", false);
-            //currentState = State.Idle;
             hasWarped = false;
             slimeController.enabled = true;
             playerTracking.SetActive(true);
             gameObject.SetActive(false);
+            Debug.Log("owari");
         }
     }
 
     public void CastEnum(string input)
     {
-
         if (Enum.TryParse(input, out State state))
         {
             currentState = state;
-            //Debug.Log(currentState);
         }
     }
 }

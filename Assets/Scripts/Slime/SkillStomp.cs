@@ -22,6 +22,8 @@ public class SkillStomp : MonoBehaviour
     //[SerializeField] float wallCheckDistance = 0.5f;//壁の探索範囲
     [SerializeField] LayerMask groundLayer; // 地面レイヤー
 
+    [SerializeField] float groundCheckDistance;
+
     [SerializeField] GameObject playerTracking;
 
     [SerializeField] float searchRange = 10f;
@@ -60,6 +62,7 @@ public class SkillStomp : MonoBehaviour
 
             case State.Stomp:
                 Stomp();
+                EndStomp();
                 break;
 
             case State.Recovery:
@@ -68,33 +71,31 @@ public class SkillStomp : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
-        {
-            // 下から接触 → 地面
-            if (contact.normal.y > 0.5f && currentState == State.Stomp)
-            {
-                EndStomp();
-            }
-        }
-    }
+    //void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
+    //    {
+    //        // 下から接触 → 地面
+    //        if (contact.normal.y > 0.5f && currentState == State.Stomp)
+    //        {
+    //            EndStomp();
+    //        }
+    //    }
+    //}
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (isHit) return;
+
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
-            if (isHit) return;
-
-            if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
-            {
-                isHit = true;
-                IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-                if (damageable != null) damageable.Damage(playerStatus.AttackPower);
-                gameObject.SetActive(false);
-                Debug.Log("対象レイヤーにヒット");
-            }
+            isHit = true;
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+            gameObject.SetActive(false);
+            Debug.Log("対象レイヤーにヒット");
         }
     }
+
     //プレイヤー追従処理OFF
     public void StartAttack()
     {
@@ -121,6 +122,7 @@ public class SkillStomp : MonoBehaviour
     {
         parentRd.linearVelocity = Vector2.zero;
     }
+
     //突進
     void Stomp()
     {
@@ -130,8 +132,15 @@ public class SkillStomp : MonoBehaviour
     //  落下終了
     void EndStomp()
     {
-        animator.SetBool("EndStomp", true);
-        currentState = State.Recovery;
+        // 床チェック
+        RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(0, -1), groundCheckDistance, groundLayer);
+        Debug.DrawRay(parentRd.position, new Vector2(0, -1), Color.red);
+        if (hit.collider != null)
+        {
+            animator.SetBool("EndStomp", true);
+            currentState = State.Recovery;
+            return;
+        }
     }
 
     //攻撃後の硬直
@@ -153,25 +162,25 @@ public class SkillStomp : MonoBehaviour
 
     //指定されたタグの中で最も近いものを取得
     GameObject serchTag()
-{
-    Collider2D[] hits = Physics2D.OverlapCircleAll(player.position, searchRange, enemyLayer);
-
-    float nearDis = Mathf.Infinity;
-    GameObject targetObj = null;
-
-    foreach (Collider2D hit in hits)
     {
-        float tmpDis = Vector2.Distance(hit.transform.position, player.position);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.position, searchRange, enemyLayer);
 
-        if (tmpDis < nearDis)
+        float nearDis = Mathf.Infinity;
+        GameObject targetObj = null;
+
+        foreach (Collider2D hit in hits)
         {
-            nearDis = tmpDis;
-            targetObj = hit.gameObject;
-        }
-    }
+            float tmpDis = Vector2.Distance(hit.transform.position, player.position);
 
-    return targetObj;
-}
+            if (tmpDis < nearDis)
+            {
+                nearDis = tmpDis;
+                targetObj = hit.gameObject;
+            }
+        }
+
+        return targetObj;
+    }
 
     public void CastEnum(string input)
     {
