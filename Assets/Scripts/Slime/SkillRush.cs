@@ -34,7 +34,7 @@ public class SkillRush : MonoBehaviour
     [SerializeField] GameObject playerTracking;
     bool hasWarped = false;
     //float timer = 0;
-    bool isHit;
+    bool isHit = false;
     enum State
     {
         Idle,//待機
@@ -83,7 +83,7 @@ public class SkillRush : MonoBehaviour
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(playerStatus.AttackPower);
-            gameObject.SetActive(false);
+            Debug.Log("エネミーに衝突した");
         }
     }
 
@@ -169,7 +169,7 @@ public class SkillRush : MonoBehaviour
             slimeController.enabled = true;
             playerTracking.SetActive(true);
             gameObject.SetActive(false);
-            Debug.Log("owari");
+            isHit = false;
         }
     }
 

@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public int Damage(int attackPower);
+    public void Damage(int attackPower);
     public void Death();
 }

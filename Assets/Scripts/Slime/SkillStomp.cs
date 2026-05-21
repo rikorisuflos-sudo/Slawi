@@ -29,7 +29,7 @@ public class SkillStomp : MonoBehaviour
     [SerializeField] float searchRange = 10f;
     [SerializeField] LayerMask enemyLayer;
 
-    bool isHit;
+    bool isHit = false;
 
     enum State
     {
@@ -71,17 +71,6 @@ public class SkillStomp : MonoBehaviour
         }
     }
 
-    //void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
-    //    {
-    //        // 下から接触 → 地面
-    //        if (contact.normal.y > 0.5f && currentState == State.Stomp)
-    //        {
-    //            EndStomp();
-    //        }
-    //    }
-    //}
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isHit) return;
@@ -91,8 +80,6 @@ public class SkillStomp : MonoBehaviour
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(playerStatus.AttackPower);
-            gameObject.SetActive(false);
-            Debug.Log("対象レイヤーにヒット");
         }
     }
 
@@ -157,6 +144,7 @@ public class SkillStomp : MonoBehaviour
             slimeController.enabled = true;
             playerTracking.SetActive(true);
             gameObject.SetActive(false);
+            isHit = false;
         }
     }
 

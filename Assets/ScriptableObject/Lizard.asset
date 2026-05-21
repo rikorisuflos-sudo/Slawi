@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Lizard
   repop: 1
   hp: 40
-  attackPower: 5
+  attackPower: 10
   defensePower: 5
   walkForce: 5
   viewDistance: 10

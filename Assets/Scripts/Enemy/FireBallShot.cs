@@ -33,7 +33,7 @@ public class FireBallShot : MonoBehaviour
         timer += Time.deltaTime;
         if (withinRange && timer >= interval)
         {
-            Debug.Log("ŽË’ö“à‚É“ü‚Á‚½");
+            Debug.Log("‰Î‚Ì‹Ê");
             GameObject newFireBoal = Instantiate(fireBall, enemyTr.position, Quaternion.identity);
 
             fireBallSc = newFireBoal.GetComponent<FireBall>();
