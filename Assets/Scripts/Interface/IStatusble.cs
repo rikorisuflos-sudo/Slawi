@@ -3,6 +3,6 @@ using UnityEngine;
 public interface IStatusble
 {
     public void StatusReset();
-    public void Buff();
-    public void Debuff();
+    public void Buff(int plus);
+    public void Debuff(int minus);
 }

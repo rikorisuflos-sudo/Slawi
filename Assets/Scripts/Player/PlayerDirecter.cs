@@ -5,6 +5,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
     [SerializeField] Player playerStatus;
     int playerHp;
     int attackPower;
+    int defensePower;
     public int AttackPower => attackPower;
 
     void Start()
@@ -34,16 +35,17 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
 
     public void StatusReset()
     {
-        throw new System.NotImplementedException();
+        attackPower = playerStatus.AttackPower;
+        defensePower = playerStatus.DefensePower;
     }
 
-    public void Buff()
+    public void Buff(int plus)
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public void Debuff()
+    public void Debuff(int minus)
     {
-        throw new System.NotImplementedException();
+       
     }
 }
