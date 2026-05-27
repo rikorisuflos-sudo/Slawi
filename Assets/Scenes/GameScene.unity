@@ -1731,6 +1731,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDirecter
   enemyStatus: {fileID: 11400000, guid: 960ebc9598696364f86e6ee0fda72570, type: 2}
+--- !u!1001 &1611525149
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.70521104
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7089975
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035184695042570519, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90.307
+      objectReference: {fileID: 0}
+    - target: {fileID: 6016276441062346567, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
+      propertyPath: m_Name
+      value: Ground (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 335b130b39f5c6d4aba2ba6f27f55e9c, type: 3}
 --- !u!1 &1809482711
 GameObject:
   m_ObjectHideFlags: 0
@@ -2555,4 +2612,5 @@ SceneRoots:
   - {fileID: 583328092}
   - {fileID: 1978269247}
   - {fileID: 436342198}
+  - {fileID: 1611525149}
   - {fileID: 269585470}

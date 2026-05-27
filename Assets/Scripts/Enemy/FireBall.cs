@@ -42,11 +42,11 @@ public class FireBall : MonoBehaviour
 
         if (((1 << collision.gameObject.layer) & playerLayer) != 0)
         {
+            Debug.Log("対象レイヤーにヒット");
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(attackPower);
             gameObject.SetActive(false);
-            Debug.Log("対象レイヤーにヒット");
         }
     }
 
@@ -63,16 +63,17 @@ public class FireBall : MonoBehaviour
         Debug.DrawRay(rb.position, new Vector2(dir, 0), Color.red);
         if (hitWall.collider != null)
         {
+            Debug.Log("壁に当たった");
             this.gameObject.SetActive(false);
         }
 
-        //プレイヤーチェック
-        RaycastHit2D hitPlayer = Physics2D.Raycast(rb.position, new Vector2(dir, 0), checkDistance, playerLayer);
-        Debug.DrawRay(rb.position, new Vector2(dir, 0), Color.red);
-        if (hitPlayer.collider != null)
-        {
-            this.gameObject.SetActive(false);
-        }
+        ////プレイヤーチェック
+        //RaycastHit2D hitPlayer = Physics2D.Raycast(rb.position, new Vector2(dir, 0), checkDistance, playerLayer);
+        //Debug.DrawRay(rb.position, new Vector2(dir, 0), Color.red);
+        //if (hitPlayer.collider != null)
+        //{
+        //    this.gameObject.SetActive(false);
+        //}
 
         //// 距離チェック（Xだけ）
         //float distance = Mathf.Abs(rb.position.x - dashStartPos.x);

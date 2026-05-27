@@ -12,14 +12,16 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
     {
         playerHp = playerStatus.HP;
         attackPower = playerStatus.AttackPower;
+        defensePower = playerStatus.DefensePower;
         Debug.Log(playerHp);
     }
 
+   
     public void Damage(int attackPower)
     {
         //ダメージ計算：アルテリオス計算式*0.8~1.2の乱数
         playerHp -= Mathf.FloorToInt((attackPower - playerStatus.DefensePower)* Random.Range(0.8f,1.1f));
-        Debug.Log(playerHp);
+        Debug.Log("プレイヤー:" + playerHp);
 
         //死亡判定
         if (playerHp <= 0)
@@ -41,7 +43,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
 
     public void Buff(int plus)
     {
-        
+        attackPower = (attackPower + plus);
     }
 
     public void Debuff(int minus)
