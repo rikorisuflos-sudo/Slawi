@@ -91,13 +91,14 @@ public class EnemyMove : MonoBehaviour
         // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
         if (currentDistance >= enemyMileage || turnAround)
         {
+            Debug.Log("方向転換");
             enemyDir *= -1;
             //movPosition = transform.position; // 反転地点を起点に更新
 
+            // 見た目の向きを反転させる処理
+            parentTr.localScale = new Vector3(enemyDir, 1, 1);
         }
 
-        // 見た目の向きを反転させる処理
-        parentTr.localScale = new Vector3(enemyDir, 1, 1);
 
         // linearVelocityによる移動処理 
         parentRd.linearVelocity = new Vector2(enemyDir * walkForce, parentRd.linearVelocity.y);
