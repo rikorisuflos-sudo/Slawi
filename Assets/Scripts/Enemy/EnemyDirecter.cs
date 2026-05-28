@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class EnemyDirecter : MonoBehaviour, IDamageable
 {
-    [SerializeField] Enemy enemyStatus;
-    int enemyHp;
+    [SerializeField] Enemy enemyStatus;//エネミーのスクリプタブルオブジェクト
+    int enemyHp;//エネミーの体力
 
     void Start()
     {
+        //スクリプタブルオブジェクトで初期化
         enemyHp = enemyStatus.Hp;
         Debug.Log(enemyHp);
     }
@@ -26,7 +27,8 @@ public class EnemyDirecter : MonoBehaviour, IDamageable
 
     public void Death()
     {
+        //オブジェクト削除
         Debug.Log("倒された");
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

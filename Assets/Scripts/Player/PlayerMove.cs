@@ -10,10 +10,10 @@ public class PlayerMove : MonoBehaviour
 {
     [SerializeField]private Rigidbody2D rb;
     
+    const float MoveRun = 1.0f;//歩いているか
+    const float MoveWalk = 0.5f;//走っているか
 
-    float move = 0f;//走っていたら1.5、歩いていたら1.0
-    const float MoveRun = 1.0f;
-    const float MoveWalk = 0.5f;
+    float move = 0f;//上の二つの変数を受け渡すための変数
     public float Move
     {
         get { return move; } // getterの部分
@@ -32,10 +32,8 @@ public class PlayerMove : MonoBehaviour
         keyboard = Keyboard.current;
     }
 
-
-    void Update()
+    void FixedUpdate()
     {
-
         if (keyboard == null) return;
         move = 0f;
 
@@ -43,7 +41,7 @@ public class PlayerMove : MonoBehaviour
         if (keyboard.aKey.isPressed)
         {
             move = keyboard.shiftKey.isPressed ? -MoveRun : -MoveWalk;
-            transform.localScale = new Vector3(-1,1,0);
+            transform.localScale = new Vector3(-1, 1, 0);
         }
         // //Dが押されたとき右に移動
         if (keyboard.dKey.isPressed)
@@ -51,13 +49,9 @@ public class PlayerMove : MonoBehaviour
             move = keyboard.shiftKey.isPressed ? MoveRun : MoveWalk;
             transform.localScale = new Vector3(1, 1, 0);
         }
-       
-       
-    }
 
-    void FixedUpdate()
-    {
         Walk();
+
         //Spaceが押されたとき
         if (keyboard.spaceKey.wasPressedThisFrame)
         {

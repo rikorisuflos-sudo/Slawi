@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
-
+//ゲッタン修正中
 public class EnemyMove : MonoBehaviour
 {
     [SerializeField] Rigidbody2D parentRd; // エネミーのRigidbody2Dを取得 
@@ -12,8 +12,8 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] float enemyMileage; // エネミーの移動範囲 
     float enemyDir; // エネミーの向き (初期値1) 
     float walkForce; // エネミーの移動速度 
-    [SerializeField] float smooth = 5f;// ぬるっと具合
-    [SerializeField] float minimumSpeed = 0.5f;//最低速度保障
+    [SerializeField] float smooth;// ぬるっと具合
+    //[SerializeField] float minimumSpeed;//最低速度保障
 
     [SerializeField] float checkDistance; // 地面検知範囲 
     [SerializeField] float wallCheckDistance;//壁検知範囲
@@ -29,13 +29,13 @@ public class EnemyMove : MonoBehaviour
     bool playerFind = false; // プレイヤーを見つけたか (初期値false) 
 
 
-    private void OnEnable()
+    void OnEnable()
     {
         //playerFind = false;
         enemyDir = Mathf.Sign(parentTr.localScale.x);
     }
 
-    private void Start()
+    void Start()
     {
         //エネミーの方向を取得
         enemyDir = Mathf.Sign(parentTr.localScale.x);
@@ -57,7 +57,7 @@ public class EnemyMove : MonoBehaviour
     }
 
     // 移動処理を呼び出す 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         playerFind = PlayerSearch();
         // プレイヤーを発見したら、待機状態を解除する（＝移動を停止する） 
@@ -70,18 +70,19 @@ public class EnemyMove : MonoBehaviour
         {
             Attack.SetActive(true);
             //移動先をエネミーの初期位置に
-            if (movPosition != startPosition) movPosition = startPosition;
-            //プレイヤーの位置をもとに移動方向を決める
-            float dir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
+            movPosition = startPosition;
 
-            float targetX = dir * walkForce * minimumSpeed;
-            float newX = Mathf.MoveTowards(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-            parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
+            ////プレイヤーの位置をもとに移動方向を決める
+            //float dir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
+
+            ////float targetX = dir * walkForce * minimumSpeed;
+            //float newX = Mathf.MoveTowards(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+            //parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
         }
     }
 
     // 移動処理やそれに関連する処理を記述 
-    private void Walk()
+    void Walk()
     {
         turnAround = CheckTurn();
         // 現在の移動距離を計算
@@ -98,13 +99,18 @@ public class EnemyMove : MonoBehaviour
             // 見た目の向きを反転させる処理
             parentTr.localScale = new Vector3(enemyDir, 1, 1);
         }
+       
 
+        //プレイヤーの位置をもとに移動方向を決める
+        float dir =　!playerFind ? enemyDir : Mathf.Sign(playerTr.position.x - parentTr.position.x);
 
+        float targetX = enemyDir * walkForce;
+        //float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
         // linearVelocityによる移動処理 
-        parentRd.linearVelocity = new Vector2(enemyDir * walkForce, parentRd.linearVelocity.y);
+        parentRd.linearVelocity = new Vector2(targetX, parentRd.linearVelocity.y);
     }
 
-    // 段差検知のための処理を記述 (Raycastを用いる) 
+    // 段差検知と壁検知のための処理を記述 (Raycastを用いる) 
     bool CheckTurn()
     {
         // 壁チェック
@@ -126,6 +132,7 @@ public class EnemyMove : MonoBehaviour
         return false;
     }
 
+    //プレイヤーを探索する
     bool PlayerSearch()
     {
         if (playerTr == null) return false;

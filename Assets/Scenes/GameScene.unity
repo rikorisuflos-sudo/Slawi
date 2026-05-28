@@ -1037,7 +1037,7 @@ GameObject:
   - component: {fileID: 680007745}
   - component: {fileID: 680007744}
   m_Layer: 8
-  m_Name: NormalAttack
+  m_Name: SkillAttack_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1092,9 +1092,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227b97de21e2ff8438a6fcc278c7715f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeNormalAttack
+  parentRd: {fileID: 583328091}
   slimeController: {fileID: 583328093}
-  playerTr: {fileID: 387031428}
   animator: {fileID: 680007744}
+  playerTr: {fileID: 387031428}
   playerStatus: {fileID: 11400000, guid: 6f5fd9289a00f5140a77dea4fc53a6bb, type: 2}
   rushDistance: 5
   rushSpeed: 50
@@ -1357,7 +1358,6 @@ MonoBehaviour:
   Attack: {fileID: 1457103510}
   enemyMileage: 5
   smooth: 5
-  minimumSpeed: 5
   checkDistance: 5
   wallCheckDistance: 0.5
   groundLayer:
@@ -2093,6 +2093,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08968e5e1cf52c44b8d56efc9704e027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillAttack
+  parentRd: {fileID: 583328091}
+  slimeController: {fileID: 583328093}
   animator: {fileID: 1829696917}
   player: {fileID: 387031428}
   playerStatus: {fileID: 11400000, guid: 6f5fd9289a00f5140a77dea4fc53a6bb, type: 2}
@@ -2263,7 +2265,6 @@ MonoBehaviour:
   Attack: {fileID: 927721889}
   enemyMileage: 5
   smooth: 5
-  minimumSpeed: 1
   checkDistance: 5
   wallCheckDistance: 0.5
   groundLayer:
@@ -2368,7 +2369,6 @@ MonoBehaviour:
   Attack: {fileID: 1809482711}
   enemyMileage: 5
   smooth: 5
-  minimumSpeed: 5
   checkDistance: 5
   wallCheckDistance: 0.5
   groundLayer:

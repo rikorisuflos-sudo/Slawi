@@ -1,5 +1,8 @@
 using UnityEngine;
 
+
+//C³’†iŒã‰ñ‚µj
+
 public class CameraDirector : MonoBehaviour
 {
     [SerializeField]GameObject player;

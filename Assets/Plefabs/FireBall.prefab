@@ -155,6 +155,7 @@ MonoBehaviour:
   rb: {fileID: -1142018920601110316}
   movwForce: 10
   smooth: 5
+  moveDistance: 10
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024

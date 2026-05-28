@@ -9,20 +9,16 @@ using static UnityEngine.GraphicsBuffer;
 public class SkillRush : MonoBehaviour
 {
     //親オブジェクトのものを取得
-    Rigidbody2D parentRd;
-
+    [SerializeField] Rigidbody2D parentRd;
     [SerializeField] SlimeController slimeController;
-    [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Animator animator;
+
+    [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Player playerStatus;
 
     [SerializeField] float rushDistance = 20f;//攻撃距離
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
-
-    //[SerializeField]  float chargeTime = 0.3f;   // 溜め時間
-    //[SerializeField]  float recoveryTime = 0.3f; // 硬直時間
-    float broadcastTime = 0f;
 
     Vector2 dashStartPos; // 突進開始位置
 
@@ -31,10 +27,11 @@ public class SkillRush : MonoBehaviour
 
     [SerializeField] LayerMask enemyLayer; // 地面レイヤー
 
-    [SerializeField] GameObject playerTracking;
-    bool hasWarped = false;
+    [SerializeField] GameObject playerTracking;//プレイヤー追従
+
+    bool hasWarped = false;//ワープしたか
     //float timer = 0;
-    bool isHit = false;
+    bool isHit = false;//攻撃が当たったか
     enum State
     {
         Idle,//待機
@@ -45,11 +42,6 @@ public class SkillRush : MonoBehaviour
     }
 
     State currentState = State.Idle;
-
-    void Awake()
-    {
-        parentRd = GetComponentInParent<Rigidbody2D>();
-    }
 
     void FixedUpdate()
     {
@@ -76,8 +68,9 @@ public class SkillRush : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isHit) return;
+        if (isHit) return;//攻撃が複数回当たるのを防ぐ
 
+        //エネミーに当たったらダメージ処理
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
             isHit = true;
@@ -157,10 +150,12 @@ public class SkillRush : MonoBehaviour
     void Recovery()
     {
         //アニメーションの再生位置を示す（開始0,終了１）
-        broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+       　float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
+        //移動を止める
         parentRd.linearVelocity = Vector2.zero;
 
+        //初期化
         if (broadcastTime >= 1.0f)
         {
             animator.SetBool("EndRush", false);
@@ -173,7 +168,8 @@ public class SkillRush : MonoBehaviour
         }
     }
 
-    public void CastEnum(string input)
+    //アニメーションイベントから渡された文字列をStateに変換
+    public void CastState(string input)
     {
         if (Enum.TryParse(input, out State state))
         {

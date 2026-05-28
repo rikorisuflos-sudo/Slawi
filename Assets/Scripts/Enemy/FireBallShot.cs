@@ -2,24 +2,31 @@ using UnityEngine;
 
 public class FireBallShot : MonoBehaviour
 {
-    [SerializeField] Enemy enemyStatus;
-    [SerializeField] Transform parentTr;
+    [SerializeField] Enemy enemyStatus;//エネミーのスクリプタブルオブジェクト
+    [SerializeField] Transform parentTr;//親のトランスフォーム
 
-    [SerializeField] GameObject fireBall;
-    [SerializeField] FireBall fireBallSc;
-    [SerializeField] Transform enemyTr;
-    [SerializeField] Transform playerTr;
-    float attackDistance;
-    float attackAngle;
-    float enemyDir;
-    [SerializeField] LayerMask groundLayer;
-    bool withinRange = false;
+    [SerializeField] GameObject fireBall;//ファイアボールプレハブ
+    [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
+
+    [SerializeField] Transform playerTr;//プレイヤートランスフォーム
+
+    float attackDistance;//攻撃範囲
+    float attackAngle;//攻撃範囲
+
+    float enemyDir;//エネミーの向き
+    [SerializeField] LayerMask groundLayer;//地面レイヤー
+    bool withinRange = false;//攻撃範囲に入ったか
+
+    //攻撃間隔
     float timer = 0;
     [SerializeField] float interval;
 
     void Start()
     {
+        //発射方向を取得
         enemyDir = Mathf.Sign(parentTr.localScale.x);
+
+        //初期化
         if (enemyStatus != null)
         {
             this.attackDistance = enemyStatus.AttackDistance;
@@ -27,15 +34,20 @@ public class FireBallShot : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        //攻撃範囲に入ったか
         withinRange = PlayerSearch();
+
+        //攻撃間隔
         timer += Time.deltaTime;
         if (withinRange && timer >= interval)
         {
+            //ファイアボールの生成
             Debug.Log("火の玉");
-            GameObject newFireBoal = Instantiate(fireBall, enemyTr.position, Quaternion.identity);
+            GameObject newFireBoal = Instantiate(fireBall, parentTr.position, Quaternion.identity);
 
+            //ダメージ処理
             fireBallSc = newFireBoal.GetComponent<FireBall>();
             fireBallSc.SetParameter(enemyStatus.AttackPower, enemyDir);
 
