@@ -18,6 +18,7 @@ MonoBehaviour:
   attackPower: 5
   defensePower: 5
   walkForce: 5
+  dropExp: 10
   viewDistance: 5
   viewAngle: 60
   attackDistance: 5

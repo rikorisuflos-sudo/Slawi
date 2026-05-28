@@ -6,8 +6,10 @@ using UnityEngine.InputSystem;
 using System.Xml.Linq;
 using UnityEngine.UIElements;
 
+//スクリプタブルオブジェクト適応中
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] Player playerStatus;
     [SerializeField]private Rigidbody2D rb;
     
     const float MoveRun = 1.0f;//歩いているか
@@ -23,7 +25,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float walkForce;//速度の上昇値
     bool isGrounded = true;//地面に触れているかいないか
 
-    Keyboard keyboard;
+    Keyboard keyboard;//キーボード取得
 
     void Awake()
     {

@@ -11,6 +11,7 @@ public class Enemy : ScriptableObject
     [SerializeField] int attackPower;//攻撃力
     [SerializeField] int defensePower;
     [SerializeField] float walkForce;//移動速度
+    [SerializeField] int dropExp;
 
     //プレイヤー検知のための値
     [SerializeField] float viewDistance;//プレイヤー検知範囲（視界距離）
