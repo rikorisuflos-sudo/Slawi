@@ -8,8 +8,8 @@ using UnityEngine.UIElements;
 
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField]private Rigidbody2D rb;
-    
+    [SerializeField] private Rigidbody2D rb;
+
     const float MoveRun = 1.0f;//歩いているか
     const float MoveWalk = 0.5f;//走っているか
 
@@ -77,8 +77,8 @@ public class PlayerMove : MonoBehaviour
             //DebugLogger.Log("地面から離れた");
             isGrounded = false;
         }
-        
-        
+
+
     }
 
     /// <summary>
@@ -100,6 +100,4 @@ public class PlayerMove : MonoBehaviour
             //DebugLogger.Log("ジャンプ");
         }
     }
-
-   
 }
