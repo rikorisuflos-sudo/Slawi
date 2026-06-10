@@ -1,0 +1,11 @@
+{
+	"level":1,
+	"exp":0,
+	"skillPoint":0,
+	"hp":50,
+	"integerAttack":10,
+	"multiplierAttack":0.0,
+	"integerDefense":10,
+	"multiplierDefense":0.0,
+	"unlokedNodes":[]	
+}

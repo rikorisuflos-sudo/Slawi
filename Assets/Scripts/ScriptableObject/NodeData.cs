@@ -8,11 +8,11 @@ public class NodeData : ScriptableObject
     [SerializeField] int skillId;
     public StatusUp skillTopic;
     [SerializeField] float parameter;
-    [SerializeField] List<int> prerequisites;
-    [SerializeField] List<int> nextSkills;
+    [SerializeField] List<NodeData> prerequisites;
+    [SerializeField] List<NodeData> nextSkills;
 
     public int SkillId => skillId;
     public float Parameter => parameter;
-    public IReadOnlyList<int> Prerequisites => prerequisites;
-    public IReadOnlyList<int> NextSkills => nextSkills;
+    public IReadOnlyList<NodeData> Prerequisites => prerequisites;
+    public IReadOnlyList<NodeData> NextSkills => nextSkills;
 }

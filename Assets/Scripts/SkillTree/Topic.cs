@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Topic : MonoBehaviour
 {
     [SerializeField]TreeData treeData;
     NodeData nodeData;
+
+    public List<int> unlockedNodes;
 
     int attackPoint;
     float attackMul;
@@ -35,7 +38,7 @@ public class Topic : MonoBehaviour
 
     float DefenseMul(float upMul)
     {
-        Debug.Log("UŒ‚“‚ªã‚ª‚Á‚½");
+        Debug.Log("–hŒä“‚ªã‚ª‚Á‚½");
         defenseMul += upMul;
         return defenseMul;
     }

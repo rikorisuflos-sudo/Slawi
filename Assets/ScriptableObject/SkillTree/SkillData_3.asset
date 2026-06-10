@@ -15,5 +15,6 @@ MonoBehaviour:
   skillId: 3
   skillTopic: 2
   parameter: 3
-  prerequisites: 00000000
-  nextSkills: 
+  prerequisites:
+  - {fileID: 11400000, guid: 1786e3cefdf7b2847939873ccaa0dfcd, type: 2}
+  nextSkills: []
