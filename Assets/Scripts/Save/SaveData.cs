@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using System;
-[Serializable]public class SaveData : MonoBehaviour
+[Serializable]public class SaveData
 {
 	int level;
 	int exp;

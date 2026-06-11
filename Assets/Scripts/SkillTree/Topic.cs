@@ -9,11 +9,27 @@ public class Topic : MonoBehaviour
 
     public List<int> unlockedNodes;
 
+    int hpPoint;
+    float hpMul;
     int attackPoint;
     float attackMul;
     int defensePoint;
     float defenseMul;
     int skillLv =1;
+
+    int HpUp(float upPoint)
+    {
+        Debug.Log("HpÇ™è„Ç™Ç¡ÇΩ");
+        hpPoint += (int)upPoint;
+        return hpPoint;
+    }
+
+    float HpMul(float upMul)
+    {
+        Debug.Log("çUåÇ%Ç™è„Ç™Ç¡ÇΩ");
+        hpMul += upMul;
+        return hpMul;
+    }
 
     int AttackUp(float upPoint)
     {
@@ -56,6 +72,12 @@ public class Topic : MonoBehaviour
         Debug.Log(nodeData);
         switch (nodeData.skillTopic)
         {
+            case StatusUp.HpUp:
+                HpUp(nodeData.Parameter);
+                break;
+            case StatusUp.HpMul:
+                HpMul(nodeData.Parameter);
+                break;
             case StatusUp.AtkUp:
                 AttackUp(nodeData.Parameter);
                 break;

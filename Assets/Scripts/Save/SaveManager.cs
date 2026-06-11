@@ -10,4 +10,15 @@ public class SaveManager : MonoBehaviour
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
     }
+
+    public static SaveData Load()
+    {
+        if (!File.Exists(path))
+        {
+            return null;
+        }
+
+        string json = File.ReadAllText(path);
+        return JsonUtility.FromJson<SaveData>(json);
+    }
 }
