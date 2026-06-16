@@ -20,6 +20,7 @@ public class Enemy : ScriptableObject
     [SerializeField] float attackDistance;
     [SerializeField] float attackAngle;
 
+    //  エネミーから取得できるもの
     [SerializeField] int exp;
     //[SerializeField] int[] dropItems;
 
@@ -34,4 +35,6 @@ public class Enemy : ScriptableObject
     public float ViewAngle => viewAngle;
     public float AttackDistance => attackDistance;
     public float AttackAngle => attackAngle;
+    public int Exp => exp;
+    //public int[] DropItems => dropItems;
 }
