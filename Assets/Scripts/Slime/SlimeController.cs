@@ -9,14 +9,16 @@ public class SlimeController : MonoBehaviour
     private Mouse mouse;
     private Keyboard keyboard;
 
-    [SerializeField] Animator animator;
-    const float NormalizedTime = 0f;
-    const int Layer = -1;
+    //[SerializeField] Animator animator;
+    //const float NormalizedTime = 0f;
+    //const int Layer = -1;
 
     [SerializeField] GameObject normalAttack;
-    private SkillRush normalAttackScript;
-    [SerializeField] GameObject skillAttack1;
-    private SkillStomp skillAttack1Script;
+    [SerializeField] NormalAttack normalAttackScript;
+    [SerializeField] GameObject skillRush;
+    [SerializeField] SkillRush skillRushScript;
+    [SerializeField] GameObject skillStomp;
+    [SerializeField] SkillStomp skillStompScript;
     private void Awake()
     {
         mouse = Mouse.current;
@@ -25,8 +27,8 @@ public class SlimeController : MonoBehaviour
 
     private void Start()
     {
-        normalAttackScript = normalAttack.GetComponent<SkillRush>();
-        skillAttack1Script = skillAttack1.GetComponent<SkillStomp>();
+        //normalAttackScript = normalAttack.GetComponent<SkillRush>();
+        //skillAttack1Script = skillAttack1.GetComponent<SkillStomp>();
     }
 
     private void Update()
@@ -36,10 +38,15 @@ public class SlimeController : MonoBehaviour
             normalAttack.SetActive(true); // オブジェクトを有効化
             normalAttackScript.StartAttack();
         }
-        if (keyboard.rKey.wasPressedThisFrame)
+        if (keyboard.fKey.wasPressedThisFrame)
         {
-            skillAttack1.SetActive(true);
-            skillAttack1Script.StartAttack();
+            skillRush.SetActive(true);
+            skillRushScript.StartAttack();
+        }
+        if (keyboard.rKey.wasPressedThisFrame)
+        { 
+            skillStomp.SetActive(true);
+            skillStompScript.StartAttack();
         }
     }
 }

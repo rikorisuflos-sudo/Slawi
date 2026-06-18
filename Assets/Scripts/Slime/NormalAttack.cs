@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class NormalAttack : MonoBehaviour
 {
-
     //親オブジェクトのものを取得
     [SerializeField] Rigidbody2D parentRd;
     [SerializeField] SlimeController slimeController;
+    //[SerializeField] Animator animator;
+
+    [SerializeField] Collider2D attackCollider;
 
     [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Player playerStatus;
@@ -13,26 +17,59 @@ public class NormalAttack : MonoBehaviour
     [SerializeField] float rushDistance = 20f;//攻撃距離
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
+    [SerializeField] float walkForce;
+    [SerializeField] float smooth;
+
+    [SerializeField]float searchRange;//エネミー探索範囲
+    [SerializeField]float stopDistance;
 
     Vector2 dashStartPos; // 突進開始位置
 
     [SerializeField] float wallCheckDistance = 0.5f;//壁の探索範囲
     [SerializeField] LayerMask groundLayer; // 地面レイヤー
 
-    [SerializeField] LayerMask enemyLayer; // 地面レイヤー
+    [SerializeField] LayerMask enemyLayer; // エネミーレイヤー
 
     [SerializeField] GameObject playerTracking;//プレイヤー追従
 
-    bool hasWarped = false;//ワープしたか
-    //float timer = 0;
-    bool isHit = false;//攻撃が当たったか
 
-    void Awake()
+    bool hasEnemy = false;
+    bool isHit = false;//攻撃が当たったか
+    enum State
     {
-        Rush();
-        EndRush();
+        Idle,//待機
+        Tracking,//追尾
+        Charge,//攻撃前の溜め
+        Attack,//突進
+        Recovery//硬直
     }
-    void OnTriggerEnter2D(Collider2D collision)
+
+    State currentState = State.Idle;
+
+    void FixedUpdate()
+    {
+        switch (currentState)
+        {
+            case State.Tracking:
+                Tracking();
+                break;
+            //case State.Charge:
+            //    Charge();
+            //    break;
+
+            case State.Attack:
+                Attack();
+                EndAttack();
+                break;
+
+            case State.Recovery:
+                Recovery();
+                break;
+        }
+        //Debug.Log(currentState);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isHit) return;//攻撃が複数回当たるのを防ぐ
 
@@ -42,18 +79,79 @@ public class NormalAttack : MonoBehaviour
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+
             Debug.Log("エネミーに衝突した");
         }
     }
 
-    void Rush()
+    //プレイヤー追従処理OFF
+    //突進方向の確定、タイマーの初期化
+    public void StartAttack()
+    {
+        //animator.SetBool("StartRush", true);
+        playerTracking.SetActive(false);
+        slimeController.enabled = false;
+        dashDir = Mathf.Sign(playerTr.transform.localScale.x);
+        if (dashDir == 0) dashDir = 1;
+        currentState = State.Tracking;
+    }
+
+    void Tracking()
+    {
+        GameObject target = serchTag();
+
+        if (target == null)
+        {
+            currentState = State.Recovery;
+            return;
+        }
+        ////自分とプレイヤーがどれだけ離れているか
+        float distance = Vector2.Distance(parentRd.transform.position, target.transform.position);
+
+        if (distance < stopDistance)
+        {
+            dashStartPos = parentRd.transform.position;
+            attackCollider.isTrigger = false;
+            currentState = State.Attack;
+            return;
+        }
+
+
+        //一定距離離れたら追いかける
+        //if (target != null )
+        //{
+        //プレイヤーの位置をもとに移動方向を決める
+        float dir = Mathf.Sign(target.transform.position.x - parentRd.position.x);
+
+        float targetX = dir * walkForce;
+        float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+        parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
+
+        //オブジェクト反転
+        if (dir == 0) dir = 1;
+        transform.localScale = new Vector3(dir, 1, 1);
+
+        //DebugLogger.Log(distance);
+        //}
+
+    }
+
+    //攻撃前の溜め
+    //void Charge()
+    //{
+    //    if (currentState != State.Charge) return;
+    //    parentRd.linearVelocity = Vector2.zero;
+    //}
+
+    //攻撃
+    void Attack()
     {
         parentRd.linearVelocity = new Vector2(dashDir * rushSpeed, parentRd.linearVelocity.y);
 
     }
 
     //突進終了
-    void EndRush()
+    void EndAttack()
     {
         // 壁チェック
         RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
@@ -61,7 +159,7 @@ public class NormalAttack : MonoBehaviour
         if (hit.collider != null)
         {
             //animator.SetBool("EndRush", true);
-            //currentState = State.Recovery;
+            currentState = State.Recovery;
             return;
         }
 
@@ -70,10 +168,41 @@ public class NormalAttack : MonoBehaviour
         if (distance >= rushDistance)
         {
             //animator.SetBool("EndRush", true);
-            //currentState = State.Recovery;
+            currentState = State.Recovery;
             return;
         }
     }
+
+    //攻撃後の硬直
+    void Recovery()
+    {
+        ////アニメーションの再生位置を示す（開始0,終了１）
+        //float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        ////移動を止める
+        //parentRd.linearVelocity = Vector2.zero;
+
+        //初期化
+        //if (broadcastTime >= 1.0f)
+        //{
+        //animator.SetBool("EndRush", false);
+        //animator.SetBool("StartRush", false);
+
+        slimeController.enabled = true;
+        playerTracking.SetActive(true);
+        //gameObject.SetActive(false);
+        isHit = false;
+        //}
+    }
+
+    //アニメーションイベントから渡された文字列をStateに変換
+    //public void CastState(string input)
+    //{
+    //    if (Enum.TryParse(input, out State state))
+    //    {
+    //        currentState = state;
+    //    }
+    //}
 
     //指定されたタグの中で最も近いものを取得
     GameObject serchTag()

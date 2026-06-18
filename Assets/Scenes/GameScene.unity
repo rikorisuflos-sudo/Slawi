@@ -1021,9 +1021,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b08a9f8c1b7f44f864869bc5dd88e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeController
-  animator: {fileID: 680007744}
-  normalAttack: {fileID: 680007742}
-  skillAttack1: {fileID: 1829696915}
+  normalAttack: {fileID: 1483657747}
+  normalAttackScript: {fileID: 1483657749}
+  skillRush: {fileID: 680007742}
+  skillRushScript: {fileID: 680007745}
+  skillStomp: {fileID: 1829696915}
+  skillStompScript: {fileID: 1829696918}
 --- !u!1 &680007742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,7 +1041,7 @@ GameObject:
   - component: {fileID: 680007745}
   - component: {fileID: 680007744}
   m_Layer: 8
-  m_Name: SkillAttack_2
+  m_Name: SkillRush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1414,7 +1417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1483657748
 Transform:
   m_ObjectHideFlags: 0
@@ -1442,6 +1445,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308fdccb6c2f12641a3cda907e1f6c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NormalAttack
+  parentRd: {fileID: 583328091}
+  slimeController: {fileID: 583328093}
+  attackCollider: {fileID: 1483657750}
+  playerTr: {fileID: 387031428}
+  playerStatus: {fileID: 11400000, guid: 6f5fd9289a00f5140a77dea4fc53a6bb, type: 2}
+  rushDistance: 10
+  rushSpeed: 2
+  walkForce: 10
+  smooth: 5
+  searchRange: 20
+  stopDistance: 5
+  wallCheckDistance: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  playerTracking: {fileID: 290311860}
 --- !u!61 &1483657750
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2189,7 +2211,7 @@ GameObject:
   - component: {fileID: 1829696918}
   - component: {fileID: 1829696917}
   m_Layer: 8
-  m_Name: SkillAttack_1
+  m_Name: SkillStomp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

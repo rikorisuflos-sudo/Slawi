@@ -21,14 +21,18 @@ public class EnemyDirecter : MonoBehaviour, IDamageable
         //死亡判定
         if (enemyHp <= 0)
         {
-            Death();
+            Debug.Log("倒された");
+            Destroy(gameObject);
+            //return true;
+            //Death();
         }
+        //return false;
     }
 
-    public void Death()
-    {
-        //オブジェクト削除
-        Debug.Log("倒された");
-        Destroy(gameObject);
-    }
+    //public void Death()
+    //{
+    //    ////オブジェクト削除
+    //    //Debug.Log("倒された");
+    //    //Destroy(gameObject);
+    //}
 }
