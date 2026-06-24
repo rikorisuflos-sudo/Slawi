@@ -999,7 +999,7 @@ Transform:
   m_GameObject: {fileID: 583328090}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.7516, y: -3.988, z: 0}
+  m_LocalPosition: {x: -1.23, y: -3.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1450,8 +1450,8 @@ MonoBehaviour:
   attackCollider: {fileID: 1483657750}
   playerTr: {fileID: 387031428}
   playerStatus: {fileID: 11400000, guid: 6f5fd9289a00f5140a77dea4fc53a6bb, type: 2}
-  rushDistance: 10
-  rushSpeed: 2
+  rushDistance: 5
+  rushSpeed: 10
   walkForce: 10
   smooth: 5
   searchRange: 20

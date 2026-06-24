@@ -70,7 +70,7 @@ public class EnemyMove : MonoBehaviour
         {
             Attack.SetActive(true);
             //移動先をエネミーの初期位置に
-            movPosition = startPosition;
+            //movPosition = startPosition;
 
             ////プレイヤーの位置をもとに移動方向を決める
             //float dir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
@@ -94,7 +94,12 @@ public class EnemyMove : MonoBehaviour
         {
             Debug.Log("方向転換");
             enemyDir *= -1;
-            //movPosition = transform.position; // 反転地点を起点に更新
+
+
+
+            movPosition = transform.position; // 反転地点を起点に更新
+
+
 
             // 見た目の向きを反転させる処理
             parentTr.localScale = new Vector3(enemyDir, 1, 1);

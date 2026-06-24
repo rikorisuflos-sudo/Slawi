@@ -20,8 +20,8 @@ public class NormalAttack : MonoBehaviour
     [SerializeField] float walkForce;
     [SerializeField] float smooth;
 
-    [SerializeField]float searchRange;//エネミー探索範囲
-    [SerializeField]float stopDistance;
+    [SerializeField] float searchRange;//エネミー探索範囲
+    [SerializeField] float stopDistance;
 
     Vector2 dashStartPos; // 突進開始位置
 
@@ -32,8 +32,6 @@ public class NormalAttack : MonoBehaviour
 
     [SerializeField] GameObject playerTracking;//プレイヤー追従
 
-
-    bool hasEnemy = false;
     bool isHit = false;//攻撃が当たったか
     enum State
     {
@@ -66,10 +64,10 @@ public class NormalAttack : MonoBehaviour
                 Recovery();
                 break;
         }
-        //Debug.Log(currentState);
+        Debug.Log(currentState);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isHit) return;//攻撃が複数回当たるのを防ぐ
 
@@ -79,6 +77,7 @@ public class NormalAttack : MonoBehaviour
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+            currentState = State.Recovery;
 
             Debug.Log("エネミーに衝突した");
         }
@@ -102,25 +101,21 @@ public class NormalAttack : MonoBehaviour
 
         if (target == null)
         {
-            currentState = State.Recovery;
+            dashStartPos = parentRd.transform.position;
+            currentState = State.Attack;
             return;
         }
         ////自分とプレイヤーがどれだけ離れているか
         float distance = Vector2.Distance(parentRd.transform.position, target.transform.position);
 
-        if (distance < stopDistance)
+        if (distance <= stopDistance)
         {
             dashStartPos = parentRd.transform.position;
-            attackCollider.isTrigger = false;
             currentState = State.Attack;
             return;
         }
 
-
-        //一定距離離れたら追いかける
-        //if (target != null )
-        //{
-        //プレイヤーの位置をもとに移動方向を決める
+        //エネミーの位置をもとに移動方向を決める
         float dir = Mathf.Sign(target.transform.position.x - parentRd.position.x);
 
         float targetX = dir * walkForce;
@@ -135,13 +130,6 @@ public class NormalAttack : MonoBehaviour
         //}
 
     }
-
-    //攻撃前の溜め
-    //void Charge()
-    //{
-    //    if (currentState != State.Charge) return;
-    //    parentRd.linearVelocity = Vector2.zero;
-    //}
 
     //攻撃
     void Attack()
@@ -190,7 +178,7 @@ public class NormalAttack : MonoBehaviour
 
         slimeController.enabled = true;
         playerTracking.SetActive(true);
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
         isHit = false;
         //}
     }
