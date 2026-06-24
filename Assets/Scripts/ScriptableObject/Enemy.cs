@@ -21,7 +21,8 @@ public class Enemy : ScriptableObject
     [SerializeField] float attackAngle;
 
     //  エネミーから取得できるもの
-    [SerializeField] int exp;
+    [SerializeField] int exp;//経験値
+    [SerializeField] string absorbSkill;//プレイヤーが吸収できるスキル
     //[SerializeField] int[] dropItems;
 
     //get-only
@@ -36,5 +37,6 @@ public class Enemy : ScriptableObject
     public float AttackDistance => attackDistance;
     public float AttackAngle => attackAngle;
     public int Exp => exp;
+    public string AbsorbSkill => absorbSkill;
     //public int[] DropItems => dropItems;
 }

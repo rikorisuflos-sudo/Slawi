@@ -78,6 +78,9 @@ public class AbsorbAttack : MonoBehaviour
             currentState = State.Recovery;
 
             Debug.Log("エネミーに衝突した");
+
+
+
         }
     }
 
@@ -156,6 +159,37 @@ public class AbsorbAttack : MonoBehaviour
             //animator.SetBool("EndRush", true);
             currentState = State.Recovery;
             return;
+        }
+    }
+
+    void Absorb()
+    {
+        int random = Random.Range(0, 100);
+
+        int hp = 0;//てきのHp（明日直す）
+        int a;//確率（明日直す）
+        switch (hp)
+        {
+            case 100:
+                a = 3;
+                break;
+            case 50:
+                a = 3;
+                break;
+            case 20:
+                a = 3;
+                break;
+            case 5:
+                a = 3;
+                break;
+            default:
+                a = 0;
+                break;
+        }
+
+        if(random >= a)
+        {
+            Debug.Log("吸収された");
         }
     }
 
