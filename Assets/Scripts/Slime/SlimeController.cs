@@ -16,7 +16,7 @@ public class SlimeController : MonoBehaviour
     [SerializeField] GameObject normalAttack;
     [SerializeField] NormalAttack normalAttackScript;
     [SerializeField] GameObject absorbAttack;
-    [SerializeField] NormalAttack absorbAttackScript;
+    [SerializeField] AbsorbAttack absorbAttackScript;
     [SerializeField] GameObject skillRush;
     [SerializeField] SkillRush skillRushScript;
     [SerializeField] GameObject skillStomp;
