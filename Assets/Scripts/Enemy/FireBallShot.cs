@@ -44,7 +44,7 @@ public class FireBallShot : MonoBehaviour
         if (withinRange && timer >= interval)
         {
             //ファイアボールの生成
-            Debug.Log("火の玉");
+            //Debug.Log("火の玉");
             GameObject newFireBoal = Instantiate(fireBall, parentTr.position, Quaternion.identity);
 
             //ダメージ処理

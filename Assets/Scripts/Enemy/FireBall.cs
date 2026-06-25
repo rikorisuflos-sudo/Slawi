@@ -46,7 +46,7 @@ public class FireBall : MonoBehaviour
         //プレイヤーに当たったらダメージ処理
         if (((1 << collision.gameObject.layer) & playerLayer) != 0)
         {
-            Debug.Log("対象レイヤーにヒット");
+            //Debug.Log("対象レイヤーにヒット");
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(attackPower);

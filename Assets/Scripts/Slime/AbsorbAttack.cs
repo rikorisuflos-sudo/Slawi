@@ -7,7 +7,7 @@ public class AbsorbAttack : MonoBehaviour
     [SerializeField] SlimeController slimeController;
     //[SerializeField] Animator animator;
 
-    [SerializeField] Collider2D attackCollider;
+    //[SerializeField] Collider2D attackCollider;
 
     [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Player playerStatus;
@@ -31,6 +31,7 @@ public class AbsorbAttack : MonoBehaviour
     [SerializeField] GameObject playerTracking;//プレイヤー追従
 
     bool isHit = false;//攻撃が当たったか
+
     enum State
     {
         Idle,//待機
@@ -62,7 +63,7 @@ public class AbsorbAttack : MonoBehaviour
                 Recovery();
                 break;
         }
-        Debug.Log(currentState);
+        //Debug.Log(currentState);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -73,8 +74,14 @@ public class AbsorbAttack : MonoBehaviour
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
             isHit = true;
+            IAbsorble absorble = collision.gameObject.GetComponent<IAbsorble>();
+            if (absorble != null) absorble.Absorb();
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+
+            //enemyHp = collision.gameObject.GetComponent<EnemyDirecter>().enemyHp;
+
+
             currentState = State.Recovery;
 
             Debug.Log("エネミーに衝突した");
@@ -159,37 +166,6 @@ public class AbsorbAttack : MonoBehaviour
             //animator.SetBool("EndRush", true);
             currentState = State.Recovery;
             return;
-        }
-    }
-
-    void Absorb()
-    {
-        int random = Random.Range(0, 100);
-
-        int hp = 0;//てきのHp（明日直す）
-        int a;//確率（明日直す）
-        switch (hp)
-        {
-            case 100:
-                a = 3;
-                break;
-            case 50:
-                a = 3;
-                break;
-            case 20:
-                a = 3;
-                break;
-            case 5:
-                a = 3;
-                break;
-            default:
-                a = 0;
-                break;
-        }
-
-        if(random >= a)
-        {
-            Debug.Log("吸収された");
         }
     }
 

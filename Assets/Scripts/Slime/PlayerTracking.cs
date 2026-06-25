@@ -25,10 +25,12 @@ public class PlayerTracking : MonoBehaviour
     float heightDiff;
 
     bool canMove = true;//’Ç]ˆ—‚ÌON.OFF
+
     public bool CanMove
     {
         set { canMove = value; }
     }
+
     void Start()
     {
         parentRd = GetComponentInParent<Rigidbody2D>();

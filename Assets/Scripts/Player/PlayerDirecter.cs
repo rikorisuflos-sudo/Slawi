@@ -21,7 +21,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
     {
         //ダメージ計算：アルテリオス計算式*0.8~1.2の乱数
         playerHp -= Mathf.FloorToInt((attackPower - defensePower)* Random.Range(0.8f,1.1f));
-        Debug.Log("プレイヤー:" + playerHp);
+        //Debug.Log("プレイヤー:" + playerHp);
 
         //死亡判定
         if (playerHp <= 0)
@@ -32,7 +32,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
 
     public void Death()
     {
-        Debug.Log("倒された");
+        //Debug.Log("倒された");
     }
 
     public void StatusReset()

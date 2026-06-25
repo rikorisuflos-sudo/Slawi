@@ -21,6 +21,8 @@ public class SlimeController : MonoBehaviour
     [SerializeField] SkillRush skillRushScript;
     [SerializeField] GameObject skillStomp;
     [SerializeField] SkillStomp skillStompScript;
+    [SerializeField] GameObject skillAbsorb;
+    [SerializeField] SkillAbsorb skillAbsorbScript;
     private void Awake()
     {
         mouse = Mouse.current;
@@ -54,6 +56,11 @@ public class SlimeController : MonoBehaviour
         { 
             skillStomp.SetActive(true);
             skillStompScript.StartAttack();
+        }
+        if (keyboard.vKey.wasPressedThisFrame)
+        {
+            skillAbsorb.SetActive(true);
+            skillAbsorbScript.StartAttack();
         }
     }
 }
