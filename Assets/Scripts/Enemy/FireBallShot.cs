@@ -4,6 +4,7 @@ public class FireBallShot : MonoBehaviour
 {
     [SerializeField] Enemy enemyStatus;//エネミーのスクリプタブルオブジェクト
     [SerializeField] Transform parentTr;//親のトランスフォーム
+    [SerializeField] Animator parentAnimator;
 
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
@@ -17,9 +18,11 @@ public class FireBallShot : MonoBehaviour
     [SerializeField] LayerMask groundLayer;//地面レイヤー
     bool withinRange = false;//攻撃範囲に入ったか
 
-    //攻撃間隔
-    float timer = 0;
-    [SerializeField] float interval;
+    bool shot = false;
+
+    ////攻撃間隔
+    //float timer = 0;
+    //[SerializeField] float interval;
 
     void Start()
     {
@@ -40,8 +43,9 @@ public class FireBallShot : MonoBehaviour
         withinRange = PlayerSearch();
 
         //攻撃間隔
-        timer += Time.deltaTime;
-        if (withinRange && timer >= interval)
+        //timer += Time.deltaTime;
+        //if (withinRange && timer >= interval)
+        if (withinRange && shot)
         {
             //ファイアボールの生成
             //Debug.Log("火の玉");
@@ -51,7 +55,7 @@ public class FireBallShot : MonoBehaviour
             fireBallSc = newFireBoal.GetComponent<FireBall>();
             fireBallSc.SetParameter(enemyStatus.AttackPower, enemyDir);
 
-            timer = 0;
+            //timer = 0;
         }
     }
 
@@ -92,5 +96,11 @@ public class FireBallShot : MonoBehaviour
         }
         // すべてクリア → 見えてる
         return true;
+    }
+
+    public void GetBool(int shot)
+    {
+//intをboolに
+        //this.shot = shot;
     }
 }
