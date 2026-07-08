@@ -2125,7 +2125,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::shot
   enemyStatus: {fileID: 11400000, guid: 960ebc9598696364f86e6ee0fda72570, type: 2}
   parentTr: {fileID: 1578675771}
-  parentAnimator: {fileID: 0}
+  animator: {fileID: 1809482715}
+  move: {fileID: 1894763150}
   fireBall: {fileID: 8804492111596663323, guid: abeb94cbef5859e4f94c4e2e9768f806, type: 3}
   fireBallSc: {fileID: -7264275163875473436, guid: abeb94cbef5859e4f94c4e2e9768f806, type: 3}
   playerTr: {fileID: 387031428}

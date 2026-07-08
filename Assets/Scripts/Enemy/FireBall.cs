@@ -32,7 +32,7 @@ public class FireBall : MonoBehaviour
     {
         this.attackPower = attackPower;
         this.dir = dir;
-        transform.localScale = new Vector3(-dir * 1.5f, 1.5f, 1);
+        transform.localScale = new Vector3(dir * 1, 1, -1);
     }
     void FixedUpdate()
     {
