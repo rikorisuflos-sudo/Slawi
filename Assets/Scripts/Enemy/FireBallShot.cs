@@ -71,7 +71,7 @@ public class FireBallShot : MonoBehaviour
         {
             //ファイアボールの生成
             //Debug.Log("火の玉");
-            GameObject newFireBoal = Instantiate(fireBall, new Vector3(transform.position.x + 0.2f, transform.position.y, -1), Quaternion.identity);
+            GameObject newFireBoal = Instantiate(fireBall, new Vector3(transform.position.x + (0.2f * enemyDir), transform.position.y, -1), Quaternion.identity);
 
             //ダメージ処理
             fireBallSc = newFireBoal.GetComponent<FireBall>();

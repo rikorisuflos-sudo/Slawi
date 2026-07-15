@@ -17,7 +17,7 @@ MonoBehaviour:
   hp: 100
   attackPower: 10
   defensePower: 5
-  walkForce: 5
+  walkForce: 2
   viewDistance: 10
   viewAngle: 60
   attackDistance: 10
