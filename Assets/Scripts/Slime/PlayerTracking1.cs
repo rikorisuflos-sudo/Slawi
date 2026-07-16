@@ -44,7 +44,8 @@ public class PlayerTracking_1: MonoBehaviour
             //プレイヤーが動いていなくても、最低速度は保証する
             float minimumSpeed = Mathf.Max(move, 0.5f);
             //プレイヤーの位置をもとに移動方向を決める
-            float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
+            Vector3 plaerPos = vector3s.Dequeue();
+            float dir = Mathf.Sign(plaerPos.x - transform.position.x);
 
             targetX = dir * walkForce * minimumSpeed;
 
@@ -63,11 +64,14 @@ public class PlayerTracking_1: MonoBehaviour
 
     void FixedUpdate()
     {
-        //プレイヤーの位置を取得
+        //プレイヤーの位置を格納
         vector3s.Enqueue(playerTr.position);
 
+        //プレイヤーの位置を取得
+        Vector3 plaerPos = vector3s.Dequeue();
+
         // 今のY速度はそのまま維持！
-        float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+        float newX = Mathf.Lerp(parentRd.linearVelocity.x, plaerPos.x, smooth * Time.fixedDeltaTime);
         parentRd.MovePosition(new Vector2(newX,transform.position.y));
 
         
