@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 public class FireBallShot : MonoBehaviour
 {
     [SerializeField] Enemy enemyStatus;//エネミーのスクリプタブルオブジェクト
     [SerializeField] Transform parentTr;//親のトランスフォーム
+    [SerializeField] Animator animator;
+    [SerializeField] GameObject move;
 
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
@@ -17,14 +20,17 @@ public class FireBallShot : MonoBehaviour
     [SerializeField] LayerMask groundLayer;//地面レイヤー
     bool withinRange = false;//攻撃範囲に入ったか
 
-    //攻撃間隔
-    float timer = 0;
-    [SerializeField] float interval;
+    bool shot = false;
+
+    ////攻撃間隔
+    //float timer = 0;
+    //[SerializeField] float interval;
 
     void Start()
     {
         //発射方向を取得
         enemyDir = Mathf.Sign(parentTr.localScale.x);
+
 
         //初期化
         if (enemyStatus != null)
@@ -40,18 +46,38 @@ public class FireBallShot : MonoBehaviour
         withinRange = PlayerSearch();
 
         //攻撃間隔
-        timer += Time.deltaTime;
-        if (withinRange && timer >= interval)
+        //timer += Time.deltaTime;
+        //if (withinRange && timer >= interval)
+        if (withinRange)
+        {
+
+            animator.SetBool("Shot", true);
+            move.SetActive(false);
+
+            Shot();
+
+        }
+        else
+        {
+            animator.SetBool("Shot", false);
+            move.SetActive(true);
+        }
+    }
+
+    void Shot()
+    {
+
+        if (shot)
         {
             //ファイアボールの生成
-            Debug.Log("火の玉");
-            GameObject newFireBoal = Instantiate(fireBall, parentTr.position, Quaternion.identity);
+            //Debug.Log("火の玉");
+            GameObject newFireBoal = Instantiate(fireBall, new Vector3(transform.position.x + (0.2f * enemyDir), transform.position.y, -1), Quaternion.identity);
 
             //ダメージ処理
             fireBallSc = newFireBoal.GetComponent<FireBall>();
             fireBallSc.SetParameter(enemyStatus.AttackPower, enemyDir);
 
-            timer = 0;
+            shot = false;
         }
     }
 
@@ -92,5 +118,10 @@ public class FireBallShot : MonoBehaviour
         }
         // すべてクリア → 見えてる
         return true;
+    }
+
+    public void CastBool(int input)
+    {
+        shot = Convert.ToBoolean(input);
     }
 }

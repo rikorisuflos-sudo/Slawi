@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class Save : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void executeSave()
     {
-        
-    }
+        SaveData data = new SaveData();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        SaveManager.Save(data);
     }
 }

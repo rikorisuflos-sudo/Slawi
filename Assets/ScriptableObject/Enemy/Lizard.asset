@@ -17,12 +17,21 @@ MonoBehaviour:
   hp: 100
   attackPower: 10
   defensePower: 5
+<<<<<<< HEAD
 <<<<<<< HEAD:Assets/ScriptableObject/Lizard.asset
   walkForce: 5
   dropExp: 10
 =======
   walkForce: 2
 >>>>>>> GameScene:Assets/ScriptableObject/Enemy/Lizard.asset
+=======
+<<<<<<<< HEAD:Assets/ScriptableObject/Lizard.asset
+  walkForce: 5
+  dropExp: 10
+========
+  walkForce: 2
+>>>>>>>> GameScene:Assets/ScriptableObject/Enemy/Lizard.asset
+>>>>>>> GameScene
   viewDistance: 10
   viewAngle: 60
   attackDistance: 10

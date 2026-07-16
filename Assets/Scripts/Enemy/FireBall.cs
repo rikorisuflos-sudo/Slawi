@@ -32,6 +32,7 @@ public class FireBall : MonoBehaviour
     {
         this.attackPower = attackPower;
         this.dir = dir;
+        transform.localScale = new Vector3(dir * 1, 1, -1);
     }
     void FixedUpdate()
     {
@@ -46,11 +47,11 @@ public class FireBall : MonoBehaviour
         //プレイヤーに当たったらダメージ処理
         if (((1 << collision.gameObject.layer) & playerLayer) != 0)
         {
-            Debug.Log("対象レイヤーにヒット");
+            //Debug.Log("対象レイヤーにヒット");
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(attackPower);
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 
@@ -68,14 +69,14 @@ public class FireBall : MonoBehaviour
         Debug.DrawRay(rb.position, new Vector2(dir, 0), Color.red);
         if (hitWall.collider != null)
         {
-            this.gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
         // 距離チェック（Xだけ）
         float distance = Mathf.Abs(rb.position.x - moveStartPos.x);
         if (distance >= moveDistance)
         {
-            this.gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 

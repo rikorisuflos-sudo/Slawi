@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -8,6 +9,7 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] Transform parentTr;
     [SerializeField] Enemy enemyStatus;//エネミーのScriptableObject
     [SerializeField] GameObject Attack;
+    [SerializeField] Canvas hpBar;
 
     [SerializeField] float enemyMileage; // エネミーの移動範囲 
     float enemyDir; // エネミーの向き (初期値1) 
@@ -28,6 +30,7 @@ public class EnemyMove : MonoBehaviour
     float viewAngle = 60f;//視野角(見える角度）
     bool playerFind = false; // プレイヤーを見つけたか (初期値false) 
 
+    bool stop = false;
 
     void OnEnable()
     {
@@ -63,21 +66,20 @@ public class EnemyMove : MonoBehaviour
         // プレイヤーを発見したら、待機状態を解除する（＝移動を停止する） 
         if (!playerFind)
         {
-            Walk();
+            if (stop) 
+            { 
+                parentRd.linearVelocity = new Vector2(0.0f, parentRd.linearVelocity.y);
+            }
+            else
+            {
+                Walk();
+            }
+            ;
             Attack.SetActive(false);
         }
         else
         {
             Attack.SetActive(true);
-            //移動先をエネミーの初期位置に
-            movPosition = startPosition;
-
-            ////プレイヤーの位置をもとに移動方向を決める
-            //float dir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
-
-            ////float targetX = dir * walkForce * minimumSpeed;
-            //float newX = Mathf.MoveTowards(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-            //parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
         }
     }
 
@@ -94,15 +96,20 @@ public class EnemyMove : MonoBehaviour
         {
             Debug.Log("方向転換");
             enemyDir *= -1;
-            //movPosition = transform.position; // 反転地点を起点に更新
+
+            hpBar.transform.localScale = new Vector3(enemyDir * 0.01f, 0.01f, 1);
+
+            movPosition = transform.position; // 反転地点を起点に更新
+
+
 
             // 見た目の向きを反転させる処理
             parentTr.localScale = new Vector3(enemyDir, 1, 1);
         }
-       
+
 
         //プレイヤーの位置をもとに移動方向を決める
-        float dir =　!playerFind ? enemyDir : Mathf.Sign(playerTr.position.x - parentTr.position.x);
+        float dir = !playerFind ? enemyDir : Mathf.Sign(playerTr.position.x - parentTr.position.x);
 
         float targetX = enemyDir * walkForce;
         //float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
@@ -171,4 +178,8 @@ public class EnemyMove : MonoBehaviour
         return true;
     }
 
+    public void CastBool(int input)
+    {
+        stop = Convert.ToBoolean(input);
+    }
 }
