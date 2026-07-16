@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1e35acf3cab5c4c8ca1e770511c2f8, type: 3}
+  m_Name: Frog
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  enemyName: Frog
+  repop: 1
+  hp: 40
+  attackPower: 5
+  defensePower: 5
+<<<<<<< HEAD:Assets/ScriptableObject/Frog.asset
+  walkForce: 5
+  dropExp: 10
+=======
+  walkForce: 3
+>>>>>>> GameScene:Assets/ScriptableObject/Enemy/Frog.asset
+  viewDistance: 5
+  viewAngle: 60
+  attackDistance: 5
+  attackAngle: 60
+  exp: 0
+  absorbSkill: 
