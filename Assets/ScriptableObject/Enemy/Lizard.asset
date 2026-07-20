@@ -23,4 +23,4 @@ MonoBehaviour:
   attackDistance: 10
   attackAngle: 60
   exp: 0
-  absorbSkill: 
+  absorbSkill: 1
