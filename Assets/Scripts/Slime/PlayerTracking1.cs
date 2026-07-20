@@ -1,7 +1,8 @@
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerTracking_1: MonoBehaviour
+public class PlayerTracking_1 : MonoBehaviour
 {
     Rigidbody2D parentRd;//親オブジェクトのものを取得
     //Transform parentTr;
@@ -10,7 +11,7 @@ public class PlayerTracking_1: MonoBehaviour
 
     [SerializeField] float walkForce;//速度の上昇値
     [SerializeField] float jumpForce;//ジャンプの高さ
-   
+
     [SerializeField] float followDistance; // この距離より離れたら追う
     [SerializeField] float stopDistance;   // この距離まで来たら止まる
     [SerializeField] float warpDistance; // この距離より離れたら追う
@@ -23,10 +24,18 @@ public class PlayerTracking_1: MonoBehaviour
     float heightDiff;
 
     BoundedQueue<Vector3> vector3s = new BoundedQueue<Vector3>(20);
+    Vector3 plaerPos = Vector3.zero;
+    [SerializeField] float recordInterval = 0.2f;
+
+    float timer;
+
 
     void Start()
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
+
+        //プレイヤーの位置を格納
+        vector3s.Enqueue(playerTr.position);
     }
 
     void Update()
@@ -44,7 +53,6 @@ public class PlayerTracking_1: MonoBehaviour
             //プレイヤーが動いていなくても、最低速度は保証する
             float minimumSpeed = Mathf.Max(move, 0.5f);
             //プレイヤーの位置をもとに移動方向を決める
-            Vector3 plaerPos = vector3s.Dequeue();
             float dir = Mathf.Sign(plaerPos.x - transform.position.x);
 
             targetX = dir * walkForce * minimumSpeed;
@@ -64,17 +72,39 @@ public class PlayerTracking_1: MonoBehaviour
 
     void FixedUpdate()
     {
-        //プレイヤーの位置を格納
-        vector3s.Enqueue(playerTr.position);
+        //Walk();
+        timer += Time.fixedDeltaTime;
 
-        //プレイヤーの位置を取得
-        Vector3 plaerPos = vector3s.Dequeue();
+        //if (timer >= 0.5)
+        //{
+            //timer = 0;
+            ////プレイヤーの位置を格納
+            //vector3s.Enqueue(playerTr.position);
 
-        // 今のY速度はそのまま維持！
-        float newX = Mathf.Lerp(parentRd.linearVelocity.x, plaerPos.x, smooth * Time.fixedDeltaTime);
-        parentRd.MovePosition(new Vector2(newX,transform.position.y));
+            //if (vector3s.Count > 0)
+            //{
+            //    plaerPos = vector3s.Dequeue();
+            //}
 
-        
+            vector3s.Enqueue(playerTr.position);
+
+            if (vector3s.Count >= 20)
+            {
+                plaerPos = vector3s.Peek();
+            }
+
+        //}
+
+
+        float dx = plaerPos.x - parentRd.position.x;
+
+        float speed = Mathf.Clamp(dx * smooth, -walkForce, walkForce);
+
+        parentRd.linearVelocity = new Vector2(
+            speed,
+            parentRd.linearVelocity.y);
+
+
 
         //一定距離離れたらプレイヤーのところにワープする
         if (Vector2.Distance(transform.position, playerTr.position) > warpDistance)
@@ -92,7 +122,7 @@ public class PlayerTracking_1: MonoBehaviour
             parentRd.linearVelocity = new Vector2(parentRd.linearVelocity.x, jumpForce);
         }
     }
-    
+
 
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -114,5 +144,5 @@ public class PlayerTracking_1: MonoBehaviour
             isGrounded = false;
         }
     }
-}
 
+}
