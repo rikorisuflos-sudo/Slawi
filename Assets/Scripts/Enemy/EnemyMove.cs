@@ -67,15 +67,16 @@ public class EnemyMove : MonoBehaviour
     // 移動処理を呼び出す 
     void FixedUpdate()
     {
-        playerFind = PlayerSearch();
+        bool callAttack = CallAttack();
         // プレイヤーを発見したら、待機状態を解除する（＝移動を停止する） 
-        if (!playerFind)
+        if (!callAttack)
         {
-                Walk();
+            Walk();
         }
         else
         {
             attack.SetActive(true);
+            gameObject.SetActive(false);
         }
     }
 
@@ -87,28 +88,35 @@ public class EnemyMove : MonoBehaviour
             parentRd.linearVelocity = new Vector2(0.0f, parentRd.linearVelocity.y);
             return;
         }
-        turnAround = CheckTurn();
-        // 現在の移動距離を計算
-        float currentDistance = Vector3.Distance(movPosition, parentTr.position);
 
-        // 往復および落下防止の判定
-        // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
-        if (currentDistance >= enemyMileage || turnAround)
+        if (!playerFind)
         {
-            Debug.Log("方向転換");
-            enemyDir *= -1;
+            turnAround = CheckTurn();
+            // 現在の移動距離を計算
+            float currentDistance = Vector3.Distance(movPosition, parentTr.position);
 
-            hpBar.transform.localScale = new Vector3(enemyDir * 0.01f, 0.01f, 1);
+            // 往復および落下防止の判定
+            // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
+            if (currentDistance >= enemyMileage || turnAround)
+            {
+                Debug.Log("方向転換");
+                enemyDir *= -1;
 
-            movPosition = transform.position; // 反転地点を起点に更新
+                hpBar.transform.localScale = new Vector3(enemyDir * 0.01f, 0.01f, 1);
 
-            // 見た目の向きを反転させる処理
-            parentTr.localScale = new Vector3(enemyDir, 1, 1);
+                movPosition = transform.position; // 反転地点を起点に更新
+
+                // 見た目の向きを反転させる処理
+                parentTr.localScale = new Vector3(enemyDir, 1, 1);
+            }
+        }
+        else
+        {
+
+            //追跡中はプレイヤーの位置をもとに移動方向を決める
+            enemyDir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
         }
 
-
-        //追跡中はプレイヤーの位置をもとに移動方向を決める
-        float dir = !playerFind ? enemyDir : Mathf.Sign(playerTr.position.x - parentTr.position.x);
 
         float targetX = enemyDir * walkForce;
 

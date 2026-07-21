@@ -392,7 +392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3371330233128099201, guid: 03f033ac922a0bb4ca93368f11e5db24, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4381839320184456570, guid: 03f033ac922a0bb4ca93368f11e5db24, type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -13366,7 +13366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1828434226
 BoxCollider2D:
   m_ObjectHideFlags: 0
