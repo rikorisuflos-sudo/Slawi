@@ -20,6 +20,8 @@ public class PlayerTracking_1 : MonoBehaviour
     const float GroundCatch = 0.5f;
     private bool isGrounded = true;//地面に触れているかいないか
 
+    float enemyDir;
+
     float targetX = 0f;//目標座標
     float heightDiff;
 
@@ -53,14 +55,14 @@ public class PlayerTracking_1 : MonoBehaviour
             //プレイヤーが動いていなくても、最低速度は保証する
             float minimumSpeed = Mathf.Max(move, 0.5f);
             //プレイヤーの位置をもとに移動方向を決める
-            float dir = Mathf.Sign(plaerPos.x - transform.position.x);
+            enemyDir = Mathf.Sign(plaerPos.x - transform.position.x);
 
-            targetX = dir * walkForce * minimumSpeed;
+            targetX = enemyDir * walkForce * minimumSpeed;
 
             //オブジェクト反転
-            if (dir == 0) dir = 1;
+            if (enemyDir == 0) enemyDir = 1;
             //parentTr.localScale = new Vector3(dir, 1, 1);
-            transform.localScale = new Vector3(dir, 1, 1);
+            transform.localScale = new Vector3(enemyDir, 1, 1);
             //DebugLogger.Log(distance);
         }
         else if (distance < stopDistance)
@@ -96,9 +98,9 @@ public class PlayerTracking_1 : MonoBehaviour
         //}
 
 
-        float dx = plaerPos.x - parentRd.position.x;
+        //float dx = plaerPos.x - parentRd.position.x;
 
-        float speed = Mathf.Clamp(dx * smooth, -walkForce, walkForce);
+        float speed = Mathf.Clamp(enemyDir * smooth, -walkForce, walkForce);
 
         parentRd.linearVelocity = new Vector2(
             speed,
@@ -110,7 +112,7 @@ public class PlayerTracking_1 : MonoBehaviour
         if (Vector2.Distance(transform.position, playerTr.position) > warpDistance)
         {
             float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
-            Vector2 warpPos = playerTr.position + new Vector3(-dir * 1.5f, 0, 0);
+            Vector2 warpPos = playerTr.position + new Vector3(-enemyDir  * 1.5f, 0, 0);
 
             parentRd.position = warpPos;
             parentRd.linearVelocity = Vector2.zero;

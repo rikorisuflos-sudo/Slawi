@@ -10,26 +10,24 @@ public class FrogRush : MonoBehaviour
 {
     //親オブジェクトのものを取得
     [SerializeField] Rigidbody2D parentRd;
-    [SerializeField] SlimeController slimeController;
+    [SerializeField] Transform parentTr;
     [SerializeField] Animator animator;
 
+    [SerializeField] GameObject move;
+
     [SerializeField] Transform playerTr;//プレイヤー
-    [SerializeField] Player playerStatus;
 
     [SerializeField] float rushDistance = 20f;//攻撃距離
     [SerializeField] float rushSpeed;//攻撃速度
-    float dashDir = 0;//ダッシュ方向
+    float enemyDir = 0;//ダッシュ方向
 
     Vector2 dashStartPos; // 突進開始位置
 
     [SerializeField] float wallCheckDistance = 0.5f;//壁の探索範囲
     [SerializeField] LayerMask groundLayer; // 地面レイヤー
 
-    [SerializeField] LayerMask enemyLayer; // 地面レイヤー
+    [SerializeField] LayerMask playerLayer; // プレイヤーレイヤー
 
-    [SerializeField] GameObject playerTracking;//プレイヤー追従
-
-    bool hasWarped = false;//ワープしたか
     //float timer = 0;
     bool isHit = false;//攻撃が当たったか
     enum State
@@ -42,6 +40,14 @@ public class FrogRush : MonoBehaviour
 
     State currentState = State.Idle;
 
+    private void Start()
+    {
+        animator.SetBool("StartRush", true);
+        move.SetActive(false);
+        enemyDir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
+        if (enemyDir == 0) enemyDir = 1;
+        currentState = State.Charge;
+    }
     void FixedUpdate()
     {
         switch (currentState)
@@ -62,32 +68,19 @@ public class FrogRush : MonoBehaviour
         //Debug.Log(currentState);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (isHit) return;//攻撃が複数回当たるのを防ぐ
 
         //エネミーに当たったらダメージ処理
-        if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
+        if (((1 << collision.gameObject.layer) & playerLayer) != 0)
         {
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-            if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+            //if (damageable != null) damageable.Damage(playerStatus.AttackPower);
             Debug.Log("エネミーに衝突した");
         }
     }
-
-    //プレイヤー追従処理OFF
-    //突進方向の確定、タイマーの初期化
-    public void StartAttack()
-    {
-        animator.SetBool("StartRush", true);
-        playerTracking.SetActive(false);
-        slimeController.enabled = false;
-        dashDir = Mathf.Sign(playerTr.transform.localScale.x);
-        if (dashDir == 0) dashDir = 1;
-        currentState = State.Charge;
-    }
-   
 
     //攻撃前の溜め
     void Charge()
@@ -99,7 +92,7 @@ public class FrogRush : MonoBehaviour
     //突進
     void Rush()
     {
-        parentRd.linearVelocity = new Vector2(dashDir * rushSpeed, parentRd.linearVelocity.y);
+        parentRd.linearVelocity = new Vector2(enemyDir * rushSpeed, parentRd.linearVelocity.y);
 
     }
 
@@ -107,11 +100,10 @@ public class FrogRush : MonoBehaviour
     void EndRush()
     {
         // 壁チェック
-        RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(dashDir, 0), wallCheckDistance, groundLayer);
-        Debug.DrawRay(parentRd.position, new Vector2(dashDir, 0), Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(parentRd.position, new Vector2(enemyDir, 0), wallCheckDistance, groundLayer);
+        Debug.DrawRay(parentRd.position, new Vector2(enemyDir, 0), Color.red);
         if (hit.collider != null)
         {
-            animator.SetBool("EndRush", true);
             currentState = State.Recovery;
             return;
         }
@@ -120,7 +112,6 @@ public class FrogRush : MonoBehaviour
         float distance = Mathf.Abs(parentRd.position.x - dashStartPos.x);
         if (distance >= rushDistance)
         {
-            animator.SetBool("EndRush", true);
             currentState = State.Recovery;
             return;
         }
@@ -138,13 +129,10 @@ public class FrogRush : MonoBehaviour
         //初期化
         if (broadcastTime >= 1.0f)
         {
-            animator.SetBool("EndRush", false);
             animator.SetBool("StartRush", false);
-            hasWarped = false;
-            slimeController.enabled = true;
-            playerTracking.SetActive(true);
             gameObject.SetActive(false);
             isHit = false;
+            move.SetActive(true);
         }
     }
 
