@@ -570,6 +570,7 @@ MonoBehaviour:
   highHpColor: {r: 0.6156863, g: 1, b: 0.37254903, a: 1}
   midHpColor: {r: 0.94509804, g: 0.6627451, b: 0.22745098, a: 1}
   lowHpColor: {r: 1, g: 0.24313726, b: 0.1764706, a: 1}
+  skillAbsorb: {fileID: 0}
 --- !u!1 &4830951947939569698
 GameObject:
   m_ObjectHideFlags: 0

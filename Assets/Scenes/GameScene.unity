@@ -9429,6 +9429,9 @@ MonoBehaviour:
   skillStompScript: {fileID: 1886583942}
   skillAbsorb: {fileID: 1285989515}
   skillAbsorbScript: {fileID: 1285989516}
+  rushDelay: 3
+  stompDelay: 3
+  absorbDelay: 5
 --- !u!50 &964853460
 Rigidbody2D:
   serializedVersion: 5
@@ -12117,10 +12120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lizard
       objectReference: {fileID: 0}
-    - target: {fileID: 4222309802532224807, guid: 21c3fcf69898a914d89d06f76b1dc2fc, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 8099972863059804774, guid: 21c3fcf69898a914d89d06f76b1dc2fc, type: 3}
+      propertyPath: skillAbsorb
+      value: 
+      objectReference: {fileID: 1285989516}
     - target: {fileID: 8237039554330553624, guid: 21c3fcf69898a914d89d06f76b1dc2fc, type: 3}
       propertyPath: playerTr
       value: 
@@ -12142,6 +12145,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 324721449779251486, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
+      propertyPath: skillAbsorb
+      value: 
+      objectReference: {fileID: 1285989516}
     - target: {fileID: 2450183100324924062, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
       propertyPath: playerTr
       value: 

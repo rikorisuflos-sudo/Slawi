@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using UnityEngine;
 
 public class SkillAbsorb : MonoBehaviour
@@ -32,8 +33,17 @@ public class SkillAbsorb : MonoBehaviour
 
     State currentState = State.Idle;
 
+    AbsorbSkill absorbSkill = AbsorbSkill.None;
+    public AbsorbSkill AbsorbSkill {
+        set { absorbSkill = value; } // setter‚Ì•”•ª
+    }
+
     void FixedUpdate()
     {
+        if (absorbSkill == AbsorbSkill.None)
+        {
+            return;
+        }
         switch (currentState)
         {
             case State.Warp:

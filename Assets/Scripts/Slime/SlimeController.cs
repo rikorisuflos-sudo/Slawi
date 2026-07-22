@@ -9,11 +9,7 @@ public class SlimeController : MonoBehaviour
     private Mouse mouse;
     private Keyboard keyboard;
 
-    AbsorbSkill absorbSkill;
-
-    //[SerializeField] Animator animator;
-    //const float NormalizedTime = 0f;
-    //const int Layer = -1;
+    
 
     [SerializeField] GameObject normalAttack;
     [SerializeField] NormalAttack normalAttackScript;
@@ -25,20 +21,26 @@ public class SlimeController : MonoBehaviour
     [SerializeField] SkillStomp skillStompScript;
     [SerializeField] GameObject skillAbsorb;
     [SerializeField] SkillAbsorb skillAbsorbScript;
+
+    float rushTimer = 0;
+    [SerializeField] float rushDelay = 3;
+    float stompTimer = 0;
+    [SerializeField] float stompDelay = 3;
+    float absorbTimer = 0;
+    [SerializeField] float absorbDelay = 5;
+
     private void Awake()
     {
         mouse = Mouse.current;
         keyboard = Keyboard.current;
     }
 
-    private void Start()
-    {
-        //normalAttackScript = normalAttack.GetComponent<SkillRush>();
-        //skillAttack1Script = skillAttack1.GetComponent<SkillStomp>();
-    }
+    void FixedUpdate()
+    { 
+        rushTimer += Time.fixedDeltaTime;
+        stompTimer += Time.fixedDeltaTime;
+        absorbTimer += Time.fixedDeltaTime;
 
-    private void Update()
-    {
         if (mouse.leftButton.wasPressedThisFrame)
         {
             normalAttack.SetActive(true); // オブジェクトを有効化
@@ -49,20 +51,23 @@ public class SlimeController : MonoBehaviour
             absorbAttack.SetActive(true); // オブジェクトを有効化
             absorbAttackScript.StartAttack();
         }
-        if (keyboard.fKey.wasPressedThisFrame)
+        if (keyboard.fKey.wasPressedThisFrame && rushDelay <= rushTimer)
         {
             skillRush.SetActive(true);
             skillRushScript.StartAttack();
+            rushTimer = 0;
         }
-        if (keyboard.rKey.wasPressedThisFrame)
+        if (keyboard.rKey.wasPressedThisFrame && stompDelay <= stompTimer)
         { 
             skillStomp.SetActive(true);
             skillStompScript.StartAttack();
+            stompTimer = 0;
         }
-        if (keyboard.vKey.wasPressedThisFrame)
+        if (keyboard.vKey.wasPressedThisFrame && absorbDelay <= absorbTimer)
         {
             skillAbsorb.SetActive(true);
             skillAbsorbScript.StartAttack();
+            absorbTimer = 0;
         }
     }
 }

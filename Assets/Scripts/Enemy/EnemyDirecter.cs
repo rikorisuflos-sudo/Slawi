@@ -15,6 +15,8 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
     [SerializeField] Color midHpColor;
     [SerializeField] Color lowHpColor;
 
+    [SerializeField] SkillAbsorb skillAbsorb;
+
     void Awake()
     {
         //スクリプタブルオブジェクトで初期化
@@ -100,7 +102,7 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
 
         if (random <= chances)
         {
-            
+            skillAbsorb.AbsorbSkill = enemyStatus.AbsorbSkill;
             Destroy(gameObject);
             Debug.Log("吸収された");
         }
