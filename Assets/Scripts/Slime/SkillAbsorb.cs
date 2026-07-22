@@ -18,6 +18,8 @@ public class SkillAbsorb : MonoBehaviour
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
 
+    [SerializeField] LayerMask tagetLayer;
+
     float dir;
     enum State
     {
@@ -93,7 +95,7 @@ public class SkillAbsorb : MonoBehaviour
 
             //ダメージ処理
             fireBallSc = newFireBoal.GetComponent<FireBall>();
-            fireBallSc.SetParameter(playerStatus.AttackPower, dir);
+            fireBallSc.SetParameter(playerStatus.AttackPower, dir,tagetLayer);
 
         currentState = State.Recovery;
     }

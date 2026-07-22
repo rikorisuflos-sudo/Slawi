@@ -9,6 +9,7 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] Transform parentTr;
     [SerializeField] Enemy enemyStatus;//エネミーのScriptableObject
     [SerializeField] GameObject attack;
+    [SerializeField] Animator animator;
     [SerializeField] Canvas hpBar;
 
     [SerializeField] float enemyMileage; // エネミーの移動範囲 
@@ -68,16 +69,19 @@ public class EnemyMove : MonoBehaviour
     void FixedUpdate()
     {
         bool callAttack = CallAttack();
+
+        //アニメーションの再生位置を示す（開始0,終了１）
+       　float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
         // プレイヤーを発見したら、待機状態を解除する（＝移動を停止する） 
-        if (!callAttack)
-        {
-            Walk();
-        }
-        else
+        if (callAttack && broadcastTime >= 1.0f)
         {
             attack.SetActive(true);
             gameObject.SetActive(false);
+            return;
         }
+
+        Walk();
     }
 
     // 移動処理やそれに関連する処理を記述 
@@ -88,6 +92,8 @@ public class EnemyMove : MonoBehaviour
             parentRd.linearVelocity = new Vector2(0.0f, parentRd.linearVelocity.y);
             return;
         }
+
+        playerFind = PlayerSearch();
 
         if (!playerFind)
         {

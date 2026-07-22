@@ -12,6 +12,7 @@ public class FireBallShot : MonoBehaviour
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
 
     [SerializeField] Transform playerTr;//プレイヤートランスフォーム
+    [SerializeField] LayerMask tagetLayer;
 
     float attackDistance;//攻撃範囲
     float attackAngle;//攻撃範囲
@@ -26,12 +27,16 @@ public class FireBallShot : MonoBehaviour
     //float timer = 0;
     //[SerializeField] float interval;
 
-    void Start()
+    private void OnEnable()
     {
         //発射方向を取得
         enemyDir = Mathf.Sign(parentTr.localScale.x);
 
+        animator.SetBool("Shot", true);
+    }
 
+    void Start()
+    {
         //初期化
         if (enemyStatus != null)
         {
@@ -40,52 +45,40 @@ public class FireBallShot : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        animator.SetBool("Shot", false);
+        move.SetActive(true);
+    }
+
     void FixedUpdate()
     {
-        //攻撃範囲に入ったか
-        withinRange = PlayerSearch();
+        //アニメーションの再生位置を示す（開始0,終了１）
+       　float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-        //攻撃間隔
-        //timer += Time.deltaTime;
-        //if (withinRange && timer >= interval)
-        if (withinRange)
+        if (broadcastTime >= 1.0f)
         {
-
-            animator.SetBool("Shot", true);
-            move.SetActive(false);
-
-            Shot();
-
-        }
-        else
-        {
-            animator.SetBool("Shot", false);
-            move.SetActive(true);
+            Debug.Log("攻撃終了");
+            bool callAttack = CallAttack();
+            if (!callAttack)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 
-    void Shot()
+    public void Shot()
     {
+        Debug.Log("火の玉");
+        GameObject newFireBoal = Instantiate(fireBall, new Vector3(parentTr.position.x + (0.2f * enemyDir), parentTr.position.y, -1), Quaternion.identity);
 
-        if (shot)
-        {
-            //ファイアボールの生成
-            Debug.Log("火の玉");
-            GameObject newFireBoal = Instantiate(fireBall, new Vector3(parentTr.position.x + (0.2f * enemyDir), parentTr.position.y, -1), Quaternion.identity);
-
-            //ダメージ処理
-            fireBallSc = newFireBoal.GetComponent<FireBall>();
-            fireBallSc.SetParameter(enemyStatus.AttackPower, enemyDir);
-
-            shot = false;
-        }
+        //ダメージ処理
+        fireBallSc = newFireBoal.GetComponent<FireBall>();
+        fireBallSc.SetParameter(enemyStatus.AttackPower, enemyDir, tagetLayer);
     }
 
-    bool PlayerSearch()
+    bool CallAttack()
     {
-        if (playerTr == null)
-            return false;
-
         //プレイヤーの方向を取得
         Vector2 direction = (playerTr.position - parentTr.position);
         //プレイヤーまでの距離を算出
@@ -106,22 +99,6 @@ public class FireBallShot : MonoBehaviour
             return false;
         }
 
-        //  Raycast（壁チェック）
-        RaycastHit2D hit = Physics2D.Raycast(parentTr.position, direction.normalized, distance, groundLayer);
-        Debug.DrawRay(transform.position, direction.normalized * distance, Color.red);
-
-        // 何かに当たったら＝壁に遮られている
-        if (hit.collider != null)
-        {
-            return false;
-
-        }
-        // すべてクリア → 見えてる
         return true;
-    }
-
-    public void CastBool(int input)
-    {
-        shot = Convert.ToBoolean(input);
     }
 }
