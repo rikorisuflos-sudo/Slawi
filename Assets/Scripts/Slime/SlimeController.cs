@@ -9,6 +9,8 @@ public class SlimeController : MonoBehaviour
     private Mouse mouse;
     private Keyboard keyboard;
 
+    AbsorbSkill absorbSkill;
+
     //[SerializeField] Animator animator;
     //const float NormalizedTime = 0f;
     //const int Layer = -1;

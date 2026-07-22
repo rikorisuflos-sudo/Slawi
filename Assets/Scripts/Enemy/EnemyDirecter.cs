@@ -100,6 +100,7 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
 
         if (random <= chances)
         {
+            
             Destroy(gameObject);
             Debug.Log("‹zŽû‚³‚ê‚½");
         }

@@ -28,6 +28,9 @@ public class FrogRush : MonoBehaviour
 
     [SerializeField] LayerMask playerLayer; // プレイヤーレイヤー
 
+    [SerializeField] Enemy enemyStatus;
+    int attack = 10;
+
     //float timer = 0;
     bool isHit = false;//攻撃が当たったか
     enum State
@@ -47,7 +50,19 @@ public class FrogRush : MonoBehaviour
         enemyDir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
         if (enemyDir == 0) enemyDir = 1;
         currentState = State.Charge;
+        //attack = enemyStatus.AttackPower;
+
     }
+
+    private void OnEnable()
+    {
+        animator.SetBool("StartRush", true);
+        move.SetActive(false);
+        enemyDir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
+        if (enemyDir == 0) enemyDir = 1;
+        currentState = State.Charge;
+    }
+
     void FixedUpdate()
     {
         switch (currentState)
@@ -77,8 +92,7 @@ public class FrogRush : MonoBehaviour
         {
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-            //if (damageable != null) damageable.Damage(playerStatus.AttackPower);
-            Debug.Log("エネミーに衝突した");
+            if (damageable != null) damageable.Damage(attack);
         }
     }
 
@@ -87,6 +101,7 @@ public class FrogRush : MonoBehaviour
     {
         if (currentState != State.Charge) return;
         parentRd.linearVelocity = Vector2.zero;
+        dashStartPos = transform.position;
     }
 
     //突進

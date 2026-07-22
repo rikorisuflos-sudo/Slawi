@@ -34,6 +34,7 @@ public class FireBall : MonoBehaviour
         this.dir = dir;
         this.tagetLayer = tagetLayer;
         transform.localScale = new Vector3(dir * 1, 1, -1);
+        moveStartPos = transform.position;
     }
     void FixedUpdate()
     {
@@ -75,6 +76,7 @@ public class FireBall : MonoBehaviour
 
         // 距離チェック（Xだけ）
         float distance = Mathf.Abs(rb.position.x - moveStartPos.x);
+        Debug.Log(distance);
         if (distance >= moveDistance)
         {
             Destroy(gameObject);

@@ -58,7 +58,7 @@ public class FireBallShot : MonoBehaviour
 
         if (broadcastTime >= 1.0f)
         {
-            Debug.Log("UŒ‚I—¹");
+            //Debug.Log("UŒ‚I—¹");
             bool callAttack = CallAttack();
             if (!callAttack)
             {

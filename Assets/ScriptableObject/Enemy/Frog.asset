@@ -17,10 +17,10 @@ MonoBehaviour:
   hp: 40
   attackPower: 5
   defensePower: 5
-  walkForce: 3
+  walkForce: 5
   viewDistance: 5
   viewAngle: 60
   attackDistance: 5
   attackAngle: 60
   exp: 0
-  absorbSkill: 
+  absorbSkill: 0

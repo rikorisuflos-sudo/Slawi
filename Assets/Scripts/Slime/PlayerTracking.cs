@@ -79,12 +79,12 @@ public class PlayerTracking : MonoBehaviour
     {
         timer += Time.fixedDeltaTime;
 
-            vector3s.Enqueue(playerTr.position);
+        vector3s.Enqueue(playerTr.position);
 
-            if (vector3s.Count >= 20)
-            {
-                plaerPos = vector3s.Peek();
-            }
+        if (vector3s.Count >= 20)
+        {
+            plaerPos = vector3s.Peek();
+        }
 
 
         float speed = Mathf.Clamp(targetX, -walkForce, walkForce);
@@ -99,7 +99,7 @@ public class PlayerTracking : MonoBehaviour
         if (Vector2.Distance(transform.position, playerTr.position) > warpDistance)
         {
             float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
-            Vector2 warpPos = playerTr.position + new Vector3(-enemyDir  * 1.5f, 0, 0);
+            Vector2 warpPos = playerTr.position + new Vector3(-enemyDir * 1.5f, 0, 0);
 
             parentRd.position = warpPos;
             parentRd.linearVelocity = Vector2.zero;
@@ -115,12 +115,16 @@ public class PlayerTracking : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        foreach (ContactPoint2D contact in collision.contacts)//ê⁄êGì_ÇÃéÊìæ
+        //ínñ Ç©ÇÁó£ÇÍÇΩÇ©Ç«Ç§Ç©
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
-            // â∫Ç©ÇÁê⁄êG Å® ínñ 
-            if (contact.normal.y > GroundCatch)
+            foreach (ContactPoint2D contact in collision.contacts)//ê⁄êGì_ÇÃéÊìæ
             {
-                isGrounded = true;
+                // â∫Ç©ÇÁê⁄êG Å® ínñ 
+                if (contact.normal.y > GroundCatch)
+                {
+                    isGrounded = true;
+                }
             }
         }
 

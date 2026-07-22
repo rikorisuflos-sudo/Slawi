@@ -87,9 +87,17 @@ public class SkillStomp : MonoBehaviour
     void Warp()
     {
         GameObject tagetEnemy = serchTag();
-        //ワープさせる
-        Vector2 warpPos = tagetEnemy.transform.position + new Vector3(0, stompDistance, 0);
 
+        Vector2 warpPos = Vector2.zero;
+        if (tagetEnemy != null)
+        {
+            //ワープさせる
+            warpPos = tagetEnemy.transform.position + new Vector3(0, stompDistance, 0);
+        }
+        else
+        {
+            warpPos = transform.position + new Vector3(0,stompDistance);
+        }
         parentRd.position = warpPos;
         //dropStartPos = parentRd.position;
         currentState = State.Charge;
