@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +9,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
     [SerializeField] Player playerStatus;
     [SerializeField] Slider hpSlider;
     [SerializeField] Image fillImage;
+    [SerializeField] Slider expSlider;
 
     [Header("色の設定")]
     [SerializeField] Color highHpColor;
@@ -18,6 +21,11 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
     int defensePower;
     public int AttackPower => attackPower;
 
+    [SerializeField] int level = 1;
+    [SerializeField] TextMeshProUGUI levelText;
+
+    int currentExp;
+    int needExp = 100; // レベル1→2に必要な経験値
     void Awake()
     {
         //ステータスの初期化
@@ -36,6 +44,19 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
             hpSlider = GetComponent<Slider>();
             hpSlider.maxValue = playerStatus.HP;
             hpSlider.value = playerStatus.HP;
+        }
+
+        //Expバーの初期化
+        if (hpSlider != null)
+        {
+            expSlider.maxValue = needExp;
+            expSlider.value = 0;
+        }
+        else
+        {
+            expSlider = GetComponent<Slider>();
+            expSlider.maxValue = needExp;
+            expSlider.value = 0;
         }
 
         if (fillImage != null)
@@ -101,5 +122,40 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
         {
             fillImage.color = lowHpColor;
         }
+    }
+
+    public void AddExp(int exp)
+    {
+        currentExp += exp;
+        expSlider.value = currentExp;
+
+        Debug.Log(currentExp);
+
+        while (currentExp >= needExp)
+        {
+            currentExp -= needExp;
+            LevelUp();
+        }
+    }
+
+    void LevelUp()
+    {
+        level++;
+        levelText.text = Convert.ToString(level);
+
+        expSlider.maxValue = needExp;
+        expSlider.value = currentExp;
+
+        playerHp += 10;
+        attackPower += 2;
+        defensePower += 1;
+
+        hpSlider.maxValue = playerHp;
+        hpSlider.value = playerHp;
+        ColorChange();
+
+        needExp = 50 * level * level + 100;
+
+        Debug.Log($"レベル{level}になりました！");
     }
 }

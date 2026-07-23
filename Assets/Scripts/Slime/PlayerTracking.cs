@@ -1,5 +1,5 @@
 using System.Threading;
-using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTracking : MonoBehaviour
@@ -11,39 +11,40 @@ public class PlayerTracking : MonoBehaviour
 
     [SerializeField] float walkForce;//速度の上昇値
     [SerializeField] float jumpForce;//ジャンプの高さ
-    [SerializeField] float jampDelay;
-    float nextJumpTime = 0f;
+
     [SerializeField] float followDistance; // この距離より離れたら追う
     [SerializeField] float stopDistance;   // この距離まで来たら止まる
     [SerializeField] float warpDistance; // この距離より離れたら追う
     [SerializeField] float smooth = 5f;           // ぬるっと具合
 
+    [SerializeField] float wallCheckDistance;//壁検知範囲
+    [SerializeField] LayerMask groundLayer;
+
     const float GroundCatch = 0.5f;
     private bool isGrounded = true;//地面に触れているかいないか
 
+    float enemyDir;
+
     float targetX = 0f;//目標座標
-    float heightDiff;
 
-    bool canMove = true;//追従処理のON.OFF
+    BoundedQueue<Vector3> vector3s = new BoundedQueue<Vector3>(20);
+    Vector3 plaerPos = Vector3.zero;
+    [SerializeField] float recordInterval = 0.2f;
 
-    public bool CanMove
-    {
-        set { canMove = value; }
-    }
 
     void Start()
     {
         parentRd = GetComponentInParent<Rigidbody2D>();
+
+        //プレイヤーの位置を格納
+        vector3s.Enqueue(playerTr.position);
     }
 
     void Update()
     {
-        if (!canMove) return;
 
         //自分とプレイヤーがどれだけ離れているか
         float distance = Vector2.Distance(transform.position, playerTr.position);
-        //自分とプレイヤー高さの差
-        heightDiff = playerTr.position.y - transform.position.y;
 
 
         //一定距離離れたら追いかける
@@ -54,14 +55,13 @@ public class PlayerTracking : MonoBehaviour
             //プレイヤーが動いていなくても、最低速度は保証する
             float minimumSpeed = Mathf.Max(move, 0.5f);
             //プレイヤーの位置をもとに移動方向を決める
-            float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
+            enemyDir = Mathf.Sign(plaerPos.x - transform.position.x);
 
-            targetX = dir * walkForce * minimumSpeed;
+            targetX = enemyDir * walkForce * minimumSpeed;
 
             //オブジェクト反転
-            if (dir == 0) dir = 1;
-            //parentTr.localScale = new Vector3(dir, 1, 1);
-            transform.localScale = new Vector3(dir, 1, 1);
+            if (enemyDir == 0) enemyDir = 1;
+            transform.localScale = new Vector3(enemyDir, 1, 1);
             //DebugLogger.Log(distance);
         }
         else if (distance < stopDistance)
@@ -73,11 +73,19 @@ public class PlayerTracking : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!canMove) return;
+        vector3s.Enqueue(playerTr.position);
 
-        // 今のY速度はそのまま維持！
-        float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-        parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
+        if (vector3s.Count >= 20)
+        {
+            plaerPos = vector3s.Peek();
+        }
+
+
+        float speed = Mathf.Clamp(targetX, -walkForce, walkForce);
+
+        parentRd.linearVelocity = new Vector2(
+            speed,
+            parentRd.linearVelocity.y);
 
 
 
@@ -85,29 +93,32 @@ public class PlayerTracking : MonoBehaviour
         if (Vector2.Distance(transform.position, playerTr.position) > warpDistance)
         {
             float dir = Mathf.Sign(playerTr.position.x - transform.position.x);
-            Vector2 warpPos = playerTr.position + new Vector3(-dir * 1.5f, 0, 0);
+            Vector2 warpPos = playerTr.position + new Vector3(-enemyDir * 1.5f, 0, 0);
 
             parentRd.position = warpPos;
             parentRd.linearVelocity = Vector2.zero;
         }
 
         // 壁に当たってたらジャンプ
-        if (isGrounded && heightDiff > 1f && Time.time >= nextJumpTime)
+        if (isGrounded && CheckWall())
         {
             parentRd.linearVelocity = new Vector2(parentRd.linearVelocity.x, jumpForce);
-            nextJumpTime = Time.time + jampDelay;
         }
     }
-    
+
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
+        //地面から離れたかどうか
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
-            // 下から接触 → 地面
-            if (contact.normal.y > GroundCatch)
+            foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
             {
-                isGrounded = true;
+                // 下から接触 → 地面
+                if (contact.normal.y > GroundCatch)
+                {
+                    isGrounded = true;
+                }
             }
         }
 
@@ -115,10 +126,25 @@ public class PlayerTracking : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
         //地面から離れたかどうか
-        if (collision.gameObject.CompareTag("Ground"))
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
             isGrounded = false;
         }
     }
-}
 
+    bool CheckWall()
+    {
+        RaycastHit2D wallFind = Physics2D.Raycast(
+            parentRd.position,
+            Vector2.right * enemyDir,
+            wallCheckDistance,
+            groundLayer);
+
+        Debug.DrawRay(parentRd.position,
+                      Vector2.right * enemyDir * wallCheckDistance,
+                      Color.red);
+
+        return wallFind.collider != null;
+    }
+
+}

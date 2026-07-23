@@ -15,6 +15,9 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
     [SerializeField] Color midHpColor;
     [SerializeField] Color lowHpColor;
 
+    [SerializeField] SlimeController slimeController;
+    [SerializeField] PlayerDirecter playerDirecter;
+
     void Awake()
     {
         //スクリプタブルオブジェクトで初期化
@@ -56,6 +59,7 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
         if (enemyHp <= 0)
         {
             Debug.Log("倒された");
+            playerDirecter.AddExp(enemyStatus.Exp);
             Destroy(gameObject);
             //return true;
             //Death();
@@ -100,6 +104,8 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
 
         if (random <= chances)
         {
+            slimeController.AbsorbSkill = enemyStatus.AbsorbSkill;
+            playerDirecter.AddExp(enemyStatus.Exp);
             Destroy(gameObject);
             Debug.Log("吸収された");
         }

@@ -17,24 +17,10 @@ MonoBehaviour:
   hp: 40
   attackPower: 5
   defensePower: 5
-<<<<<<< HEAD
-<<<<<<< HEAD:Assets/ScriptableObject/Frog.asset
   walkForce: 5
-  dropExp: 10
-=======
-  walkForce: 3
->>>>>>> GameScene:Assets/ScriptableObject/Enemy/Frog.asset
-=======
-<<<<<<<< HEAD:Assets/ScriptableObject/Frog.asset
-  walkForce: 5
-  dropExp: 10
-========
-  walkForce: 3
->>>>>>>> GameScene:Assets/ScriptableObject/Enemy/Frog.asset
->>>>>>> GameScene
   viewDistance: 5
   viewAngle: 60
   attackDistance: 5
   attackAngle: 60
-  exp: 0
-  absorbSkill: 
+  exp: 50
+  absorbSkill: 0

@@ -1,4 +1,6 @@
+using System.Xml.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillAbsorb : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class SkillAbsorb : MonoBehaviour
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
 
+    [SerializeField] LayerMask tagetLayer;
+
     float dir;
     enum State
     {
@@ -30,26 +34,28 @@ public class SkillAbsorb : MonoBehaviour
 
     State currentState = State.Idle;
 
+    
+
     void FixedUpdate()
     {
-        switch (currentState)
-        {
-            case State.Warp:
-                Warp();
-                break;
-            case State.Charge:
-                Charge();
-                break;
+                 switch (currentState)
+            {
+                case State.Warp:
+                    Warp();
+                    break;
+                case State.Charge:
+                    Charge();
+                    break;
 
-            case State.FireBallShot:
-                FireBallShot();
-                break;
+                case State.FireBallShot:
+                    FireBallShot();
+                    break;
 
-            case State.Recovery:
-                Recovery();
-                break;
-        }
-        Debug.Log(currentState);
+                case State.Recovery:
+                    Recovery();
+                    break;
+            }
+            Debug.Log(currentState);
     }
 
     public void StartAttack()
@@ -93,7 +99,7 @@ public class SkillAbsorb : MonoBehaviour
 
             //ダメージ処理
             fireBallSc = newFireBoal.GetComponent<FireBall>();
-            fireBallSc.SetParameter(playerStatus.AttackPower, dir);
+            fireBallSc.SetParameter(playerStatus.AttackPower, dir,tagetLayer);
 
         currentState = State.Recovery;
     }

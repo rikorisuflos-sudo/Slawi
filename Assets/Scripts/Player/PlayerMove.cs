@@ -6,17 +6,10 @@ using UnityEngine.InputSystem;
 using System.Xml.Linq;
 using UnityEngine.UIElements;
 
-//スクリプタブルオブジェクト適応中
 public class PlayerMove : MonoBehaviour
 {
-<<<<<<< HEAD
-    [SerializeField] Player playerStatus;
-    [SerializeField]private Rigidbody2D rb;
-    
-=======
     [SerializeField] private Rigidbody2D rb;
 
->>>>>>> GameScene
     const float MoveRun = 1.0f;//歩いているか
     const float MoveWalk = 0.5f;//走っているか
 
@@ -30,7 +23,10 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float walkForce;//速度の上昇値
     bool isGrounded = true;//地面に触れているかいないか
 
-    Keyboard keyboard;//キーボード取得
+    const float GroundCatch = 0.5f;
+    [SerializeField] LayerMask groundLayer;
+
+    Keyboard keyboard;
 
     void Awake()
     {
@@ -68,24 +64,27 @@ public class PlayerMove : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        //地面と接触しているかいないか
-        if (collision.gameObject.CompareTag("Ground"))
+        //地面から離れたかどうか
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
-            //DebugLogger.Log("地面についた");
-            isGrounded = true;
+            foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
+            {
+                // 下から接触 → 地面
+                if (contact.normal.y > GroundCatch)
+                {
+                    isGrounded = true;
+                }
+            }
         }
 
     }
     void OnCollisionExit2D(Collision2D collision)
     {
         //地面から離れたかどうか
-        if (collision.gameObject.CompareTag("Ground"))
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
-            //DebugLogger.Log("地面から離れた");
             isGrounded = false;
         }
-
-
     }
 
     /// <summary>

@@ -14,7 +14,7 @@ public class FireBall : MonoBehaviour
     Vector2 moveStartPos;//発射位置
 
     [SerializeField] LayerMask groundLayer; // 地面レイヤー
-    [SerializeField] LayerMask playerLayer; // プレイヤーレイヤー
+    LayerMask tagetLayer; // 攻撃対象レイヤー
     [SerializeField] float checkDistance;//検知範囲
 
     int attackPower;//攻撃力
@@ -28,11 +28,13 @@ public class FireBall : MonoBehaviour
     }
 
     //初期化
-    public void SetParameter(int attackPower, float dir)
+    public void SetParameter(int attackPower, float dir,LayerMask tagetLayer)
     {
         this.attackPower = attackPower;
         this.dir = dir;
+        this.tagetLayer = tagetLayer;
         transform.localScale = new Vector3(dir * 1, 1, -1);
+        moveStartPos = transform.position;
     }
     void FixedUpdate()
     {
@@ -45,7 +47,7 @@ public class FireBall : MonoBehaviour
         if (isHit) return;//当たり判定が複数回になるのを防ぐ
 
         //プレイヤーに当たったらダメージ処理
-        if (((1 << collision.gameObject.layer) & playerLayer) != 0)
+        if (((1 << collision.gameObject.layer) & tagetLayer) != 0)
         {
             //Debug.Log("対象レイヤーにヒット");
             isHit = true;

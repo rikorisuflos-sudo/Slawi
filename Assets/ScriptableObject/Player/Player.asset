@@ -16,5 +16,5 @@ MonoBehaviour:
   hp: 60
   attackPower: 10
   defensePower: 5
-  walkForce: 5
-  jumpForce: 10
+  walkForce: 8
+  jumpForce: 20

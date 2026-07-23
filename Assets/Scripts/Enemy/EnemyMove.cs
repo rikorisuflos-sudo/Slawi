@@ -8,7 +8,8 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] Rigidbody2D parentRd; // エネミーのRigidbody2Dを取得 
     [SerializeField] Transform parentTr;
     [SerializeField] Enemy enemyStatus;//エネミーのScriptableObject
-    [SerializeField] GameObject Attack;
+    [SerializeField] GameObject attack;
+    [SerializeField] Animator animator;
     [SerializeField] Canvas hpBar;
 
     [SerializeField] float enemyMileage; // エネミーの移動範囲 
@@ -29,6 +30,9 @@ public class EnemyMove : MonoBehaviour
     float viewDistance = 5f;//視界距離（扇形の半径）
     float viewAngle = 60f;//視野角(見える角度）
     bool playerFind = false; // プレイヤーを見つけたか (初期値false) 
+
+    float attackDistance;//攻撃範囲
+    float attackAngle;//攻撃範囲
 
     bool stop = false;
 
@@ -55,6 +59,8 @@ public class EnemyMove : MonoBehaviour
             walkForce = enemyStatus.WalkForce;
             viewDistance = enemyStatus.ViewDistance;
             viewAngle = enemyStatus.ViewAngle;
+            attackDistance = enemyStatus.AttackDistance;
+            attackAngle = enemyStatus.AttackAngle;
         }
         //Debug.Log(walkForce+","+enemyStatus.WalkForce);
     }
@@ -62,57 +68,64 @@ public class EnemyMove : MonoBehaviour
     // 移動処理を呼び出す 
     void FixedUpdate()
     {
-        playerFind = PlayerSearch();
+        bool callAttack = CallAttack();
+
+        //アニメーションの再生位置を示す（開始0,終了１）
+       　float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
         // プレイヤーを発見したら、待機状態を解除する（＝移動を停止する） 
-        if (!playerFind)
+        if (callAttack && broadcastTime >= 1.0f)
         {
-            if (stop) 
-            { 
-                parentRd.linearVelocity = new Vector2(0.0f, parentRd.linearVelocity.y);
-            }
-            else
-            {
-                Walk();
-            }
-            ;
-            Attack.SetActive(false);
+            attack.SetActive(true);
+            gameObject.SetActive(false);
+            return;
         }
-        else
-        {
-            Attack.SetActive(true);
-        }
+
+        Walk();
     }
 
     // 移動処理やそれに関連する処理を記述 
     void Walk()
     {
-        turnAround = CheckTurn();
-        // 現在の移動距離を計算
-        float currentDistance = Vector3.Distance(movPosition, parentTr.position);
-
-        // 往復および落下防止の判定
-        // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
-        if (currentDistance >= enemyMileage || turnAround)
+        if (stop)
         {
-            Debug.Log("方向転換");
-            enemyDir *= -1;
+            parentRd.linearVelocity = new Vector2(0.0f, parentRd.linearVelocity.y);
+            return;
+        }
 
-            hpBar.transform.localScale = new Vector3(enemyDir * 0.01f, 0.01f, 1);
+        playerFind = PlayerSearch();
 
-            movPosition = transform.position; // 反転地点を起点に更新
+        if (!playerFind)
+        {
+            turnAround = CheckTurn();
+            // 現在の移動距離を計算
+            float currentDistance = Vector3.Distance(movPosition, parentTr.position);
 
+            // 往復および落下防止の判定
+            // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
+            if (currentDistance >= enemyMileage || turnAround)
+            {
+                Debug.Log("方向転換");
+                enemyDir *= -1;
 
+                hpBar.transform.localScale = new Vector3(enemyDir * 0.01f, 0.01f, 1);
 
-            // 見た目の向きを反転させる処理
-            parentTr.localScale = new Vector3(enemyDir, 1, 1);
+                movPosition = transform.position; // 反転地点を起点に更新
+
+                // 見た目の向きを反転させる処理
+                parentTr.localScale = new Vector3(enemyDir, 1, 1);
+            }
+        }
+        else
+        {
+
+            //追跡中はプレイヤーの位置をもとに移動方向を決める
+            enemyDir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
         }
 
 
-        //プレイヤーの位置をもとに移動方向を決める
-        float dir = !playerFind ? enemyDir : Mathf.Sign(playerTr.position.x - parentTr.position.x);
-
         float targetX = enemyDir * walkForce;
-        //float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
+
         // linearVelocityによる移動処理 
         parentRd.linearVelocity = new Vector2(targetX, parentRd.linearVelocity.y);
     }
@@ -175,6 +188,31 @@ public class EnemyMove : MonoBehaviour
 
         }
         // すべてクリア → 見えてる
+        return true;
+    }
+
+    bool CallAttack()
+    {
+        //プレイヤーの方向を取得
+        Vector2 direction = (playerTr.position - parentTr.position);
+        //プレイヤーまでの距離を算出
+        float distance = direction.magnitude;
+        //  距離チェック
+        if (distance > attackDistance)
+        {
+            return false;
+        }
+
+        //エネミーの方向取得
+        Vector2 facingDir = new Vector2(enemyDir, 0);
+        //  プレイヤーの位置とエネミーの位置の角度差
+        float angle = Vector2.Angle(facingDir, direction);
+        //angleが視野角内に収まるかどうか
+        if (angle > attackAngle / 2f)
+        {
+            return false;
+        }
+
         return true;
     }
 

@@ -11,7 +11,6 @@ public class Enemy : ScriptableObject
     [SerializeField] int attackPower;//攻撃力
     [SerializeField] int defensePower;
     [SerializeField] float walkForce;//移動速度
-    [SerializeField] int dropExp;
 
     //プレイヤー検知のための値
     [SerializeField] float viewDistance;//プレイヤー検知範囲（視界距離）
@@ -23,7 +22,7 @@ public class Enemy : ScriptableObject
 
     //  エネミーから取得できるもの
     [SerializeField] int exp;//経験値
-    [SerializeField] string absorbSkill;//プレイヤーが吸収できるスキル
+    [SerializeField] AbsorbSkill absorbSkill;//プレイヤーが吸収できるスキル
     //[SerializeField] int[] dropItems;
 
     //get-only
@@ -38,6 +37,6 @@ public class Enemy : ScriptableObject
     public float AttackDistance => attackDistance;
     public float AttackAngle => attackAngle;
     public int Exp => exp;
-    public string AbsorbSkill => absorbSkill;
+    public AbsorbSkill AbsorbSkill => absorbSkill;
     //public int[] DropItems => dropItems;
 }
