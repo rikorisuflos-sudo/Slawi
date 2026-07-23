@@ -15,7 +15,8 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
     [SerializeField] Color midHpColor;
     [SerializeField] Color lowHpColor;
 
-    [SerializeField] SkillAbsorb skillAbsorb;
+    [SerializeField] SlimeController slimeController;
+    [SerializeField] PlayerDirecter playerDirecter;
 
     void Awake()
     {
@@ -58,6 +59,7 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
         if (enemyHp <= 0)
         {
             Debug.Log("“|‚³‚ê‚½");
+            playerDirecter.AddExp(enemyStatus.Exp);
             Destroy(gameObject);
             //return true;
             //Death();
@@ -102,7 +104,8 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
 
         if (random <= chances)
         {
-            skillAbsorb.AbsorbSkill = enemyStatus.AbsorbSkill;
+            slimeController.AbsorbSkill = enemyStatus.AbsorbSkill;
+            playerDirecter.AddExp(enemyStatus.Exp);
             Destroy(gameObject);
             Debug.Log("‹zŽû‚³‚ê‚½");
         }

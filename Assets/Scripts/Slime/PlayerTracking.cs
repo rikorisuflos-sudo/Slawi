@@ -26,13 +26,10 @@ public class PlayerTracking : MonoBehaviour
     float enemyDir;
 
     float targetX = 0f;//目標座標
-    float heightDiff;
 
     BoundedQueue<Vector3> vector3s = new BoundedQueue<Vector3>(20);
     Vector3 plaerPos = Vector3.zero;
     [SerializeField] float recordInterval = 0.2f;
-
-    float timer;
 
 
     void Start()
@@ -64,7 +61,6 @@ public class PlayerTracking : MonoBehaviour
 
             //オブジェクト反転
             if (enemyDir == 0) enemyDir = 1;
-            //parentTr.localScale = new Vector3(dir, 1, 1);
             transform.localScale = new Vector3(enemyDir, 1, 1);
             //DebugLogger.Log(distance);
         }
@@ -77,8 +73,6 @@ public class PlayerTracking : MonoBehaviour
 
     void FixedUpdate()
     {
-        timer += Time.fixedDeltaTime;
-
         vector3s.Enqueue(playerTr.position);
 
         if (vector3s.Count >= 20)

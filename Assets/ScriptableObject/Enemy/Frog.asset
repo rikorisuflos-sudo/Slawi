@@ -22,5 +22,5 @@ MonoBehaviour:
   viewAngle: 60
   attackDistance: 5
   attackAngle: 60
-  exp: 0
+  exp: 50
   absorbSkill: 0

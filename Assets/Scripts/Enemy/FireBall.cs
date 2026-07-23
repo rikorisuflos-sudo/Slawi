@@ -76,7 +76,6 @@ public class FireBall : MonoBehaviour
 
         // 距離チェック（Xだけ）
         float distance = Mathf.Abs(rb.position.x - moveStartPos.x);
-        Debug.Log(distance);
         if (distance >= moveDistance)
         {
             Destroy(gameObject);

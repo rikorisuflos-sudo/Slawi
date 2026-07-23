@@ -19,13 +19,6 @@ public class FireBallShot : MonoBehaviour
 
     float enemyDir;//エネミーの向き
     [SerializeField] LayerMask groundLayer;//地面レイヤー
-    bool withinRange = false;//攻撃範囲に入ったか
-
-    bool shot = false;
-
-    ////攻撃間隔
-    //float timer = 0;
-    //[SerializeField] float interval;
 
     private void OnEnable()
     {

@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillAbsorb : MonoBehaviour
 {
@@ -33,35 +34,28 @@ public class SkillAbsorb : MonoBehaviour
 
     State currentState = State.Idle;
 
-    AbsorbSkill absorbSkill = AbsorbSkill.None;
-    public AbsorbSkill AbsorbSkill {
-        set { absorbSkill = value; } // setter‚Ì•”•ª
-    }
+    
 
     void FixedUpdate()
     {
-        if (absorbSkill == AbsorbSkill.None)
-        {
-            return;
-        }
-        switch (currentState)
-        {
-            case State.Warp:
-                Warp();
-                break;
-            case State.Charge:
-                Charge();
-                break;
+                 switch (currentState)
+            {
+                case State.Warp:
+                    Warp();
+                    break;
+                case State.Charge:
+                    Charge();
+                    break;
 
-            case State.FireBallShot:
-                FireBallShot();
-                break;
+                case State.FireBallShot:
+                    FireBallShot();
+                    break;
 
-            case State.Recovery:
-                Recovery();
-                break;
-        }
-        Debug.Log(currentState);
+                case State.Recovery:
+                    Recovery();
+                    break;
+            }
+            Debug.Log(currentState);
     }
 
     public void StartAttack()
