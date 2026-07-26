@@ -9,7 +9,7 @@ public class SlimeController : MonoBehaviour
     private Mouse mouse;
     private Keyboard keyboard;
 
-    
+
 
     [SerializeField] GameObject normalAttack;
     [SerializeField] NormalAttack normalAttackScript;
@@ -22,8 +22,7 @@ public class SlimeController : MonoBehaviour
     [SerializeField] GameObject skillAbsorb;
     [SerializeField] SkillAbsorb skillAbsorbScript;
 
-    InputAction normalAttackAction;
-    InputAction absorbAttackAction;
+    [SerializeField] InputActionProperty absorbAttackProperty;
 
     [SerializeField] Slider rushSlider;
     InputAction rushAction;
@@ -46,14 +45,16 @@ public class SlimeController : MonoBehaviour
     AbsorbSkill absorbSkill = AbsorbSkill.None;
     public AbsorbSkill AbsorbSkill
     {
-        set { absorbSkill = value;
+        set
+        {
+            absorbSkill = value;
             absorbSlider.maxValue = absorbDelay;
             absorbSlider.value = absorbTimer;
             absorbImage.sprite = fireBallSprite;
         } // setterの部分
     }
 
-    
+
     private void Awake()
     {
         mouse = Mouse.current;
@@ -71,56 +72,62 @@ public class SlimeController : MonoBehaviour
         absorbImage.sprite = noneSprite;
         absorbSlider.maxValue = 1;
         absorbSlider.value = 1;
-        
+
     }
 
     void Update()
-    { 
+    {
         rushTimer += Time.fixedDeltaTime;
         stompTimer += Time.fixedDeltaTime;
         absorbTimer += Time.fixedDeltaTime;
 
-        if (normalAttackAction.IsPressed())
-        {
-            normalAttack.SetActive(true); // オブジェクトを有効化
-            normalAttackScript.StartAttack();
-        }
-        if (absorbAttackAction.IsPressed())
-        {
-            absorbAttack.SetActive(true); // オブジェクトを有効化
-            absorbAttackScript.StartAttack();
-        }
-        if (rushAction.IsPressed() && rushDelay <= rushTimer)
-        {
-            skillRush.SetActive(true);
-            skillRushScript.StartAttack();
-            rushTimer = 0;
-        }
-        if (stompAction.IsPressed() && stompDelay <= stompTimer)
-        { 
-            skillStomp.SetActive(true);
-            skillStompScript.StartAttack();
-            stompTimer = 0;
-        }
-        if (absorbAction.IsPressed() && absorbDelay <= absorbTimer)
-        {
-            if (absorbSkill == AbsorbSkill.None)
-            {
-                return;
-            }
-            //if(absorbSkill == AbsorbSkill.FireBallShot)
-            //{
-            //    absorbSlider.maxValue = absorbDelay;
-            //    absorbSlider.value = absorbTimer;
-            //    absorbImage.sprite = fireBallSprite;
-            //}
-            skillAbsorb.SetActive(true);
-            skillAbsorbScript.StartAttack();
-            absorbTimer = 0;
-        }
+        //if ()
+        //{
+        //    normalAttack.SetActive(true); // オブジェクトを有効化
+        //    normalAttackScript.StartAttack();
+        //}
+        //if (absorbAttackAction.IsPressed())
+        //{
+        //    absorbAttack.SetActive(true); // オブジェクトを有効化
+        //    absorbAttackScript.StartAttack();
+        //}
+        //if (rushAction.IsPressed() && rushDelay <= rushTimer)
+        //{
+        //    skillRush.SetActive(true);
+        //    skillRushScript.StartAttack();
+        //    rushTimer = 0;
+        //}
+        //if (stompAction.IsPressed() && stompDelay <= stompTimer)
+        //{
+        //    skillStomp.SetActive(true);
+        //    skillStompScript.StartAttack();
+        //    stompTimer = 0;
+        //}
+        //if (absorbAction.IsPressed() && absorbDelay <= absorbTimer)
+        //{
+        //    if (absorbSkill == AbsorbSkill.None)
+        //    {
+        //        return;
+        //    }
+        //    //if(absorbSkill == AbsorbSkill.FireBallShot)
+        //    //{
+        //    //    absorbSlider.maxValue = absorbDelay;
+        //    //    absorbSlider.value = absorbTimer;
+        //    //    absorbImage.sprite = fireBallSprite;
+        //    //}
+        //    skillAbsorb.SetActive(true);
+        //    skillAbsorbScript.StartAttack();
+        //    absorbTimer = 0;
+        //}
 
-        rushSlider.value = rushTimer;
-        stompSlider.value = stompTimer;
-        absorbSlider.value = absorbTimer;
+        //rushSlider.value = rushTimer;
+        //stompSlider.value = stompTimer;
+        //absorbSlider.value = absorbTimer;
+    }
+
+    public void OnNormalAttack(InputAction.CallbackContext context)
+    {
+        normalAttack.SetActive(true); // オブジェクトを有効化
+        normalAttackScript.StartAttack();
     }
 }
