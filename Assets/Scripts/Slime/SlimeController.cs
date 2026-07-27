@@ -22,8 +22,6 @@ public class SlimeController : MonoBehaviour
     [SerializeField] GameObject skillAbsorb;
     [SerializeField] SkillAbsorb skillAbsorbScript;
 
-    [SerializeField] InputActionProperty absorbAttackProperty;
-
     [SerializeField] Slider rushSlider;
     InputAction rushAction;
     float rushTimer = 0;
@@ -81,53 +79,60 @@ public class SlimeController : MonoBehaviour
         stompTimer += Time.fixedDeltaTime;
         absorbTimer += Time.fixedDeltaTime;
 
-        //if ()
-        //{
-        //    normalAttack.SetActive(true); // オブジェクトを有効化
-        //    normalAttackScript.StartAttack();
-        //}
-        //if (absorbAttackAction.IsPressed())
-        //{
-        //    absorbAttack.SetActive(true); // オブジェクトを有効化
-        //    absorbAttackScript.StartAttack();
-        //}
-        //if (rushAction.IsPressed() && rushDelay <= rushTimer)
-        //{
-        //    skillRush.SetActive(true);
-        //    skillRushScript.StartAttack();
-        //    rushTimer = 0;
-        //}
-        //if (stompAction.IsPressed() && stompDelay <= stompTimer)
-        //{
-        //    skillStomp.SetActive(true);
-        //    skillStompScript.StartAttack();
-        //    stompTimer = 0;
-        //}
-        //if (absorbAction.IsPressed() && absorbDelay <= absorbTimer)
-        //{
-        //    if (absorbSkill == AbsorbSkill.None)
-        //    {
-        //        return;
-        //    }
-        //    //if(absorbSkill == AbsorbSkill.FireBallShot)
-        //    //{
-        //    //    absorbSlider.maxValue = absorbDelay;
-        //    //    absorbSlider.value = absorbTimer;
-        //    //    absorbImage.sprite = fireBallSprite;
-        //    //}
-        //    skillAbsorb.SetActive(true);
-        //    skillAbsorbScript.StartAttack();
-        //    absorbTimer = 0;
-        //}
-
-        //rushSlider.value = rushTimer;
-        //stompSlider.value = stompTimer;
-        //absorbSlider.value = absorbTimer;
+        rushSlider.value = rushTimer;
+        stompSlider.value = stompTimer;
+        absorbSlider.value = absorbTimer;
     }
 
     public void OnNormalAttack(InputAction.CallbackContext context)
     {
         normalAttack.SetActive(true); // オブジェクトを有効化
         normalAttackScript.StartAttack();
+    }
+
+    public void OnAbsorbAttack(InputAction.CallbackContext context)
+    {
+        absorbAttack.SetActive(true); // オブジェクトを有効化
+            absorbAttackScript.StartAttack();
+    }
+
+    public void OnSkillRush(InputAction.CallbackContext context)
+    {
+        if (rushDelay <= rushTimer)
+        {
+            skillRush.SetActive(true);
+            skillRushScript.StartAttack();
+            rushTimer = 0;
+        }
+    }
+
+    public void OnSkillStomp(InputAction.CallbackContext context)
+    {
+        if (stompDelay <= stompTimer)
+        {
+            skillStomp.SetActive(true);
+            skillStompScript.StartAttack();
+            stompTimer = 0;
+        }
+    }
+
+    public void OnSkillAbsorb(InputAction.CallbackContext context)
+    {
+        if (absorbDelay <= absorbTimer)
+        {
+            if (absorbSkill == AbsorbSkill.None)
+            {
+                return;
+            }
+            if (absorbSkill == AbsorbSkill.FireBallShot)
+            {
+                absorbSlider.maxValue = absorbDelay;
+                absorbSlider.value = absorbTimer;
+                absorbImage.sprite = fireBallSprite;
+            }
+            skillAbsorb.SetActive(true);
+            skillAbsorbScript.StartAttack();
+            absorbTimer = 0;
+        }
     }
 }

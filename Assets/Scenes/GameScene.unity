@@ -8882,6 +8882,7 @@ GameObject:
   - component: {fileID: 387031431}
   - component: {fileID: 387031433}
   - component: {fileID: 387031434}
+  - component: {fileID: 387031435}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -9143,6 +9144,36 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.5821693, y: 1.94}
   m_EdgeRadius: 0
+--- !u!114 &387031435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387031426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &418669317
 GameObject:
   m_ObjectHideFlags: 0
@@ -9983,18 +10014,6 @@ MonoBehaviour:
   skillStompScript: {fileID: 1886583942}
   skillAbsorb: {fileID: 1285989515}
   skillAbsorbScript: {fileID: 1285989516}
-  absorbAttackProperty:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Absorb Attack Property
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: a64fa8d1-78dc-4dc1-bc24-4643b4ab6a6e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
   rushSlider: {fileID: 39785081}
   rushDelay: 3
   stompSlider: {fileID: 1782275709}
@@ -10078,6 +10097,30 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
+    m_ActionName: 'Player/Move[/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 964853459}
+        m_TargetAssemblyTypeName: SlimeController, Assembly-CSharp
+        m_MethodName: OnSkillStomp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 630d2ffd-2c6d-4623-9c26-38a3a701d4f1
+    m_ActionName: 'Player/SkillStomp[/Keyboard/r]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
+    m_ActionName: 'Player/Look[/Mouse/delta]'
+  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 964853459}
         m_TargetAssemblyTypeName: SlimeController, Assembly-CSharp
@@ -10091,18 +10134,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
-    m_ActionName: 'Player/Move[/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 630d2ffd-2c6d-4623-9c26-38a3a701d4f1
-    m_ActionName: 'Player/SkillStomp[/Keyboard/r]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
-    m_ActionName: 'Player/Look[/Mouse/delta]'
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a
     m_ActionName: 'Player/NormalAttack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
@@ -10130,15 +10161,51 @@ MonoBehaviour:
     m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 964853459}
+        m_TargetAssemblyTypeName: SlimeController, Assembly-CSharp
+        m_MethodName: OnAbsorbAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 96ea15b3-196d-459c-908e-9101de35f0f3
     m_ActionName: 'Player/AbsorbAttack[/Mouse/rightButton]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 964853459}
+        m_TargetAssemblyTypeName: SlimeController, Assembly-CSharp
+        m_MethodName: OnSkillRush
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 37434f5b-e888-4730-87e9-1742ed0ffdb1
     m_ActionName: 'Player/SkillRush[/Keyboard/f]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 964853459}
+        m_TargetAssemblyTypeName: SlimeController, Assembly-CSharp
+        m_MethodName: OnSkillAbsorb
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 49d40bd2-9feb-486a-844c-5c257feb86d7
     m_ActionName: 'Player/SkillAbsorb[/Keyboard/v]'
   - m_PersistentCalls:
