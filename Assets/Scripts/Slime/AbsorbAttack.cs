@@ -5,7 +5,7 @@ public class AbsorbAttack : MonoBehaviour
     //親オブジェクトのものを取得
     [SerializeField] Rigidbody2D parentRd;
     [SerializeField] SlimeController slimeController;
-    //[SerializeField] Animator animator;
+    [SerializeField] Animator animator;
 
     //[SerializeField] Collider2D attackCollider;
 
@@ -95,9 +95,11 @@ public class AbsorbAttack : MonoBehaviour
     //突進方向の確定、タイマーの初期化
     public void StartAttack()
     {
-        //animator.SetBool("StartRush", true);
+        if (currentState != State.Idle) return;
+
         playerTracking.SetActive(false);
-        slimeController.enabled = false;
+        slimeController.IsAttacking = true;
+        animator.SetBool("Attack", true);
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
         if (dashDir == 0) dashDir = 1;
         currentState = State.Tracking;
@@ -113,7 +115,7 @@ public class AbsorbAttack : MonoBehaviour
             currentState = State.Attack;
             return;
         }
-        ////自分とプレイヤーがどれだけ離れているか
+        ////自分とエネミーがどれだけ離れているか
         float distance = Vector2.Distance(parentRd.transform.position, target.transform.position);
 
         if (distance <= stopDistance)
@@ -172,23 +174,24 @@ public class AbsorbAttack : MonoBehaviour
     //攻撃後の硬直
     void Recovery()
     {
-        ////アニメーションの再生位置を示す（開始0,終了１）
-        //float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        //アニメーションの再生位置を示す（開始0,終了１）
+        float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
-        ////移動を止める
-        //parentRd.linearVelocity = Vector2.zero;
+        //移動を止める
+        parentRd.linearVelocity = Vector2.zero;
 
         //初期化
-        //if (broadcastTime >= 1.0f)
-        //{
-        //animator.SetBool("EndRush", false);
-        //animator.SetBool("StartRush", false);
+        if (broadcastTime >= 1.0f)
+        {
+            animator.SetBool("Attack", false);
 
-        slimeController.enabled = true;
-        playerTracking.SetActive(true);
-        gameObject.SetActive(false);
-        isHit = false;
-        //}
+            currentState = State.Idle;
+
+            slimeController.IsAttacking = false;
+            playerTracking.SetActive(true);
+            gameObject.SetActive(false);
+            isHit = false;
+        }
     }
 
     //アニメーションイベントから渡された文字列をStateに変換
@@ -203,14 +206,14 @@ public class AbsorbAttack : MonoBehaviour
     //指定されたタグの中で最も近いものを取得
     GameObject serchTag()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(parentRd.position, searchRange, enemyLayer);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(playerTr.position, searchRange, enemyLayer);
 
         float nearDis = Mathf.Infinity;
         GameObject targetObj = null;
 
         foreach (Collider2D hit in hits)
         {
-            float tmpDis = Vector2.Distance(hit.transform.position, parentRd.position);
+            float tmpDis = Vector2.Distance(hit.transform.position, playerTr.position);
 
             if (tmpDis < nearDis)
             {

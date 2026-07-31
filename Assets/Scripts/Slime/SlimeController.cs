@@ -23,22 +23,29 @@ public class SlimeController : MonoBehaviour
     [SerializeField] SkillAbsorb skillAbsorbScript;
 
     [SerializeField] Slider rushSlider;
-    InputAction rushAction;
     float rushTimer = 0;
     [SerializeField] float rushDelay = 3;
 
     [SerializeField] Slider stompSlider;
-    InputAction stompAction;
     float stompTimer = 0;
     [SerializeField] float stompDelay = 3;
 
     [SerializeField] Slider absorbSlider;
-    InputAction absorbAction;
     float absorbTimer = 0;
     [SerializeField] float absorbDelay = 5;
     [SerializeField] Image absorbImage;
     [SerializeField] Sprite noneSprite;
     [SerializeField] Sprite fireBallSprite;
+
+    private InputSystem_Actions _controls;
+
+    bool isAttacking = true;
+
+    public bool IsAttacking
+    {
+        get { return isAttacking; }
+        set { isAttacking = value; }
+    }
 
     AbsorbSkill absorbSkill = AbsorbSkill.None;
     public AbsorbSkill AbsorbSkill
@@ -71,6 +78,32 @@ public class SlimeController : MonoBehaviour
         absorbSlider.maxValue = 1;
         absorbSlider.value = 1;
 
+
+        _controls = new InputSystem_Actions();
+    }
+
+    void OnEnable()
+    {
+        _controls.Enable();
+
+        //イベント登録
+        _controls.Player.NormalAttack.performed += OnNormalAttack;
+        _controls.Player.AbsorbAttack.performed += OnAbsorbAttack;
+        _controls.Player.SkillRush.performed += OnSkillRush;
+        _controls.Player.SkillStomp.performed += OnSkillStomp;
+        _controls.Player.SkillAbsorb.performed += OnSkillAbsorb;
+    }
+
+    void OnDisable()
+    {
+        //イベント登録
+        _controls.Player.NormalAttack.performed -= OnNormalAttack;
+        _controls.Player.AbsorbAttack.performed -= OnAbsorbAttack;
+        _controls.Player.SkillRush.performed -= OnSkillRush;
+        _controls.Player.SkillStomp.performed -= OnSkillStomp;
+        _controls.Player.SkillAbsorb.performed -= OnSkillAbsorb;
+
+        _controls.Disable();
     }
 
     void Update()
@@ -84,21 +117,23 @@ public class SlimeController : MonoBehaviour
         absorbSlider.value = absorbTimer;
     }
 
-    public void OnNormalAttack(InputAction.CallbackContext context)
+    void OnNormalAttack(InputAction.CallbackContext context)
     {
+        if (!isAttacking && normalAttack.activeSelf) return;
         normalAttack.SetActive(true); // オブジェクトを有効化
         normalAttackScript.StartAttack();
     }
 
-    public void OnAbsorbAttack(InputAction.CallbackContext context)
+    void OnAbsorbAttack(InputAction.CallbackContext context)
     {
+        if (!isAttacking && absorbAttack.activeSelf) return;
         absorbAttack.SetActive(true); // オブジェクトを有効化
-            absorbAttackScript.StartAttack();
+        absorbAttackScript.StartAttack();
     }
 
-    public void OnSkillRush(InputAction.CallbackContext context)
+    void OnSkillRush(InputAction.CallbackContext context)
     {
-        if (rushDelay <= rushTimer)
+        if (!isAttacking && rushDelay <= rushTimer)
         {
             skillRush.SetActive(true);
             skillRushScript.StartAttack();
@@ -106,9 +141,9 @@ public class SlimeController : MonoBehaviour
         }
     }
 
-    public void OnSkillStomp(InputAction.CallbackContext context)
+    void OnSkillStomp(InputAction.CallbackContext context)
     {
-        if (stompDelay <= stompTimer)
+        if (!isAttacking && stompDelay <= stompTimer)
         {
             skillStomp.SetActive(true);
             skillStompScript.StartAttack();
@@ -116,9 +151,9 @@ public class SlimeController : MonoBehaviour
         }
     }
 
-    public void OnSkillAbsorb(InputAction.CallbackContext context)
+    void OnSkillAbsorb(InputAction.CallbackContext context)
     {
-        if (absorbDelay <= absorbTimer)
+        if (!isAttacking && absorbDelay <= absorbTimer)
         {
             if (absorbSkill == AbsorbSkill.None)
             {

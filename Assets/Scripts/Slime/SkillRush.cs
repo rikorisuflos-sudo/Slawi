@@ -25,7 +25,7 @@ public class SkillRush : MonoBehaviour
     [SerializeField] float wallCheckDistance = 0.5f;//壁の探索範囲
     [SerializeField] LayerMask groundLayer; // 地面レイヤー
 
-    [SerializeField] LayerMask enemyLayer; // 地面レイヤー
+    [SerializeField] LayerMask enemyLayer; // 敵レイヤー
 
     [SerializeField] GameObject playerTracking;//プレイヤー追従
 
@@ -86,7 +86,7 @@ public class SkillRush : MonoBehaviour
     {
         animator.SetBool("StartRush", true);
         playerTracking.SetActive(false);
-        slimeController.enabled = false;
+        slimeController.IsAttacking = true;
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
         if (dashDir == 0) dashDir = 1;
         currentState = State.Warp;
@@ -161,7 +161,7 @@ public class SkillRush : MonoBehaviour
             animator.SetBool("EndRush", false);
             animator.SetBool("StartRush", false);
             hasWarped = false;
-            slimeController.enabled = true;
+            slimeController.IsAttacking = false;
             playerTracking.SetActive(true);
             gameObject.SetActive(false);
             isHit = false;

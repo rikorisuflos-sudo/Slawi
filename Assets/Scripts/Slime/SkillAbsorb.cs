@@ -62,7 +62,7 @@ public class SkillAbsorb : MonoBehaviour
     {
         //animator.SetBool("StartRush", true);
         playerTracking.SetActive(false);
-        slimeController.enabled = false;
+        slimeController.IsAttacking = true;
         dir = Mathf.Sign(playerTr.transform.localScale.x);
         if (dir == 0) dir = 1;
         currentState = State.Warp;
@@ -121,7 +121,7 @@ public class SkillAbsorb : MonoBehaviour
             //animator.SetBool("EndRush", false);
             //animator.SetBool("StartRush", false);
             hasWarped = false;
-            slimeController.enabled = true;
+            slimeController.IsAttacking = false;
             playerTracking.SetActive(true);
             gameObject.SetActive(false);
         }

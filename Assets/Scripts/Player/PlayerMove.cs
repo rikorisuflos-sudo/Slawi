@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Xml.Linq;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -13,7 +14,11 @@ public class PlayerMove : MonoBehaviour
     const float MoveRun = 1.0f;//歩いているか
     const float MoveWalk = 0.5f;//走っているか
 
-    float move = 0f;//上の二つの変数を受け渡すための変数
+    Vector2 moveInput;//インプットシステム　左右移動
+    bool isRunning;//インプットシステム　走っているかいないか
+
+
+    float move = 0f;//プレイヤーが走っているかいないかを追尾クラスに送る
     public float Move
     {
         get { return move; } // getterの部分
@@ -26,6 +31,8 @@ public class PlayerMove : MonoBehaviour
     const float GroundCatch = 0.5f;
     [SerializeField] LayerMask groundLayer;
 
+    private InputSystem_Actions _controls;
+
     Keyboard keyboard;
 
     void Awake()
@@ -33,33 +40,48 @@ public class PlayerMove : MonoBehaviour
         //初期化
         Application.targetFrameRate = 60;
         keyboard = Keyboard.current;
+
+        _controls = new InputSystem_Actions();
     }
 
-    void FixedUpdate()
+    private void OnEnable()
     {
-        if (keyboard == null) return;
-        move = 0f;
+        _controls.Enable();
 
-        ////Aが押されたとき左に移動
-        if (keyboard.aKey.isPressed)
-        {
-            move = keyboard.shiftKey.isPressed ? -MoveRun : -MoveWalk;
-            transform.localScale = new Vector3(-1, 1, 0);
-        }
-        // //Dが押されたとき右に移動
-        if (keyboard.dKey.isPressed)
-        {
-            move = keyboard.shiftKey.isPressed ? MoveRun : MoveWalk;
-            transform.localScale = new Vector3(1, 1, 0);
-        }
+        _controls.Player.Move.started += OnMove;
+        _controls.Player.Move.performed += OnMove;
+        _controls.Player.Move.canceled += OnMove;
 
-        Walk();
+        _controls.Player.Run.started += OnRun;
+        _controls.Player.Run.performed += OnRun;
+        _controls.Player.Run.canceled += OnRun;
 
-        //Spaceが押されたとき
-        if (keyboard.spaceKey.wasPressedThisFrame)
-        {
-            Jump();
-        }
+        _controls.Player.Jump.performed += OnJump;
+    }
+
+    private void OnDisable()
+    {
+        _controls.Player.Move.started -= OnMove;
+        _controls.Player.Move.performed -= OnMove;
+        _controls.Player.Move.canceled -= OnMove;
+
+        _controls.Player.Run.started -= OnRun;
+        _controls.Player.Run.performed -= OnRun;
+        _controls.Player.Run.canceled -= OnRun;
+
+        _controls.Player.Jump.performed -= OnJump;
+
+        _controls.Disable();
+    }
+
+    private void FixedUpdate()
+    {
+        float speed = isRunning ? MoveRun : MoveWalk;
+
+        rb.linearVelocity = new Vector2(moveInput.x * walkForce * speed,rb.linearVelocity.y);
+
+        if (moveInput.x == 0) return;
+        transform.localScale = new Vector3(moveInput.x, 1, 0);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -87,21 +109,24 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 歩く
-    /// </summary>
-    void Walk()
+    private void OnMove(InputAction.CallbackContext context)
     {
-        rb.linearVelocity = new Vector2(move * walkForce, rb.linearVelocity.y);
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    private void OnRun(InputAction.CallbackContext context)
+    {
+        isRunning = context.ReadValueAsButton();
     }
 
     /// <summary>
     /// ジャンプする
     /// </summary>
-    void Jump()
+    void OnJump(InputAction.CallbackContext context)
     {
         if (isGrounded)
         {
+            Debug.Log("ジャンプ");
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             //DebugLogger.Log("ジャンプ");
         }

@@ -45,7 +45,7 @@ public class FrogRush : MonoBehaviour
 
     private void Start()
     {
-        animator.SetBool("StartRush", true);
+        animator.SetBool("Rush", true);
         move.SetActive(false);
         enemyDir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
         if (enemyDir == 0) enemyDir = 1;
@@ -56,7 +56,7 @@ public class FrogRush : MonoBehaviour
 
     private void OnEnable()
     {
-        animator.SetBool("StartRush", true);
+        animator.SetBool("Rush", true);
         move.SetActive(false);
         enemyDir = Mathf.Sign(playerTr.position.x - parentTr.position.x);
         if (enemyDir == 0) enemyDir = 1;
@@ -144,7 +144,7 @@ public class FrogRush : MonoBehaviour
         //‰Šú‰»
         if (broadcastTime >= 1.0f)
         {
-            animator.SetBool("StartRush", false);
+            animator.SetBool("Rush", false);
             gameObject.SetActive(false);
             isHit = false;
             move.SetActive(true);

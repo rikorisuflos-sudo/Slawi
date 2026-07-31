@@ -79,7 +79,7 @@ public class SkillStomp : MonoBehaviour
     {
         animator.SetBool("StartStomp", true);
         playerTracking.SetActive(false);
-        slimeController.enabled = false;
+        slimeController.IsAttacking = true;
         currentState = State.Warp;
     }
 
@@ -140,7 +140,7 @@ public class SkillStomp : MonoBehaviour
         if (broadcastTime >= 1)
         {
             currentState = State.Idle;
-            slimeController.enabled = true;
+            slimeController.IsAttacking = false;
             playerTracking.SetActive(true);
             gameObject.SetActive(false);
             isHit = false;
