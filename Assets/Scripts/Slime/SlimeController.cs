@@ -1,4 +1,6 @@
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -23,14 +25,17 @@ public class SlimeController : MonoBehaviour
     [SerializeField] SkillAbsorb skillAbsorbScript;
 
     [SerializeField] Slider rushSlider;
+    [SerializeField] TextMeshProUGUI rushKeyText;
     float rushTimer = 0;
     [SerializeField] float rushDelay = 3;
 
     [SerializeField] Slider stompSlider;
+    [SerializeField] TextMeshProUGUI stompKeyText;
     float stompTimer = 0;
     [SerializeField] float stompDelay = 3;
 
     [SerializeField] Slider absorbSlider;
+    [SerializeField] TextMeshProUGUI absorbKeyText;
     float absorbTimer = 0;
     [SerializeField] float absorbDelay = 5;
     [SerializeField] Image absorbImage;
@@ -62,24 +67,47 @@ public class SlimeController : MonoBehaviour
 
     private void Awake()
     {
+        //マウスとキーボードの取得
         mouse = Mouse.current;
         keyboard = Keyboard.current;
 
+        _controls = new InputSystem_Actions();
+
+        //突進の入力関連設定
+        //タイマーの初期化
         rushTimer = rushDelay;
+        //スライダーの設定
         rushSlider.maxValue = rushDelay;
         rushSlider.value = rushTimer;
+        //キーの取得と表示
+        string rushPath = _controls.Player.SkillRush.bindings[0].effectivePath;
+        string rushKey = InputControlPath.ToHumanReadableString(rushPath,InputControlPath.HumanReadableStringOptions.OmitDevice);
+        rushKeyText.text = rushKey;
 
+        //落下の入力関連設定
+        //タイマーの初期化
         stompTimer = stompDelay;
+        //スライダーの設定
         stompSlider.maxValue = stompDelay;
         absorbSlider.value = stompTimer;
+        //キーの取得と表示
+        string stompPath = _controls.Player.SkillStomp.bindings[0].effectivePath;
+        string stompKey = InputControlPath.ToHumanReadableString(stompPath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        stompKeyText.text = stompKey;
 
+        //吸収スキルの入力関連設定
+        //タイマーの初期化
         absorbTimer = absorbDelay;
+        //スライダーの設定
         absorbImage.sprite = noneSprite;
         absorbSlider.maxValue = 1;
         absorbSlider.value = 1;
+        //キーの取得と表示
+        string absorbPath = _controls.Player.SkillAbsorb.bindings[0].effectivePath;
+        string absorbKey = InputControlPath.ToHumanReadableString(absorbPath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        absorbKeyText.text = absorbKey;
 
 
-        _controls = new InputSystem_Actions();
     }
 
     void OnEnable()

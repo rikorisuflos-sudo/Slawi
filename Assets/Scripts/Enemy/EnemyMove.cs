@@ -105,7 +105,7 @@ public class EnemyMove : MonoBehaviour
             // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
             if (currentDistance >= enemyMileage || turnAround)
             {
-                Debug.Log("方向転換");
+                //Debug.Log("方向転換");
                 enemyDir *= -1;
 
                 hpBar.transform.localScale = new Vector3(enemyDir * 0.01f, 0.01f, 1);

@@ -1,57 +1,55 @@
 using UnityEngine;
 
 
-//修正中（後回し）
-
 public class CameraDirector : MonoBehaviour
 {
-    [SerializeField]GameObject player;
+    [SerializeField] Transform player;//プレイヤーのトランスフォーム
 
     [Header("追従スピード")]
-    [SerializeField, Range(0, 1)] private float smoothSpeed;
+    [SerializeField, Range(0, 1)] float smoothSpeed;
 
-    [Header("上下操作の設定 (W/S)")]
-    [SerializeField] private float verticalSpeed = 10f;
-    [SerializeField] private float maxManualYOffset;
+    //デッドゾーンの基準
+    [SerializeField, Range(0, 1)] float referenceLineTop;//上
+    [SerializeField, Range(0, 1)] float referenceLineBotom;//下
+    [SerializeField, Range(0, 1)] float referenceLineLeft;//左
+    [SerializeField, Range(0, 1)] float referenceLineRight;//右
 
-    private float manualYOffset = 0f; // 手動Y移動のオフセット
+    Vector3 playerViewport;//プレイヤーのビューポート座標
 
+    Vector3 cameraPs = new Vector3(1, 1, -20);//カメラの位置
 
     void LateUpdate()
     {
+        //プレイヤーがいなかったら
         if (player == null) return;
 
-        //プレイヤー追従
-        float targetX = Mathf.Lerp(
-            transform.position.x,
-            player.transform.position.x,
-            smoothSpeed
-        );
+        //プレイヤーのワールド座標をビューポート座標に変換
+        playerViewport = Camera.main.WorldToViewportPoint(player.position);
 
-        float targetY = Mathf.Lerp(
-            transform.position.y,
-            player.transform.position.y,
-            smoothSpeed
-        );
+        //基準より左or右にいたらx軸方向に追従する
+        if (playerViewport.x < referenceLineLeft || playerViewport.x > referenceLineRight)
+        {
+            cameraPs.x = Mathf.SmoothDamp(transform.position.x, player.position.x, ref smoothSpeed, 1.2f);
+        }
 
-        // W/S入力
-        //float vInput = Input.GetAxis("Vertical");
+        //基準より上or下にいたらy軸方向に追従する
+        if (playerViewport.y < referenceLineBotom || playerViewport.y > referenceLineTop)
+        {
+            cameraPs.y = Mathf.SmoothDamp(transform.position.y, player.position.y, ref smoothSpeed, 1.2f);
+        }
 
-        //if (vInput != 0)
-        //{
-        //    manualYOffset += vInput * verticalSpeed * Time.deltaTime;
-        //    manualYOffset = Mathf.Clamp(manualYOffset, -maxManualYOffset, maxManualYOffset);
-        //}
-        //else
-        //{
-        //    manualYOffset = 0;
-        //}
+        //移動処理
+        transform.position = cameraPs;
+    }
 
-        //  最終位置
-        transform.position = new Vector3(
-            targetX,
-            targetY + manualYOffset,
-            -10f
-        );
+    //ギズモ
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawLine(Camera.main.ViewportToWorldPoint(new Vector3(referenceLineLeft, 0, 0)), Camera.main.ViewportToWorldPoint(new Vector3(referenceLineLeft, 1, 0)));
+        Gizmos.DrawLine(Camera.main.ViewportToWorldPoint(new Vector3(referenceLineRight, 0, 0)), Camera.main.ViewportToWorldPoint(new Vector3(referenceLineRight, 1, 0)));
+        Gizmos.DrawLine(Camera.main.ViewportToWorldPoint(new Vector3(0, referenceLineTop, 0)), Camera.main.ViewportToWorldPoint(new Vector3(1, referenceLineTop, 0)));
+        Gizmos.DrawLine(Camera.main.ViewportToWorldPoint(new Vector3(0, referenceLineBotom, 0)), Camera.main.ViewportToWorldPoint(new Vector3(1, referenceLineBotom, 0)));
     }
 }
