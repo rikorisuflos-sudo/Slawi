@@ -150,28 +150,24 @@ public class NormalAttack : MonoBehaviour
             return;
         }
 
-        // 距離チェック（Xだけ）
-        float distance = Mathf.Abs(parentRd.position.x - dashStartPos.x);
-        if (distance >= rushDistance)
+        ////アニメーションの再生位置を示す（開始0,終了１）
+        float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+        if (broadcastTime >= 1.0f)
         {
-            //animator.SetBool("EndRush", true);
-            currentState = State.Recovery;
-            return;
+                currentState = State.Recovery;
+                return;
         }
     }
 
     //攻撃後の硬直
     void Recovery()
     {
-        ////アニメーションの再生位置を示す（開始0,終了１）
-        float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-
         ////移動を止める
         parentRd.linearVelocity = Vector2.zero;
 
         //初期化
-        if (broadcastTime >= 1.0f)
-        {
+        
             animator.SetBool("Attack", false);
 
             currentState = State.Idle;
@@ -180,7 +176,7 @@ public class NormalAttack : MonoBehaviour
             playerTracking.SetActive(true);
             gameObject.SetActive(false);
             isHit = false;
-        }
+
     }
 
     //アニメーションイベントから渡された文字列をStateに変換
