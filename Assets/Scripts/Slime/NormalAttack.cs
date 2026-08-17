@@ -15,7 +15,6 @@ public class NormalAttack : MonoBehaviour
     [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Player playerStatus;
 
-    [SerializeField] float rushDistance = 20f;//攻撃距離
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
     [SerializeField] float walkForce;
@@ -86,11 +85,17 @@ public class NormalAttack : MonoBehaviour
     {
         if (currentState != State.Idle) return;
 
+       
+
         playerTracking.SetActive(false);
         slimeController.IsAttacking = true;
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
         animator.SetBool("Attack", true);
         if (dashDir == 0) dashDir = 1;
+        //オブジェクト反転
+        if (dashDir == 0) dashDir = 1;
+        transform.localScale = new Vector3(dashDir, 1, 1);
+
         currentState = State.Tracking;
     }
 
@@ -114,19 +119,9 @@ public class NormalAttack : MonoBehaviour
             return;
         }
 
-        //エネミーの位置をもとに移動方向を決める
-        float dir = Mathf.Sign(target.transform.position.x - parentRd.position.x);
-
-        float targetX = dir * walkForce;
+        float targetX = dashDir * walkForce;
         float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
         parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
-
-        //オブジェクト反転
-        if (dir == 0) dir = 1;
-        transform.localScale = new Vector3(dir, 1, 1);
-
-        //DebugLogger.Log(distance);
-        //}
 
     }
 
@@ -179,15 +174,6 @@ public class NormalAttack : MonoBehaviour
 
     }
 
-    //アニメーションイベントから渡された文字列をStateに変換
-    //public void CastState(string input)
-    //{
-    //    if (Enum.TryParse(input, out State state))
-    //    {
-    //        currentState = state;
-    //    }
-    //}
-
     //指定されたタグの中で最も近いものを取得
     GameObject serchTag()
     {
@@ -196,10 +182,25 @@ public class NormalAttack : MonoBehaviour
         float nearDis = Mathf.Infinity;
         GameObject targetObj = null;
 
+        // プレイヤーが向いている方向
+        Vector2 facingDir = new Vector2(dashDir, 0);   // 右:1 左:-1
+
         foreach (Collider2D hit in hits)
         {
-            float tmpDis = Vector2.Distance(hit.transform.position, playerTr.position);
+            // プレイヤー→敵へのベクトル
+            Vector2 direction = hit.transform.position - playerTr.position;
 
+            // プレイヤーとの距離
+            float tmpDis = direction.magnitude;
+
+            // プレイヤーの向きと敵への方向の角度
+            float angle = Vector2.Angle(facingDir, direction);
+
+            // 前方90°(左右45°)だけを対象にする
+            if (angle > 45f)
+                continue;
+
+            // 一番近い敵を選択
             if (tmpDis < nearDis)
             {
                 nearDis = tmpDis;

@@ -124,6 +124,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void OnJump(InputAction.CallbackContext context)
     {
+        if (!isGrounded) Debug.Log("空中にいます");
         if (isGrounded)
         {
             Debug.Log("ジャンプ");

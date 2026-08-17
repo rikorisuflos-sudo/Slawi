@@ -160,9 +160,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
   checkDistance: 0.5
 --- !u!50 &-1142018920601110316
 Rigidbody2D:
@@ -190,7 +187,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 4
 --- !u!95 &2333040987072697131
 Animator:
   serializedVersion: 7

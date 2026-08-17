@@ -9,6 +9,7 @@ public class FireBall : MonoBehaviour
     [SerializeField] float movwForce; // オブジェクトの移動速度
     [SerializeField] float smooth;//ヌルっと感を出す
     float dir;//発射方向
+    Vector2 direction;//発射角度
 
     [SerializeField] float moveDistance = 20f;//オブジェクトの移動距離上限
     Vector2 moveStartPos;//発射位置
@@ -28,12 +29,25 @@ public class FireBall : MonoBehaviour
     }
 
     //初期化
-    public void SetParameter(int attackPower, float dir,LayerMask tagetLayer)
+    public void SetParameter(int attackPower, float angle , float dir,LayerMask tagetLayer)
     {
+        //ダメージ設定
         this.attackPower = attackPower;
-        this.dir = dir;
+
+        //発射角度設定
+        // 角度をラジアンに変換
+        float rad = angle * Mathf.Deg2Rad;
+
+        // 角度から進行方向を取得
+        this.direction = new Vector2(
+            Mathf.Cos(rad) * dir,
+            Mathf.Sin(rad)
+        );
+
+        //スプライトの向きの設定
+        transform.localScale = new Vector3(dir, transform.localScale.y, transform.localScale.z); 
         this.tagetLayer = tagetLayer;
-        transform.localScale = new Vector3(dir * 1, 1, -1);
+        //transform.localScale = new Vector3(dir * 1, 1, -1);
         moveStartPos = transform.position;
     }
     void FixedUpdate()
@@ -59,16 +73,32 @@ public class FireBall : MonoBehaviour
 
     void Move()
     {
-        float targetX = movwForce * dir;
-        float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-        rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
+        
+
+
+        // 目標速度を計算
+        Vector2 targetVelocity = direction * movwForce;
+
+        // 現在速度から目標速度へ滑らかに近づける
+        Vector2 newVelocity = Vector2.MoveTowards(
+            rb.linearVelocity,
+            targetVelocity,
+            smooth * Time.fixedDeltaTime
+        );
+
+
+        //移動
+
+        rb.linearVelocity = newVelocity;
+
+       
     }
 
     void EndMove()
     {
         // 壁チェック
-        RaycastHit2D hitWall = Physics2D.Raycast(rb.position, new Vector2(dir, 0), checkDistance, groundLayer);
-        Debug.DrawRay(rb.position, new Vector2(dir, 0), Color.red);
+        RaycastHit2D hitWall = Physics2D.Raycast(rb.position,direction.normalized,checkDistance,groundLayer);
+        Debug.DrawRay(rb.position,direction.normalized * checkDistance,Color.red);
         if (hitWall.collider != null)
         {
             Destroy(gameObject);

@@ -19,6 +19,7 @@ public class SkillAbsorb : MonoBehaviour
 
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
+    const float Angle = 0;//発射角度（前方のみのため固定）
 
     [SerializeField] LayerMask tagetLayer;
 
@@ -99,7 +100,7 @@ public class SkillAbsorb : MonoBehaviour
 
             //ダメージ処理
             fireBallSc = newFireBoal.GetComponent<FireBall>();
-            fireBallSc.SetParameter(playerStatus.AttackPower, dir,tagetLayer);
+            fireBallSc.SetParameter(playerStatus.AttackPower, Angle ,dir,tagetLayer);
 
         currentState = State.Recovery;
     }

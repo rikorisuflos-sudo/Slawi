@@ -10,6 +10,7 @@ public class FireBallShot : MonoBehaviour
 
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
+    const float Angle = 0;//発射角度（前方のみのため固定）
 
     [SerializeField] Transform playerTr;//プレイヤートランスフォーム
     [SerializeField] LayerMask tagetLayer;
@@ -62,12 +63,13 @@ public class FireBallShot : MonoBehaviour
 
     public void Shot()
     {
-        Debug.Log("火の玉");
+        //FireBall生成
+        //Debug.Log("火の玉");
         GameObject newFireBoal = Instantiate(fireBall, new Vector3(parentTr.position.x + (0.2f * enemyDir), parentTr.position.y, -1), Quaternion.identity);
 
-        //ダメージ処理
+        //FireBallSc初期化
         fireBallSc = newFireBoal.GetComponent<FireBall>();
-        fireBallSc.SetParameter(enemyStatus.AttackPower, enemyDir, tagetLayer);
+        fireBallSc.SetParameter(enemyStatus.AttackPower, Angle, enemyDir, tagetLayer);
     }
 
     bool CallAttack()

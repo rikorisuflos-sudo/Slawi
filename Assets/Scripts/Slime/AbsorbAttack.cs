@@ -12,7 +12,6 @@ public class AbsorbAttack : MonoBehaviour
     [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Player playerStatus;
 
-    [SerializeField] float rushDistance = 20f;//攻撃距離
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
     [SerializeField] float walkForce;
@@ -192,15 +191,6 @@ public class AbsorbAttack : MonoBehaviour
 
     }
 
-    //アニメーションイベントから渡された文字列をStateに変換
-    //public void CastState(string input)
-    //{
-    //    if (Enum.TryParse(input, out State state))
-    //    {
-    //        currentState = state;
-    //    }
-    //}
-
     //指定されたタグの中で最も近いものを取得
     GameObject serchTag()
     {
@@ -209,10 +199,25 @@ public class AbsorbAttack : MonoBehaviour
         float nearDis = Mathf.Infinity;
         GameObject targetObj = null;
 
+        // プレイヤーが向いている方向
+        Vector2 facingDir = new Vector2(transform.localScale.x, 0);   // 右:1 左:-1
+
         foreach (Collider2D hit in hits)
         {
-            float tmpDis = Vector2.Distance(hit.transform.position, playerTr.position);
+            // プレイヤー→敵へのベクトル
+            Vector2 direction = hit.transform.position - playerTr.position;
 
+            // プレイヤーとの距離
+            float tmpDis = direction.magnitude;
+
+            // プレイヤーの向きと敵への方向の角度
+            float angle = Vector2.Angle(facingDir, direction);
+
+            // 前方90°(左右45°)だけを対象にする
+            if (angle > 45f)
+                continue;
+
+            // 一番近い敵を選択
             if (tmpDis < nearDis)
             {
                 nearDis = tmpDis;
