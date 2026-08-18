@@ -15930,6 +15930,7 @@ GameObject:
   - component: {fileID: 2054674707}
   - component: {fileID: 2054674706}
   - component: {fileID: 2054674705}
+  - component: {fileID: 2054674709}
   m_Layer: 0
   m_Name: FireBallFanShot
   m_TagString: Untagged
@@ -15944,7 +15945,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054674704}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb91f4e8fd7586a40b16add5b51b84b0, type: 3}
   m_Name: 
@@ -16058,6 +16059,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 263219574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2054674709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054674704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1be961aac67714a840d88097aa1e45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireBallRandomShot
+  enemyStatus: {fileID: 11400000, guid: 960ebc9598696364f86e6ee0fda72570, type: 2}
+  animator: {fileID: 2054674707}
+  move: {fileID: 719418187}
+  fireBall: {fileID: 8804492111596663323, guid: abeb94cbef5859e4f94c4e2e9768f806, type: 3}
+  fireBallSc: {fileID: -7264275163875473436, guid: abeb94cbef5859e4f94c4e2e9768f806, type: 3}
+  playerTr: {fileID: 387031428}
+  tagetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!223 &2074611513 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 6411612270715301297, guid: 03f033ac922a0bb4ca93368f11e5db24, type: 3}

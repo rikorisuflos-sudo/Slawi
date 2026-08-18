@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
+public class PlayerDirecter : MonoBehaviour, IDamageable
 {
     [SerializeField] Player playerStatus;
     [SerializeField] Slider hpSlider;
@@ -16,9 +16,17 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
     [SerializeField] Color midHpColor;
     [SerializeField] Color lowHpColor;
 
-    int playerHp;
+    int baseHp;
+    int baseAttackPower;
+    int baseDefensePower;
+
+    int hp;
     int attackPower;
     int defensePower;
+
+    float growthHp;
+    float growthAttackPower;
+    float growthDefensePower;
     public int AttackPower => attackPower;
 
     [SerializeField] int level = 1;
@@ -29,12 +37,12 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
     void Awake()
     {
         //ステータスの初期化
-        playerHp = playerStatus.HP;
+        hp = playerStatus.HP;
         attackPower = playerStatus.AttackPower;
         defensePower = playerStatus.DefensePower;
 
         //Hpバーの初期化
-        if (hpSlider != null) 
+        if (hpSlider != null)
         {
             hpSlider.maxValue = playerStatus.HP;
             hpSlider.value = playerStatus.HP;
@@ -67,20 +75,20 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
         {
             fillImage = GetComponent<Image>();
         }
-        Debug.Log(playerHp);
+        Debug.Log(hp);
     }
 
-   
+
     public void Damage(int attackPower)
     {
         //ダメージ計算：アルテリオス計算式
-        playerHp -= Mathf.FloorToInt(attackPower - defensePower);
-        hpSlider.value = playerHp;
+        hp -= Mathf.FloorToInt(attackPower - defensePower);
+        hpSlider.value = hp;
         ColorChange();
-        Debug.Log("プレイヤー:" + playerHp);
+        Debug.Log("プレイヤー:" + hp);
 
         //死亡判定
-        if (playerHp <= 0)
+        if (hp <= 0)
         {
             Death();
         }
@@ -92,29 +100,15 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
         SceneManager.LoadScene("TitleScene");
     }
 
-    public void StatusReset()
+    void ColorChange()
     {
-        attackPower = playerStatus.AttackPower;
-        defensePower = playerStatus.DefensePower;
-    }
-
-    public void Buff(int plus)
-    {
-        attackPower = (attackPower + plus);
-    }
-
-    public void Debuff(int minus)
-    {
-       
-    }
-
-    void ColorChange() { 
         float ratio = hpSlider.value / hpSlider.maxValue;
 
-        if(ratio > 0.5f)
+        if (ratio > 0.5f)
         {
             fillImage.color = highHpColor;
-        }else if(ratio > 0.2f)
+        }
+        else if (ratio > 0.2f)
         {
             fillImage.color = midHpColor;
         }
@@ -146,12 +140,12 @@ public class PlayerDirecter : MonoBehaviour, IDamageable, IStatusble
         expSlider.maxValue = needExp;
         expSlider.value = currentExp;
 
-        playerHp += 10;
-        attackPower += 2;
-        defensePower += 1;
+        hp = Mathf.FloorToInt(baseHp * (1 + growthHp * (level - 1)));
+        attackPower = Mathf.FloorToInt(baseAttackPower * (1 + growthAttackPower * (level - 1)));
+        defensePower = Mathf.FloorToInt(baseDefensePower * (1 + growthDefensePower * (level - 1)));
 
-        hpSlider.maxValue = playerHp;
-        hpSlider.value = playerHp;
+        hpSlider.maxValue = hp;
+        hpSlider.value = hp;
         ColorChange();
 
         needExp = 50 * level * level + 100;

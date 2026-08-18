@@ -10,7 +10,7 @@ public class FireBallFanShot : MonoBehaviour
 
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
-    float angle = 30.0f;
+    float angle = 50.0f;
     float quantity;
 
     [SerializeField] Transform playerTr;//プレイヤートランスフォーム
@@ -75,7 +75,7 @@ public class FireBallFanShot : MonoBehaviour
             fireBallSc = newFireBoal.GetComponent<FireBall>();
             fireBallSc.SetParameter(enemyStatus.AttackPower, angle, enemyDir, tagetLayer);
             count++;
-            angle =- 15.0f;
+            angle -= 25.0f;
         }
         count = 0;
         angle = 30;
