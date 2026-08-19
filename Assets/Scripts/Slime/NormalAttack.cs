@@ -13,15 +13,13 @@ public class NormalAttack : MonoBehaviour
     [SerializeField] Collider2D attackCollider;
 
     [SerializeField] Transform playerTr;//プレイヤー
+    [SerializeField] Collider2D playerCol;
     [SerializeField] Player playerStatus;
 
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
-    [SerializeField] float walkForce;
     [SerializeField] float smooth;
-
-    [SerializeField] float searchRange;//エネミー探索範囲
-    [SerializeField] float stopDistance;
+    [SerializeField] float angle;
 
     Vector2 dashStartPos; // 突進開始位置
 
@@ -32,12 +30,15 @@ public class NormalAttack : MonoBehaviour
 
     [SerializeField] GameObject playerTracking;//プレイヤー追従
 
+    float timer = 0;
+    [SerializeField] float recoveryTime;
+
     bool isHit = false;//攻撃が当たったか
+    bool hasWarped = false;//ワープしたか
     enum State
     {
         Idle,//待機
-        Tracking,//追尾
-        Charge,//攻撃前の溜め
+        Warp,
         Attack,//突進
         Recovery//硬直
     }
@@ -48,8 +49,8 @@ public class NormalAttack : MonoBehaviour
     {
         switch (currentState)
         {
-            case State.Tracking:
-                Tracking();
+            case State.Warp:
+                Warp();
                 break;
             case State.Attack:
                 Attack();
@@ -57,7 +58,11 @@ public class NormalAttack : MonoBehaviour
                 break;
 
             case State.Recovery:
-                Recovery();
+                timer += Time.fixedDeltaTime;
+                if (timer >= recoveryTime)
+                {
+                    Recovery();  
+                }
                 break;
         }
         Debug.Log(currentState);
@@ -85,50 +90,51 @@ public class NormalAttack : MonoBehaviour
     {
         if (currentState != State.Idle) return;
 
-       
+
 
         playerTracking.SetActive(false);
         slimeController.IsAttacking = true;
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
         animator.SetBool("Attack", true);
-        if (dashDir == 0) dashDir = 1;
         //オブジェクト反転
         if (dashDir == 0) dashDir = 1;
         transform.localScale = new Vector3(dashDir, 1, 1);
 
-        currentState = State.Tracking;
+        currentState = State.Warp;
     }
 
-    void Tracking()
+    //プレイヤーの前に移動
+    void Warp()
     {
-        GameObject target = serchTag();
+        if (hasWarped) return;
 
-        if (target == null)
-        {
-            dashStartPos = parentRd.transform.position;
-            currentState = State.Attack;
-            return;
-        }
-        ////自分とエネミーがどれだけ離れているか
-        float distance = Vector2.Distance(parentRd.transform.position, target.transform.position);
+        hasWarped = true;
+        //ワープさせる
+        Vector2 warpPos = new Vector2(playerTr.position.x, playerCol.bounds.min.y);
 
-        if (distance <= stopDistance)
-        {
-            dashStartPos = parentRd.transform.position;
-            currentState = State.Attack;
-            return;
-        }
+        //ワープしたときに突進方向を向くようにする
+        transform.localScale = new Vector3(dashDir, 1, 1);
 
-        float targetX = dashDir * walkForce;
-        float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-        parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
-
+        parentRd.position = warpPos;
+        dashStartPos = parentRd.position;
+        currentState = State.Attack;
     }
 
     //攻撃
     void Attack()
     {
-        parentRd.linearVelocity = new Vector2(dashDir * rushSpeed, parentRd.linearVelocity.y);
+        // 角度をラジアンに変換
+        float rad = angle * Mathf.Deg2Rad;
+
+        // 角度から進行方向を取得
+        Vector2 direction = new Vector2(
+            Mathf.Cos(rad) * dashDir,
+            Mathf.Sin(rad)
+        );
+
+        Vector2 targetVector = direction * rushSpeed;
+
+        parentRd.linearVelocity = targetVector;
 
     }
 
@@ -150,8 +156,8 @@ public class NormalAttack : MonoBehaviour
 
         if (broadcastTime >= 1.0f)
         {
-                currentState = State.Recovery;
-                return;
+            currentState = State.Recovery;
+            return;
         }
     }
 
@@ -162,52 +168,18 @@ public class NormalAttack : MonoBehaviour
         parentRd.linearVelocity = Vector2.zero;
 
         //初期化
-        
-            animator.SetBool("Attack", false);
 
-            currentState = State.Idle;
+        animator.SetBool("Attack", false);
 
-            slimeController.IsAttacking = false;
-            playerTracking.SetActive(true);
-            gameObject.SetActive(false);
-            isHit = false;
+        currentState = State.Idle;
+
+        slimeController.IsAttacking = false;
+        playerTracking.SetActive(true);
+        gameObject.SetActive(false);
+        timer = 0;
+        isHit = false;
+        hasWarped = false;
 
     }
 
-    //指定されたタグの中で最も近いものを取得
-    GameObject serchTag()
-    {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(playerTr.position, searchRange, enemyLayer);
-
-        float nearDis = Mathf.Infinity;
-        GameObject targetObj = null;
-
-        // プレイヤーが向いている方向
-        Vector2 facingDir = new Vector2(dashDir, 0);   // 右:1 左:-1
-
-        foreach (Collider2D hit in hits)
-        {
-            // プレイヤー→敵へのベクトル
-            Vector2 direction = hit.transform.position - playerTr.position;
-
-            // プレイヤーとの距離
-            float tmpDis = direction.magnitude;
-
-            // プレイヤーの向きと敵への方向の角度
-            float angle = Vector2.Angle(facingDir, direction);
-
-            // 前方90°(左右45°)だけを対象にする
-            if (angle > 45f)
-                continue;
-
-            // 一番近い敵を選択
-            if (tmpDis < nearDis)
-            {
-                nearDis = tmpDis;
-                targetObj = hit.gameObject;
-            }
-        }
-
-        return targetObj;
-    }
 }
