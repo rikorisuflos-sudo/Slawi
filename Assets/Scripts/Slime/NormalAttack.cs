@@ -28,10 +28,10 @@ public class NormalAttack : MonoBehaviour
 
     [SerializeField] LayerMask enemyLayer; // エネミーレイヤー
 
-    [SerializeField] GameObject playerTracking;//プレイヤー追従
-
     float timer = 0;
     [SerializeField] float recoveryTime;
+
+    [SerializeField] GameObject playerTracking;//プレイヤー追従
 
     bool isHit = false;//攻撃が当たったか
     bool hasWarped = false;//ワープしたか
@@ -53,7 +53,6 @@ public class NormalAttack : MonoBehaviour
                 Warp();
                 break;
             case State.Attack:
-                Attack();
                 EndAttack();
                 break;
 
@@ -61,7 +60,7 @@ public class NormalAttack : MonoBehaviour
                 timer += Time.fixedDeltaTime;
                 if (timer >= recoveryTime)
                 {
-                    Recovery();  
+                    Recovery();
                 }
                 break;
         }
@@ -90,8 +89,6 @@ public class NormalAttack : MonoBehaviour
     {
         if (currentState != State.Idle) return;
 
-
-
         playerTracking.SetActive(false);
         slimeController.IsAttacking = true;
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
@@ -99,7 +96,7 @@ public class NormalAttack : MonoBehaviour
         //オブジェクト反転
         if (dashDir == 0) dashDir = 1;
         transform.localScale = new Vector3(dashDir, 1, 1);
-
+        timer = 0.0f;
         currentState = State.Warp;
     }
 
@@ -117,6 +114,7 @@ public class NormalAttack : MonoBehaviour
 
         parentRd.position = warpPos;
         dashStartPos = parentRd.position;
+        Attack();
         currentState = State.Attack;
     }
 
@@ -146,6 +144,8 @@ public class NormalAttack : MonoBehaviour
         Debug.DrawRay(parentRd.position, new Vector2(dashDir, 0), Color.red);
         if (hit.collider != null)
         {
+            ////移動を止める
+            parentRd.linearVelocity = Vector2.zero;
             //animator.SetBool("EndRush", true);
             currentState = State.Recovery;
             return;
@@ -156,6 +156,8 @@ public class NormalAttack : MonoBehaviour
 
         if (broadcastTime >= 1.0f)
         {
+            ////移動を止める
+            parentRd.linearVelocity = Vector2.zero;
             currentState = State.Recovery;
             return;
         }
@@ -164,8 +166,7 @@ public class NormalAttack : MonoBehaviour
     //攻撃後の硬直
     void Recovery()
     {
-        ////移動を止める
-        parentRd.linearVelocity = Vector2.zero;
+        
 
         //初期化
 
@@ -176,7 +177,6 @@ public class NormalAttack : MonoBehaviour
         slimeController.IsAttacking = false;
         playerTracking.SetActive(true);
         gameObject.SetActive(false);
-        timer = 0;
         isHit = false;
         hasWarped = false;
 

@@ -10,14 +10,16 @@ public class AbsorbAttack : MonoBehaviour
     //[SerializeField] Collider2D attackCollider;
 
     [SerializeField] Transform playerTr;//プレイヤー
+    [SerializeField] Collider2D playerCol;
     [SerializeField] Player playerStatus;
 
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
     [SerializeField] float walkForce;
     [SerializeField] float smooth;
+    [SerializeField] float angle;
 
-    [SerializeField] float searchRange;//エネミー探索範囲
+
     [SerializeField] float stopDistance;
 
     Vector2 dashStartPos; // 突進開始位置
@@ -29,13 +31,15 @@ public class AbsorbAttack : MonoBehaviour
 
     [SerializeField] GameObject playerTracking;//プレイヤー追従
 
-    bool isHit = false;//攻撃が当たったか
+    float timer = 0;
+    [SerializeField] float recoveryTime;
 
+    bool isHit = false;//攻撃が当たったか
+    bool hasWarped = false;//ワープしたか
     enum State
     {
         Idle,//待機
-        Tracking,//追尾
-        Charge,//攻撃前の溜め
+        Warp,
         Attack,//突進
         Recovery//硬直
     }
@@ -46,23 +50,21 @@ public class AbsorbAttack : MonoBehaviour
     {
         switch (currentState)
         {
-            case State.Tracking:
-                Tracking();
+            case State.Warp:
+                Warp();
                 break;
-            //case State.Charge:
-            //    Charge();
-            //    break;
-
             case State.Attack:
-                Attack();
                 EndAttack();
                 break;
-
             case State.Recovery:
-                Recovery();
+                timer += Time.fixedDeltaTime;
+                if (timer >= recoveryTime)
+                {
+                    Recovery();
+                }
                 break;
         }
-        //Debug.Log(currentState);
+        Debug.Log(currentState);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -96,54 +98,52 @@ public class AbsorbAttack : MonoBehaviour
     {
         if (currentState != State.Idle) return;
 
+
+
         playerTracking.SetActive(false);
         slimeController.IsAttacking = true;
-        animator.SetBool("Attack", true);
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
+        animator.SetBool("Attack", true);
+        //オブジェクト反転
         if (dashDir == 0) dashDir = 1;
-        currentState = State.Tracking;
+        transform.localScale = new Vector3(dashDir, 1, 1);
+        timer = 0.0f;
+        currentState = State.Warp;
     }
 
-    void Tracking()
+    //プレイヤーの前に移動
+    void Warp()
     {
-        GameObject target = serchTag();
+        if (hasWarped) return;
 
-        if (target == null)
-        {
-            dashStartPos = parentRd.transform.position;
-            currentState = State.Attack;
-            return;
-        }
-        ////自分とエネミーがどれだけ離れているか
-        float distance = Vector2.Distance(parentRd.transform.position, target.transform.position);
+        hasWarped = true;
+        //ワープさせる
+        Vector2 warpPos = new Vector2(playerTr.position.x, playerCol.bounds.min.y);
 
-        if (distance <= stopDistance)
-        {
-            dashStartPos = parentRd.transform.position;
-            currentState = State.Attack;
-            return;
-        }
+        //ワープしたときに突進方向を向くようにする
+        transform.localScale = new Vector3(dashDir, 1, 1);
 
-        //エネミーの位置をもとに移動方向を決める
-        float dir = Mathf.Sign(target.transform.position.x - parentRd.position.x);
-
-        float targetX = dir * walkForce;
-        float newX = Mathf.Lerp(parentRd.linearVelocity.x, targetX, smooth * Time.fixedDeltaTime);
-        parentRd.linearVelocity = new Vector2(newX, parentRd.linearVelocity.y);
-
-        //オブジェクト反転
-        if (dir == 0) dir = 1;
-        transform.localScale = new Vector3(dir, 1, 1);
-
-        //DebugLogger.Log(distance);
-        //}
-
+        parentRd.position = warpPos;
+        dashStartPos = parentRd.position;
+        Attack();
+        currentState = State.Attack;
     }
 
     //攻撃
     void Attack()
     {
-        parentRd.linearVelocity = new Vector2(dashDir * rushSpeed, parentRd.linearVelocity.y);
+        // 角度をラジアンに変換
+        float rad = angle * Mathf.Deg2Rad;
+
+        // 角度から進行方向を取得
+        Vector2 direction = new Vector2(
+            Mathf.Cos(rad) * dashDir,
+            Mathf.Sin(rad)
+        );
+
+        Vector2 targetVector = direction * rushSpeed;
+
+        parentRd.linearVelocity = targetVector;
 
     }
 
@@ -155,7 +155,9 @@ public class AbsorbAttack : MonoBehaviour
         Debug.DrawRay(parentRd.position, new Vector2(dashDir, 0), Color.red);
         if (hit.collider != null)
         {
-            //animator.SetBool("EndRush", true);
+            ////移動を止める
+            parentRd.linearVelocity = Vector2.zero;
+
             currentState = State.Recovery;
             return;
         }
@@ -165,6 +167,9 @@ public class AbsorbAttack : MonoBehaviour
 
         if (broadcastTime >= 1.0f)
         {
+            ////移動を止める
+            parentRd.linearVelocity = Vector2.zero;
+
             currentState = State.Recovery;
             return;
         }
@@ -173,10 +178,7 @@ public class AbsorbAttack : MonoBehaviour
     //攻撃後の硬直
     void Recovery()
     {
-
-
-        //移動を止める
-        parentRd.linearVelocity = Vector2.zero;
+       
 
         //初期化
 
@@ -188,43 +190,7 @@ public class AbsorbAttack : MonoBehaviour
         playerTracking.SetActive(true);
         gameObject.SetActive(false);
         isHit = false;
+        hasWarped = false;
 
-    }
-
-    //指定されたタグの中で最も近いものを取得
-    GameObject serchTag()
-    {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(playerTr.position, searchRange, enemyLayer);
-
-        float nearDis = Mathf.Infinity;
-        GameObject targetObj = null;
-
-        // プレイヤーが向いている方向
-        Vector2 facingDir = new Vector2(transform.localScale.x, 0);   // 右:1 左:-1
-
-        foreach (Collider2D hit in hits)
-        {
-            // プレイヤー→敵へのベクトル
-            Vector2 direction = hit.transform.position - playerTr.position;
-
-            // プレイヤーとの距離
-            float tmpDis = direction.magnitude;
-
-            // プレイヤーの向きと敵への方向の角度
-            float angle = Vector2.Angle(facingDir, direction);
-
-            // 前方90°(左右45°)だけを対象にする
-            if (angle > 45f)
-                continue;
-
-            // 一番近い敵を選択
-            if (tmpDis < nearDis)
-            {
-                nearDis = tmpDis;
-                targetObj = hit.gameObject;
-            }
-        }
-
-        return targetObj;
     }
 }

@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float walkForce;//速度の上昇値
     bool isGrounded = true;//地面に触れているかいないか
 
-    const float GroundCatch = 0.5f;
+    const float GroundCatch = 0.53f;
     [SerializeField] LayerMask groundLayer;
 
     private InputSystem_Actions _controls;

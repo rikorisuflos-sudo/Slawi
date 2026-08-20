@@ -8,6 +8,8 @@ public class FireBallFanShot : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] GameObject move;
 
+    [SerializeField] BossActionLottery bossActionLottery;
+
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
     float angle = 50.0f;
@@ -27,18 +29,12 @@ public class FireBallFanShot : MonoBehaviour
         //発射方向を取得
         enemyDir = Mathf.Sign(parentTr.localScale.x);
 
+        bossActionLottery.IsAttacking = true;
+
         animator.SetBool("Shot", true);
     }
 
-    void Start()
-    {
-        //初期化
-        if (enemyStatus != null)
-        {
-            this.attackDistance = enemyStatus.AttackDistance;
-            this.attackAngle = enemyStatus.AttackAngle;
-        }
-    }
+   
 
     private void OnDisable()
     {
@@ -54,11 +50,13 @@ public class FireBallFanShot : MonoBehaviour
         if (broadcastTime >= 1.0f)
         {
             //Debug.Log("攻撃終了");
-            bool callAttack = CallAttack();
-            if (!callAttack)
-            {
-                gameObject.SetActive(false);
-            }
+            //bool callAttack = CallAttack();
+            bossActionLottery.IsAttacking = false;
+            enabled = false;
+            //if (!callAttack)
+            //{
+                //gameObject.SetActive(false);
+            //}
         }
     }
 

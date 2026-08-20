@@ -10,6 +10,8 @@ public class FireBallRandomShot : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] GameObject move;
 
+    [SerializeField] BossActionLottery bossActionLottery;
+
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
     float angle = 50.0f;
@@ -31,18 +33,18 @@ public class FireBallRandomShot : MonoBehaviour
     {
         //発射方向を取得
         enemyDir = Mathf.Sign(transform.parent.localScale.x);
-
+        bossActionLottery.IsAttacking = true;
         animator.SetBool("Shot", true);
     }
 
     void Start()
     {
-        //初期化
-        if (enemyStatus != null)
-        {
-            this.attackDistance = enemyStatus.AttackDistance;
-            this.attackAngle = enemyStatus.AttackAngle;
-        }
+        ////初期化
+        //if (enemyStatus != null)
+        //{
+        //    this.attackDistance = enemyStatus.AttackDistance;
+        //    this.attackAngle = enemyStatus.AttackAngle;
+        //}
     }
 
     private void OnDisable()
@@ -60,12 +62,14 @@ public class FireBallRandomShot : MonoBehaviour
 
         if (broadcastTime >= 1.0f)
         {
-            //Debug.Log("攻撃終了");
-            bool callAttack = CallAttack();
-            if (!callAttack)
-            {
-                gameObject.SetActive(false);
-            }
+            bossActionLottery.IsAttacking = false;
+            enabled = false;
+            ////Debug.Log("攻撃終了");
+            //bool callAttack = CallAttack();
+            //if (!callAttack)
+            //{
+            //    gameObject.SetActive(false);
+            //}
         }
 
         if (!isShooting) return;
@@ -131,28 +135,28 @@ public class FireBallRandomShot : MonoBehaviour
         }
     }
 
-        bool CallAttack()
-    {
-        //プレイヤーの方向を取得
-        Vector2 direction = (playerTr.position - transform.parent.position);
-        //プレイヤーまでの距離を算出
-        float distance = direction.magnitude;
-        //  距離チェック
-        if (distance > attackDistance)
-        {
-            return false;
-        }
+    //    bool CallAttack()
+    //{
+    //    //プレイヤーの方向を取得
+    //    Vector2 direction = (playerTr.position - transform.parent.position);
+    //    //プレイヤーまでの距離を算出
+    //    float distance = direction.magnitude;
+    //    //  距離チェック
+    //    if (distance > attackDistance)
+    //    {
+    //        return false;
+    //    }
 
-        //エネミーの方向取得
-        Vector2 facingDir = new Vector2(enemyDir, 0);
-        //  プレイヤーの位置とエネミーの位置の角度差
-        float angle = Vector2.Angle(facingDir, direction);
-        //angleが視野角内に収まるかどうか
-        if (angle > attackAngle / 2f)
-        {
-            return false;
-        }
+    //    //エネミーの方向取得
+    //    Vector2 facingDir = new Vector2(enemyDir, 0);
+    //    //  プレイヤーの位置とエネミーの位置の角度差
+    //    float angle = Vector2.Angle(facingDir, direction);
+    //    //angleが視野角内に収まるかどうか
+    //    if (angle > attackAngle / 2f)
+    //    {
+    //        return false;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 }
