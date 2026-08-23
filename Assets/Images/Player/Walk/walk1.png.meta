@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0717b9ecc0ac5ef40ac0b5685f423dfa
+guid: 9b6fcf4b06d7a3c4e9df38fb695b9d13
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1440310394952163317
-    second: dotpict_20260408_093138_0
+      213: 8725583791009165418
+    second: walk1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,56 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dotpict_20260408_093138_0
+      name: walk1_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 7
-        width: 118
-        height: 198
+        x: 2
+        y: 0
+        width: 77
+        height: 109
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b00e29ea35df20ce0800000000000000
-      internalID: -1440310394952163317
+      spriteID: a60f1015a30871970800000000000000
+      internalID: 8725583791009165418
       vertices: []
       indices: 
       edges: []
@@ -174,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      dotpict_20260408_093138_0: -1440310394952163317
+      walk1_0: 8725583791009165418
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -39,7 +39,13 @@ public class BossActionLottery : MonoBehaviour
     private void FixedUpdate()
     {
         bool callAttack = CallAttack();
-        if (!callAttack &&  !isAttacking)
+
+        if (!callAttack)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        if (!isAttacking)
         {
             ActivateRandomScript();
         }

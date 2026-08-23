@@ -64,7 +64,7 @@ public class FireBallRandomShot : MonoBehaviour
         {
             bossActionLottery.IsAttacking = false;
             enabled = false;
-            ////Debug.Log("UŒ‚I—¹");
+            Debug.Log("UŒ‚I—¹");
             //bool callAttack = CallAttack();
             //if (!callAttack)
             //{

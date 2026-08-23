@@ -105,7 +105,11 @@ public class EnemyMove : MonoBehaviour
             // 一定範囲（enemyMileage）を超えたか、段差（stepFind）があった場合に反転
             if (currentDistance >= enemyMileage || turnAround)
             {
-                //Debug.Log("方向転換");
+                //Vector2 turn = transform.parent.lossyScale;
+
+                //turn.x = turn.x * -1;
+
+                ////Debug.Log("方向転換");
                 enemyDir *= -1;
 
                 hpBar.transform.localScale = new Vector3(enemyDir * 0.01f, 0.01f, 1);
@@ -113,7 +117,8 @@ public class EnemyMove : MonoBehaviour
                 movPosition = transform.position; // 反転地点を起点に更新
 
                 // 見た目の向きを反転させる処理
-                parentTr.localScale = new Vector3(enemyDir, 1, 1);
+                parentTr.localScale = new Vector3(transform.parent.lossyScale.x * enemyDir, transform.parent.lossyScale.y, 1);
+                //transform.parent.lossyScale = new Vector3(turn.x,turn.y,1);
             }
         }
         else

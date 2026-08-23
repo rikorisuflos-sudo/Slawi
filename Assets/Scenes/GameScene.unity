@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 263219574}
   - component: {fileID: 263219573}
   - component: {fileID: 263219572}
-  - component: {fileID: 263219575}
+  - component: {fileID: 263219576}
   m_Layer: 9
   m_Name: BoosLizard
   m_TagString: Untagged
@@ -701,7 +701,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!4 &263219574
 Transform:
   m_ObjectHideFlags: 0
@@ -720,7 +720,7 @@ Transform:
   - {fileID: 2054674708}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &263219575
+--- !u!114 &263219576
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -729,15 +729,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 263219571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46c8a5a9f426ae849b917d6f043c0fc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f665e800ae5df84591679eccd9cea35, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyDirecter
+  m_EditorClassIdentifier: Assembly-CSharp::BossDirecter
   enemyStatus: {fileID: 11400000, guid: 960ebc9598696364f86e6ee0fda72570, type: 2}
   hpSlider: {fileID: 1519852046}
   fillImage: {fileID: 1260208234}
-  highHpColor: {r: 0, g: 0, b: 0, a: 0}
-  midHpColor: {r: 0, g: 0, b: 0, a: 0}
-  lowHpColor: {r: 0, g: 0, b: 0, a: 0}
+  highHpColor: {r: 0.6156863, g: 1, b: 0.37254903, a: 0}
+  midHpColor: {r: 0.94509804, g: 0.6627451, b: 0.22745098, a: 0}
+  lowHpColor: {r: 1, g: 0.24313726, b: 0.1764706, a: 0}
   slimeController: {fileID: 964853459}
   playerDirecter: {fileID: 387031429}
 --- !u!1001 &295684338
@@ -10230,12 +10230,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5460631310323209826, guid: b1acd54171f78c847af1c7d3d05a474f, type: 3}
+  m_Sprite: {fileID: 8725583791009165418, guid: 9b6fcf4b06d7a3c4e9df38fb695b9d13, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.89, y: 1.52}
+  m_Size: {x: 0.77, y: 1.09}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -10359,8 +10359,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.18, y: 1.94}
-    newSize: {x: 0.89, y: 1.52}
+    oldSize: {x: 0.77, y: 1.09}
+    newSize: {x: 0.77, y: 1.09}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -10427,8 +10427,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.18, y: 1.94}
-    newSize: {x: 0.89, y: 1.52}
+    oldSize: {x: 0.77, y: 1.09}
+    newSize: {x: 0.77, y: 1.09}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
