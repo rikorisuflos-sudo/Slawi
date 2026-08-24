@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,7 +6,7 @@ using UnityEngine.UI;
 public class BossDirecter : MonoBehaviour, IDamageable
 {
     [SerializeField] Enemy enemyStatus;//エネミーのスクリプタブルオブジェクト
-    public int enemyHp { get; set;}//エネミーの体力
+    public int enemyHp { get; set; }//エネミーの体力
 
     [SerializeField] Slider hpSlider;
     [SerializeField] Image fillImage;
@@ -17,6 +18,9 @@ public class BossDirecter : MonoBehaviour, IDamageable
 
     [SerializeField] SlimeController slimeController;
     [SerializeField] PlayerDirecter playerDirecter;
+
+    [SerializeField] TextMeshProUGUI myText;
+    [SerializeField] GameObject canvas;
 
     void Awake()
     {
@@ -53,7 +57,7 @@ public class BossDirecter : MonoBehaviour, IDamageable
         enemyHp -= Mathf.FloorToInt(attackPower - enemyStatus.DefensePower);
         hpSlider.value = enemyHp;
         ColorChange();
-        Debug.Log("敵："+ enemyHp);
+        Debug.Log("敵：" + enemyHp);
 
         //死亡判定
         if (enemyHp <= 0)
@@ -61,13 +65,14 @@ public class BossDirecter : MonoBehaviour, IDamageable
             Debug.Log("倒された");
             playerDirecter.AddExp(enemyStatus.Exp);
             Destroy(gameObject);
-            //return true;
-            //Death();
+            canvas.SetActive(true);
+            Time.timeScale = 0;
+            myText.text = "Congratulations";
         }
         //return false;
     }
 
-    
+
 
     //public void Death()
     //{

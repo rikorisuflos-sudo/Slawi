@@ -34,6 +34,9 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
 
     int currentExp;
     int needExp = 100; // レベル1→2に必要な経験値
+
+    [SerializeField] TextMeshProUGUI myText;
+    [SerializeField] GameObject canvas;
     void Awake()
     {
         //ステータスの初期化
@@ -90,14 +93,10 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
         //死亡判定
         if (hp <= 0)
         {
-            Death();
+            canvas.SetActive(true);
+            Time.timeScale = 0;
+            myText.text = "let's try again.";
         }
-    }
-
-    public void Death()
-    {
-        //Debug.Log("倒された");
-        SceneManager.LoadScene("TitleScene");
     }
 
     void ColorChange()
