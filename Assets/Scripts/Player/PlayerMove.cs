@@ -31,6 +31,8 @@ public class PlayerMove : MonoBehaviour
     const float GroundCatch = 0.53f;
     [SerializeField] LayerMask groundLayer;
 
+    [SerializeField] Collider2D moveArea;//移動制限用コライダー
+
     private InputSystem_Actions _controls;
 
     Keyboard keyboard;
@@ -78,10 +80,35 @@ public class PlayerMove : MonoBehaviour
     {
         float speed = isRunning ? MoveRun : MoveWalk;
 
-        rb.linearVelocity = new Vector2(moveInput.x * walkForce * speed,rb.linearVelocity.y);
+        float moveX = moveInput.x * walkForce * speed;
 
-        if (moveInput.x == 0) return;
-        transform.localScale = new Vector3(moveInput.x, 1, 0);
+        Bounds bounds = moveArea.bounds;
+
+        // 現在位置
+        Vector2 currentPos = rb.position;
+
+        // X方向の次の位置
+        float nextX = currentPos.x + moveX * Time.fixedDeltaTime;
+
+        // X方向の範囲制限
+        if (nextX < bounds.min.x && moveX < 0)
+        {
+            moveX = 0f;
+        }
+        else if (nextX > bounds.max.x && moveX > 0)
+        {
+            moveX = 0f;
+        }
+
+        rb.linearVelocity = new Vector2(
+            moveX,
+            rb.linearVelocity.y
+        );
+
+        if (moveInput.x != 0)
+        {
+            transform.localScale = new Vector3(moveInput.x, 1, 0);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
