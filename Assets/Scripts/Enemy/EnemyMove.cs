@@ -100,7 +100,6 @@ public class EnemyMove : MonoBehaviour
             float currentDistance =
                 Vector3.Distance(movPosition, parentTr.position);
 
-            // 従来の移動範囲チェック
             if (currentDistance >= enemyMileage || turnAround)
             {
                 enemyDir *= -1;
@@ -118,66 +117,8 @@ public class EnemyMove : MonoBehaviour
                     );
             }
         }
-        else
-        {
-            // プレイヤー追跡
-            enemyDir =
-                Mathf.Sign(playerTr.position.x - parentTr.position.x);
-        }
 
         float targetX = enemyDir * walkForce;
-
-        // ==========================================
-        // 移動範囲チェック
-        // ==========================================
-
-        if (moveArea != null)
-        {
-            Bounds bounds = moveArea.bounds;
-
-            // 現在のエネミー中心
-            float currentX = parentRd.position.x;
-
-            // 次のフレームで移動する位置
-            float nextX =
-                currentX + targetX * Time.fixedDeltaTime;
-
-            // 左端に到達
-            if (nextX < bounds.min.x && targetX < 0)
-            {
-                targetX = 0f;
-
-                // 左端で反転させたい場合
-                enemyDir = 1;
-
-                parentTr.localScale =
-                    new Vector3(
-                        Mathf.Abs(parentTr.localScale.x),
-                        parentTr.localScale.y,
-                        1
-                    );
-
-                movPosition = parentTr.position;
-            }
-
-            // 右端に到達
-            else if (nextX > bounds.max.x && targetX > 0)
-            {
-                targetX = 0f;
-
-                // 右端で反転させたい場合
-                enemyDir = -1;
-
-                parentTr.localScale =
-                    new Vector3(
-                        -Mathf.Abs(parentTr.localScale.x),
-                        parentTr.localScale.y,
-                        1
-                    );
-
-                movPosition = parentTr.position;
-            }
-        }
 
         // 移動
         parentRd.linearVelocity =
@@ -186,14 +127,38 @@ public class EnemyMove : MonoBehaviour
 
     bool CheckTurn()
     {
+        // =========================
+        // 移動範囲チェック
+        // =========================
+        if (moveArea != null)
+        {
+            Bounds bounds = moveArea.bounds;
+
+            // エネミーの現在位置
+            float currentX = parentRd.position.x;
+
+            // 移動範囲の端にいるか
+            if (currentX <= bounds.min.x && enemyDir < 0)
+            {
+                return true;
+            }
+
+            if (currentX >= bounds.max.x && enemyDir > 0)
+            {
+                return true;
+            }
+        }
+
+
+        // =========================
         // 壁チェック
-        RaycastHit2D wallFind =
-            Physics2D.Raycast(
-                parentRd.position,
-                new Vector2(enemyDir, 0),
-                wallCheckDistance,
-                groundLayer
-            );
+        // =========================
+        RaycastHit2D wallFind = Physics2D.Raycast(
+            parentRd.position,
+            new Vector2(enemyDir, 0),
+            wallCheckDistance,
+            groundLayer
+        );
 
         Debug.DrawRay(
             parentRd.position,
@@ -206,17 +171,18 @@ public class EnemyMove : MonoBehaviour
             return true;
         }
 
-        // 地面検知
-        Vector2 offset =
-            new Vector2(enemyDir * 0.5f, 0);
 
-        RaycastHit2D holeFind =
-            Physics2D.Raycast(
-                parentRd.position + offset,
-                Vector2.down,
-                checkDistance,
-                groundLayer
-            );
+        // =========================
+        // 地面検知
+        // =========================
+        Vector2 offset = new Vector2(enemyDir * 0.5f, 0);
+
+        RaycastHit2D holeFind = Physics2D.Raycast(
+            parentRd.position + offset,
+            Vector2.down,
+            checkDistance,
+            groundLayer
+        );
 
         if (holeFind.collider == null)
         {
