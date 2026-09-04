@@ -89,6 +89,8 @@ public class SkillRush : MonoBehaviour
         slimeController.IsAttacking = true;
         dashDir = Mathf.Sign(playerTr.transform.localScale.x);
         if (dashDir == 0) dashDir = 1;
+        // d—Í‚Ì‰e‹¿‚ğ–³Œø‰»
+        parentRd.gravityScale = 0f;
         currentState = State.Warp;
     }
 
@@ -158,6 +160,8 @@ public class SkillRush : MonoBehaviour
         //‰Šú‰»
         if (broadcastTime >= 1.0f)
         {
+            // d—Í‚Ì‰e‹¿‚ğ—LŒø‰»
+            parentRd.gravityScale = 1f;
             animator.SetBool("EndRush", false);
             animator.SetBool("StartRush", false);
             hasWarped = false;

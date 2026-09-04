@@ -267,8 +267,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
+  m_sharedMaterial: {fileID: 8815762590457305714, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -404,8 +404,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
+  m_sharedMaterial: {fileID: 8815762590457305714, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 263219572}
   - component: {fileID: 263219576}
   m_Layer: 9
-  m_Name: BoosLizard
+  m_Name: BossLizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11264,7 +11264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 1}
+  m_Color: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 0.49803922}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11845,7 +11845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.24056602, b: 0.24056602, a: 1}
+  m_Color: {r: 1, g: 0.23921567, b: 0.8933713, a: 0.7176471}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12680,7 +12680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 0.49803922}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12755,7 +12755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_Color: {r: 0.9568628, g: 0.92549026, b: 0.8941177, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -16846,9 +16846,9 @@ RectTransform:
   - {fileID: 2040284685}
   - {fileID: 1231416844}
   - {fileID: 172624664}
-  - {fileID: 1779111733}
   - {fileID: 418669318}
   - {fileID: 561238258}
+  - {fileID: 1779111733}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -16906,7 +16906,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_Color: {r: 0.9960785, g: 0.96470594, b: 0.9294118, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17098,6 +17098,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2435861131456054317, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2450183100324924062, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
       propertyPath: moveArea
       value: 
@@ -17106,13 +17110,17 @@ PrefabInstance:
       propertyPath: playerTr
       value: 
       objectReference: {fileID: 387031428}
+    - target: {fileID: 3450039075399264217, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4352136310321498949, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 4.38
       objectReference: {fileID: 0}
     - target: {fileID: 4352136310321498949, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.57
+      value: 2.59
       objectReference: {fileID: 0}
     - target: {fileID: 4352136310321498949, guid: 3187f2112989c5b41bfa6a0e50600864, type: 3}
       propertyPath: m_LocalPosition.z
@@ -17697,8 +17705,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
+  m_sharedMaterial: {fileID: 8815762590457305714, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -20293,7 +20301,7 @@ RectTransform:
   m_GameObject: {fileID: 1779111732}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1411235917}
@@ -20325,8 +20333,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a7e8f622b998f824e81864006f1d5e9a, type: 2}
-  m_sharedMaterial: {fileID: -7897178629426072681, guid: a7e8f622b998f824e81864006f1d5e9a, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
+  m_sharedMaterial: {fileID: 8815762590457305714, guid: 65abd4e48c1183548a74960c0fdac3dd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -20910,7 +20918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_Color: {r: 0.9568628, g: 0.92549026, b: 0.8941177, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

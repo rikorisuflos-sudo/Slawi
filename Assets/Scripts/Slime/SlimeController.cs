@@ -44,7 +44,7 @@ public class SlimeController : MonoBehaviour
 
     private InputSystem_Actions _controls;
 
-    bool isAttacking = true;
+    bool isAttacking = false;
 
     public bool IsAttacking
     {
@@ -72,6 +72,8 @@ public class SlimeController : MonoBehaviour
         keyboard = Keyboard.current;
 
         _controls = new InputSystem_Actions();
+
+        isAttacking = false;
 
         //突進の入力関連設定
         //タイマーの初期化
@@ -136,9 +138,9 @@ public class SlimeController : MonoBehaviour
 
     void Update()
     {
-        rushTimer += Time.fixedDeltaTime;
-        stompTimer += Time.fixedDeltaTime;
-        absorbTimer += Time.fixedDeltaTime;
+        rushTimer += Time.deltaTime;
+        stompTimer += Time.deltaTime;
+        absorbTimer += Time.deltaTime;
 
         rushSlider.value = rushTimer;
         stompSlider.value = stompTimer;

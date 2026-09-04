@@ -64,7 +64,7 @@ public class NormalAttack : MonoBehaviour
                 }
                 break;
         }
-        Debug.Log(currentState);
+        //Debug.Log(currentState);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

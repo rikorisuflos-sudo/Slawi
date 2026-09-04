@@ -24,6 +24,7 @@ public class SceneDirector : MonoBehaviour
     {
         if (sceneAsset != null)
         {
+            Time.timeScale = 1;
             SceneManager.LoadScene(sceneIndex);//ƒV[ƒ“‘JˆÚ
         }
     }

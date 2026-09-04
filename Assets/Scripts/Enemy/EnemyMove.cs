@@ -109,12 +109,12 @@ public class EnemyMove : MonoBehaviour
 
                 movPosition = transform.position;
 
-                parentTr.localScale =
-                    new Vector3(
-                        transform.parent.lossyScale.x * enemyDir,
-                        transform.parent.lossyScale.y,
-                        1
-                    );
+                // スプライトを左右反転
+                parentTr.localScale = new Vector3(
+                    Mathf.Abs(parentTr.localScale.x) * enemyDir,
+                    parentTr.localScale.y,
+                    parentTr.localScale.z
+                );
             }
         }
 
