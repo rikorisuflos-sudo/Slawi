@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,7 +11,7 @@ public class GameStop : MonoBehaviour
     {
         canvas.SetActive(true);
         Time.timeScale = 0;
-        myText.text = "Payse";
+        myText.text = "Pause";
     }
 
     public void Close()

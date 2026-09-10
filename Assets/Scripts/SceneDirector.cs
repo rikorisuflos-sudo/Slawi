@@ -1,31 +1,44 @@
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneDirector : MonoBehaviour
 {
-    int sceneIndex =  -1;
+//    int sceneIndex =  -1;
 
-#if UNITY_EDITOR
-    [SerializeField] SceneAsset sceneAsset;//シーン
-    private void OnValidate()
+//#if UNITY_EDITOR
+//    [SerializeField] SceneAsset sceneAsset;//シーン
+//    private void OnValidate()
+//    {
+//        if(sceneAsset != null)
+//        {
+//            //シーンへのアクセスパス取得
+//            string scenePath = AssetDatabase.GetAssetPath(sceneAsset);
+
+//            //アクセスパスからインデックス番号を取得
+//            sceneIndex = SceneUtility.GetBuildIndexByScenePath(scenePath);
+//        }
+//    }
+//#endif
+//    public void OnClick()
+//    {
+//        if (sceneAsset != null)
+//        {
+//            Time.timeScale = 1;
+//            SceneManager.LoadScene(sceneIndex);//シーン遷移
+//        }
+//    }
+
+    public void Title()
     {
-        if(sceneAsset != null)
-        {
-            //シーンへのアクセスパス取得
-            string scenePath = AssetDatabase.GetAssetPath(sceneAsset);
+        Time.timeScale = 1;
+        SceneManager.LoadScene("TitleScene");
 
-            //アクセスパスからインデックス番号を取得
-            sceneIndex = SceneUtility.GetBuildIndexByScenePath(scenePath);
-        }
     }
-#endif
-    public void OnClick()
+
+    public void Retry()
     {
-        if (sceneAsset != null)
-        {
-            Time.timeScale = 1;
-            SceneManager.LoadScene(sceneIndex);//シーン遷移
-        }
+        Time.timeScale = 1;
+        SceneManager.LoadScene("GameScene");
     }
 }
