@@ -15,18 +15,19 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
     [SerializeField] Color highHpColor;
     [SerializeField] Color midHpColor;
     [SerializeField] Color lowHpColor;
-
+    //元データ
     int baseHp;
     int baseAttackPower;
     int baseDefensePower;
-
+    //現在値
     int hp;
     int attackPower;
     int defensePower;
+    //成長率
+    [SerializeField] float growthHp;
+    [SerializeField] float growthAttackPower;
+    [SerializeField] float growthDefensePower;
 
-    float growthHp;
-    float growthAttackPower;
-    float growthDefensePower;
     public int AttackPower => attackPower;
 
     [SerializeField] int level = 1;
@@ -37,8 +38,13 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
 
     [SerializeField] TextMeshProUGUI myText;
     [SerializeField] GameObject canvas;
+    [SerializeField] GameObject bottun;
     void Awake()
     {
+        //元データの初期化
+        baseHp = playerStatus.HP;
+        baseAttackPower = playerStatus.AttackPower;
+        baseDefensePower = playerStatus.DefensePower;
         //ステータスの初期化
         hp = playerStatus.HP;
         attackPower = playerStatus.AttackPower;
@@ -58,7 +64,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
         }
 
         //Expバーの初期化
-        if (hpSlider != null)
+        if (expSlider != null)
         {
             expSlider.maxValue = needExp;
             expSlider.value = 0;
@@ -95,6 +101,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
         {
             canvas.SetActive(true);
             Time.timeScale = 0;
+            bottun.SetActive(false);
             myText.text = "let's try again.";
         }
     }

@@ -21,6 +21,7 @@ public class BossDirecter : MonoBehaviour, IDamageable
 
     [SerializeField] TextMeshProUGUI myText;
     [SerializeField] GameObject canvas;
+    [SerializeField] GameObject button;
 
     void Awake()
     {
@@ -67,6 +68,7 @@ public class BossDirecter : MonoBehaviour, IDamageable
             Destroy(gameObject);
             canvas.SetActive(true);
             Time.timeScale = 0;
+            button.SetActive(false);
             myText.text = "Congratulations";
         }
         //return false;

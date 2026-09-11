@@ -26,7 +26,8 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] float jumpForce;//ジャンプの高さ
     [SerializeField] float walkForce;//速度の上昇値
-    bool isGrounded = true;//地面に触れているかいないか
+    //bool isGrounded = true;//地面に触れているかいないか
+    [SerializeField] float groundCheckDistance;
 
     const float GroundCatch = 0.53f;
     [SerializeField] LayerMask groundLayer;
@@ -111,30 +112,30 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        //地面から離れたかどうか
-        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
-        {
-            foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
-            {
-                // 下から接触 → 地面
-                if (contact.normal.y > GroundCatch)
-                {
-                    isGrounded = true;
-                }
-            }
-        }
+    //void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    //地面から離れたかどうか
+    //    if (((1 << collision.gameObject.layer) & groundLayer) != 0)
+    //    {
+    //        foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
+    //        {
+    //            // 下から接触 → 地面
+    //            if (contact.normal.y > GroundCatch)
+    //            {
+    //                isGrounded = true;
+    //            }
+    //        }
+    //    }
 
-    }
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        //地面から離れたかどうか
-        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
-        {
-            isGrounded = false;
-        }
-    }
+    //}
+    //void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    //地面から離れたかどうか
+    //    if (((1 << collision.gameObject.layer) & groundLayer) != 0)
+    //    {
+    //        isGrounded = false;
+    //    }
+    //}
 
     private void OnMove(InputAction.CallbackContext context)
     {
@@ -151,10 +152,14 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void OnJump(InputAction.CallbackContext context)
     {
-        if (!isGrounded) Debug.Log("空中にいます");
-        if (isGrounded)
-        {
-            Debug.Log("ジャンプ");
+        //if (!isGrounded) Debug.Log("空中にいます");
+        //if (isGrounded)
+        //{
+        // 足元に地面があるか確認
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,new Vector2(0, -1), groundCheckDistance,groundLayer);
+        if(hit.collider != null) { 
+        Debug.Log("ジャンプ");
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             //DebugLogger.Log("ジャンプ");
         }
