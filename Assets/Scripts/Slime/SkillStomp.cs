@@ -12,7 +12,7 @@ public class SkillStomp : MonoBehaviour
     [SerializeField] SlimeController slimeController;
     [SerializeField] Animator animator;
     [SerializeField] Transform player;//プレイヤー
-    [SerializeField] Player playerStatus;
+    [SerializeField] PlayerDirecter playerStatus;
 
     [SerializeField] float stompSpeed = 20f;//攻撃速度
     [SerializeField] float stompDistance = 30f;//プレイヤーの位置よりどれだけ上にワープするか
@@ -70,7 +70,7 @@ public class SkillStomp : MonoBehaviour
         {
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-            if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+            if (damageable != null) damageable.Damage(Mathf.FloorToInt(playerStatus.AttackPower * 1.5f));
         }
     }
 

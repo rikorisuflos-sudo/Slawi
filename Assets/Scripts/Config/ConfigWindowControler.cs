@@ -35,7 +35,7 @@ public class ConfigWindowController : MonoBehaviour
         if (systemManager != null) systemManager.SaveSettings();
         if (audioManager != null) audioManager.SaveSettings();
         if (graphicsManager != null) graphicsManager.SaveSettings();
-        if (keyConfigManager != null) keyConfigManager.SaveKeyBinds();
+        //if (keyConfigManager != null) keyConfigManager.SaveKeyBinds();
 
         PlayerPrefs.Save();
         CloseWindow();
@@ -45,7 +45,7 @@ public class ConfigWindowController : MonoBehaviour
     private void OnCancelClicked()
     {
         //入力待ち中にキャンセルされた場合の安全対策
-        if (keyConfigManager != null) keyConfigManager.CancelRebind();
+        //if (keyConfigManager != null) keyConfigManager.CancelRebind();
 
         CloseWindow();
     }
@@ -56,7 +56,7 @@ public class ConfigWindowController : MonoBehaviour
         if (systemManager != null) systemManager.ResetToDefault();
         if (audioManager != null) audioManager.ResetToDefault();
         if (graphicsManager != null) graphicsManager.ResetToDefault();
-        if (keyConfigManager != null) keyConfigManager.ResetToDefault();
+        //if (keyConfigManager != null) keyConfigManager.ResetToDefault();
     }
 
     //設定画面を閉じてポーズ画面に戻る

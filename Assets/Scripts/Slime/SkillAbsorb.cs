@@ -9,7 +9,7 @@ public class SkillAbsorb : MonoBehaviour
     [SerializeField] SlimeController slimeController;
 
     [SerializeField] Transform playerTr;//プレイヤー
-    [SerializeField] Player playerStatus;
+    [SerializeField] PlayerDirecter playerStatus;
     [SerializeField] GameObject playerTracking;//プレイヤー追従
 
     bool hasWarped = false;//ワープしたか
@@ -100,7 +100,7 @@ public class SkillAbsorb : MonoBehaviour
 
             //ダメージ処理
             fireBallSc = newFireBoal.GetComponent<FireBall>();
-            fireBallSc.SetParameter(playerStatus.AttackPower, Angle ,dir,tagetLayer);
+            fireBallSc.SetParameter(Mathf.FloorToInt(playerStatus.AttackPower * 1.5f), Angle ,dir,tagetLayer);
 
         currentState = State.Recovery;
     }

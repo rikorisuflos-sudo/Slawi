@@ -14,7 +14,7 @@ public class NormalAttack : MonoBehaviour
 
     [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Collider2D playerCol;
-    [SerializeField] Player playerStatus;
+    [SerializeField] PlayerDirecter playerStatus;
 
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向

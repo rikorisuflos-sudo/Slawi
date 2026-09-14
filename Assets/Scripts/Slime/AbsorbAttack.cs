@@ -11,7 +11,7 @@ public class AbsorbAttack : MonoBehaviour
 
     [SerializeField] Transform playerTr;//プレイヤー
     [SerializeField] Collider2D playerCol;
-    [SerializeField] Player playerStatus;
+    [SerializeField] PlayerDirecter playerStatus;
 
     [SerializeField] float rushSpeed;//攻撃速度
     float dashDir = 0;//ダッシュ方向
@@ -79,7 +79,7 @@ public class AbsorbAttack : MonoBehaviour
             Debug.Log("IAbsorbleを検出：" + absorble.GetType().Name);
             if (absorble != null) absorble.Absorb();
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-            if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+            if (damageable != null) damageable.Damage(Mathf.FloorToInt(playerStatus.AttackPower * 0.7f));
 
             //enemyHp = collision.gameObject.GetComponent<EnemyDirecter>().enemyHp;
 

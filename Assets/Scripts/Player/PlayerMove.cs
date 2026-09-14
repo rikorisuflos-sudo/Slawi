@@ -38,6 +38,9 @@ public class PlayerMove : MonoBehaviour
 
     Keyboard keyboard;
 
+    private const string RebindSaveKey = "KeyConfig";
+
+
     void Awake()
     {
         //初期化
@@ -45,8 +48,11 @@ public class PlayerMove : MonoBehaviour
         keyboard = Keyboard.current;
 
         _controls = new InputSystem_Actions();
+
+        LoadBindingOverrides();
     }
 
+    
     private void OnEnable()
     {
         _controls.Enable();
@@ -136,6 +142,16 @@ public class PlayerMove : MonoBehaviour
     //        isGrounded = false;
     //    }
     //}
+
+    private void LoadBindingOverrides()
+    {
+        if (PlayerPrefs.HasKey(RebindSaveKey))
+        {
+            string json = PlayerPrefs.GetString(RebindSaveKey);
+
+            _controls.asset.LoadBindingOverridesFromJson(json);
+        }
+    }
 
     private void OnMove(InputAction.CallbackContext context)
     {

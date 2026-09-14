@@ -64,6 +64,10 @@ public class SlimeController : MonoBehaviour
         } // setter‚Ì•”•ª
     }
 
+    private const string RebindSaveKey = "KeyConfig";
+
+    
+
 
     private void Awake()
     {
@@ -72,6 +76,8 @@ public class SlimeController : MonoBehaviour
         keyboard = Keyboard.current;
 
         _controls = new InputSystem_Actions();
+
+        LoadBindingOverrides();
 
         isAttacking = false;
 
@@ -145,6 +151,15 @@ public class SlimeController : MonoBehaviour
         rushSlider.value = rushTimer;
         stompSlider.value = stompTimer;
         absorbSlider.value = absorbTimer;
+    }
+
+    private void LoadBindingOverrides()
+    {
+        if (PlayerPrefs.HasKey(RebindSaveKey))
+        {
+            string json = PlayerPrefs.GetString(RebindSaveKey);
+            _controls.asset.LoadBindingOverridesFromJson(json);
+        }
     }
 
     void OnNormalAttack(InputAction.CallbackContext context)

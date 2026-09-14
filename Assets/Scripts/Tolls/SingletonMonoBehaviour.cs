@@ -15,6 +15,8 @@ public class SingletoMonoBehaviour<T> : MonoBehaviour where T : SingletoMonoBeha
     {
         if (I == null)
         {
+            // ƒV[ƒ“‚ğˆÚ“®‚µ‚Ä‚àc‚·
+            DontDestroyOnLoad(gameObject);
             I = this as T;
             I.Init();
             return;

@@ -14,7 +14,7 @@ public class SkillRush : MonoBehaviour
     [SerializeField] Animator animator;
 
     [SerializeField] Transform playerTr;//プレイヤー
-    [SerializeField] Player playerStatus;
+    [SerializeField] PlayerDirecter playerStatus;
 
     [SerializeField] float rushDistance = 20f;//攻撃距離
     [SerializeField] float rushSpeed;//攻撃速度
@@ -75,7 +75,7 @@ public class SkillRush : MonoBehaviour
         {
             isHit = true;
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-            if (damageable != null) damageable.Damage(playerStatus.AttackPower);
+            if (damageable != null) damageable.Damage(Mathf.FloorToInt(playerStatus.AttackPower * 1.5f));
             Debug.Log("エネミーに衝突した");
         }
     }
