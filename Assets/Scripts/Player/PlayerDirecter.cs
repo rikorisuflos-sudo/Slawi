@@ -36,9 +36,12 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
     int currentExp;
     int needExp = 100; // レベル1→2に必要な経験値
 
+    //負け画面呼び出し
     [SerializeField] TextMeshProUGUI myText;
     [SerializeField] GameObject canvas;
     [SerializeField] GameObject bottun;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip audioClip;
     void Awake()
     {
         //元データの初期化
@@ -99,10 +102,14 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
         //死亡判定
         if (hp <= 0)
         {
+            //負け画面呼び出し
             canvas.SetActive(true);
             Time.timeScale = 0;
+            audioSource.Stop();
             bottun.SetActive(false);
             myText.text = "let's try again.";
+            audioSource.clip = audioClip;
+            audioSource.Play();
         }
     }
 

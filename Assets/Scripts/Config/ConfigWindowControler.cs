@@ -6,7 +6,6 @@ public class ConfigWindowController : MonoBehaviour
 {
     [SerializeField] private SystemManager systemManager;
     [SerializeField] private AudioManager audioManager;
-    [SerializeField] private GraphicsManager graphicsManager;
     [SerializeField] private ConfigKeyConfigManager keyConfigManager;
 
     [Header("ëÄçÏÉ{É^Éì")]
@@ -34,7 +33,6 @@ public class ConfigWindowController : MonoBehaviour
     {
         if (systemManager != null) systemManager.SaveSettings();
         if (audioManager != null) audioManager.SaveSettings();
-        if (graphicsManager != null) graphicsManager.SaveSettings();
         //if (keyConfigManager != null) keyConfigManager.SaveKeyBinds();
 
         PlayerPrefs.Save();
@@ -55,7 +53,7 @@ public class ConfigWindowController : MonoBehaviour
     {
         if (systemManager != null) systemManager.ResetToDefault();
         if (audioManager != null) audioManager.ResetToDefault();
-        if (graphicsManager != null) graphicsManager.ResetToDefault();
+        
         //if (keyConfigManager != null) keyConfigManager.ResetToDefault();
     }
 

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyName: Lizard
   repop: 1
-  hp: 50
-  attackPower: 10
+  hp: 35
+  attackPower: 7
   defensePower: 5
   walkForce: 2
   viewDistance: 10

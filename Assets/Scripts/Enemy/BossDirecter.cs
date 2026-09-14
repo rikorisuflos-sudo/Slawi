@@ -19,9 +19,12 @@ public class BossDirecter : MonoBehaviour, IDamageable
     [SerializeField] SlimeController slimeController;
     [SerializeField] PlayerDirecter playerDirecter;
 
+    //クリア画面呼び出し
     [SerializeField] TextMeshProUGUI myText;
     [SerializeField] GameObject canvas;
     [SerializeField] GameObject button;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip audioClip;
 
     void Awake()
     {
@@ -66,10 +69,14 @@ public class BossDirecter : MonoBehaviour, IDamageable
             Debug.Log("倒された");
             playerDirecter.AddExp(enemyStatus.Exp);
             Destroy(gameObject);
+            //クリア画面呼び出し
             canvas.SetActive(true);
             Time.timeScale = 0;
+            audioSource.Stop();
             button.SetActive(false);
             myText.text = "Congratulations";
+            audioSource.clip = audioClip;
+            audioSource.Play();
         }
         //return false;
     }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   playerName: player
   hp: 60
-  attackPower: 10
+  attackPower: 8
   defensePower: 5
   walkForce: 13
   jumpForce: 35

@@ -7,6 +7,9 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
     // 任意の処理が実行済みか
     private bool isExecuted = false;
 
+    [SerializeField] AudioSource audio;
+    float volume;
+
     /// <summary>
     /// GameManager生成時に1回だけ実行
     /// </summary>
@@ -25,6 +28,8 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
         Debug.Log("ゲーム起動時の処理");
 
         // ゲーム起動時に行いたい処理
+        audio.Play();
+        audio.volume = volume;
     }
 
     /// <summary>
@@ -42,5 +47,7 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
         Debug.Log("任意のタイミングで1回だけ実行");
 
         // 任意のタイミングで行いたい処理
+        audio.Play();
+        audio.volume = volume;
     }
 }

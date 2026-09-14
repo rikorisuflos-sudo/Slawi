@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBall
   rb: {fileID: -1142018920601110316}
-  movwForce: 8
-  smooth: 5
+  movwForce: 5
+  smooth: 3.5
   moveDistance: 10
   groundLayer:
     serializedVersion: 2
