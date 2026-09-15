@@ -1,17 +1,17 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class BossActionLottery : MonoBehaviour
 {
     [SerializeField] List<MonoBehaviour> scriptList = new List<MonoBehaviour>();
 
-    [SerializeField] Enemy enemyStatus;//ƒGƒlƒ~[‚ÌƒXƒNƒŠƒvƒ^ƒuƒ‹ƒIƒuƒWƒFƒNƒg
-    float attackDistance;//UŒ‚”ÍˆÍ
-    float attackAngle;//UŒ‚”ÍˆÍ
+    [SerializeField] Enemy enemyStatus;//ï¿½Gï¿½lï¿½~ï¿½[ï¿½ÌƒXï¿½Nï¿½ï¿½ï¿½vï¿½^ï¿½uï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½g
+    float attackDistance;//ï¿½Uï¿½ï¿½ï¿½Íˆï¿½
+    float attackAngle;//ï¿½Uï¿½ï¿½ï¿½Íˆï¿½
 
-    float enemyDir;//ƒGƒlƒ~[‚ÌŒü‚«
+    float enemyDir;//ï¿½Gï¿½lï¿½~ï¿½[ï¿½ÌŒï¿½ï¿½ï¿½
 
-    [SerializeField] Transform playerTr;//ƒvƒŒƒCƒ„[ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€
+    [SerializeField] Transform playerTr;//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½tï¿½Hï¿½[ï¿½ï¿½
 
     bool isAttacking = false;
     public bool IsAttacking
@@ -20,7 +20,7 @@ public class BossActionLottery : MonoBehaviour
     }
     void Start()
     {
-        //‰Šú‰»
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (enemyStatus != null)
         {
             this.attackDistance = enemyStatus.AttackDistance;
@@ -29,7 +29,7 @@ public class BossActionLottery : MonoBehaviour
     }
     private void OnEnable()
     {
-        //”­ŽË•ûŒü‚ðŽæ“¾
+        //ï¿½ï¿½ï¿½Ë•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
         enemyDir = Mathf.Sign(transform.parent.localScale.x);
         isAttacking = false;
 
@@ -53,39 +53,39 @@ public class BossActionLottery : MonoBehaviour
 
     void ActivateRandomScript()
     {
-        // ƒŠƒXƒg‚ª‹ó‚Ìê‡‚Íˆ—‚µ‚È‚¢
+        // ï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½ï¿½Ìê‡ï¿½Íï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
         if (scriptList == null || scriptList.Count == 0) return;
 
-        // 2. ƒ‰ƒ“ƒ_ƒ€‚ÈƒCƒ“ƒfƒbƒNƒX‚ð1‚ÂŒˆ’è
+        // 2. ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ÈƒCï¿½ï¿½ï¿½fï¿½bï¿½Nï¿½Xï¿½ï¿½1ï¿½ÂŒï¿½ï¿½ï¿½
         int randomIndex = Random.Range(0, scriptList.Count);
 
-        // 3. ‘I‚Î‚ê‚½ƒXƒNƒŠƒvƒg‚ðŽæ‚èo‚µ‚Ä—LŒø‰»
+        // 3. ï¿½Iï¿½Î‚ê‚½ï¿½Xï¿½Nï¿½ï¿½ï¿½vï¿½gï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Ä—Lï¿½ï¿½ï¿½ï¿½
         MonoBehaviour chosenScript = scriptList[randomIndex];
         if (chosenScript != null)
         {
             isAttacking = true;
             chosenScript.enabled = true;
-            Debug.Log($"{chosenScript.GetType().Name} ‚ð—LŒø‰»‚µ‚Ü‚µ‚½B");
+            Debug.Log($"{chosenScript.GetType().Name} ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B");
         }
     }
 
     bool CallAttack()
     {
-        //ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ðŽæ“¾
+        //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
         Vector2 direction = (playerTr.position - transform.parent.position);
-        //ƒvƒŒƒCƒ„[‚Ü‚Å‚Ì‹——£‚ðŽZo
+        //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ü‚Å‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½o
         float distance = direction.magnitude;
-        //  ‹——£ƒ`ƒFƒbƒN
+        //  ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
         if (distance > attackDistance)
         {
             return false;
         }
 
-        //ƒGƒlƒ~[‚Ì•ûŒüŽæ“¾
+        //ï¿½Gï¿½lï¿½~ï¿½[ï¿½Ì•ï¿½ï¿½ï¿½ï¿½æ“¾
         Vector2 facingDir = new Vector2(enemyDir, 0);
-        //  ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ÆƒGƒlƒ~[‚ÌˆÊ’u‚ÌŠp“x·
+        //  ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌˆÊ’uï¿½ÆƒGï¿½lï¿½~ï¿½[ï¿½ÌˆÊ’uï¿½ÌŠpï¿½xï¿½ï¿½
         float angle = Vector2.Angle(facingDir, direction);
-        //angle‚ªŽ‹–ìŠp“à‚ÉŽû‚Ü‚é‚©‚Ç‚¤‚©
+        //angleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ÉŽï¿½ï¿½Ü‚é‚©ï¿½Ç‚ï¿½ï¿½ï¿½
         if (angle > attackAngle / 2f)
         {
             return false;

@@ -41,4 +41,13 @@ public class SceneDirector : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene("GameScene");
     }
+
+    public void Exit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }

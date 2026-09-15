@@ -55,10 +55,10 @@ public class FireBallRandomShot : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+
 
         //アニメーションの再生位置を示す（開始0,終了１）
-       　float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        float broadcastTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
 
         if (broadcastTime >= 1.0f)
         {

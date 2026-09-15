@@ -134,35 +134,44 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
     public void AddExp(int exp)
     {
         currentExp += exp;
-        expSlider.value = currentExp;
-
-        Debug.Log(currentExp);
 
         while (currentExp >= needExp)
         {
             currentExp -= needExp;
             LevelUp();
         }
+
+        // レベルアップ処理が全部終わった後にEXPバーを更新
+        expSlider.maxValue = needExp;
+        expSlider.value = currentExp;
+
+        Debug.Log($"現在EXP：{currentExp} / {needExp}");
     }
 
     void LevelUp()
     {
         level++;
-        levelText.text = Convert.ToString(level);
 
-        expSlider.maxValue = needExp;
-        expSlider.value = currentExp;
+        levelText.text = level.ToString();
 
+        // 次のレベルに必要な経験値を先に計算
+        needExp = 50 * level * level + 100;
+
+        // ステータス上昇
         hp = Mathf.FloorToInt(baseHp * (1 + growthHp * (level - 1)));
         attackPower = Mathf.FloorToInt(baseAttackPower * (1 + growthAttackPower * (level - 1)));
         defensePower = Mathf.FloorToInt(baseDefensePower * (1 + growthDefensePower * (level - 1)));
 
+        // HPバー更新
         hpSlider.maxValue = hp;
         hpSlider.value = hp;
+
+        // EXPバー更新
+        expSlider.maxValue = needExp;
+        expSlider.value = currentExp;
+
         ColorChange();
 
-        needExp = 50 * level * level + 100;
-
-        Debug.Log($"レベル{level}になりました！");
+        Debug.Log($"レベル{level}になりました！ 次の必要EXP：{needExp}");
     }
 }

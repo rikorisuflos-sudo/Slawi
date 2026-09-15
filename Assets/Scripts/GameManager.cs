@@ -71,6 +71,8 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
 
         Debug.Log("任意のタイミングで1回だけ実行");
 
+        config.SetActive(false);
+
         // 任意のタイミングで行いたい処理
         audioSource = FindFirstObjectByType<AudioSource>();
 

@@ -36,7 +36,7 @@ public class FireBallFanShot : MonoBehaviour
         animator.SetBool("Shot", true);
     }
 
-   
+
 
     private void OnDisable()
     {
@@ -57,7 +57,7 @@ public class FireBallFanShot : MonoBehaviour
             enabled = false;
             //if (!callAttack)
             //{
-                //gameObject.SetActive(false);
+            //gameObject.SetActive(false);
             //}
         }
     }
