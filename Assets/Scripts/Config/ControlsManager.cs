@@ -100,6 +100,11 @@ public class ConfigKeyConfigManager : MonoBehaviour
     {
         // Binding‚Ìã‘‚«‚ğ‘S‚Ä‰ğœ‚·‚é
         _action?.RemoveAllBindingOverrides();
+
+        // •Û‘¶‚µ‚Ä‚¢‚éOverride‚àíœ
+        PlayerPrefs.DeleteKey(RebindSaveKey);
+        PlayerPrefs.Save();
+
         RefreshDisplay();
     }
 

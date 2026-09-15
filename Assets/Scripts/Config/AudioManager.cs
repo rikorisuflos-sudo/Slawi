@@ -11,6 +11,9 @@ public class AudioManager : MonoBehaviour
     private const float MaxVolume = 1.0f;
     private const float MinVolume = 0.0f;
 
+    [SerializeField] GameManager gameManager;
+    [SerializeField] AudioSource audioSource;
+
     float volume;
     public float Volume{get{ return volume; }}
 
@@ -22,11 +25,19 @@ public class AudioManager : MonoBehaviour
     {
         itemBGMVal.maxValue = MaxVolume;
         itemBGMVal.minValue = MinVolume;
+        itemBGMVal.value = DefaultVolume;
+
+        audioSource.volume = itemBGMVal.value;
+        gameManager.Volume = itemBGMVal.value;
     }
 
-    public void OnValueChanged()
+    public void OnValueChanged(float value)
     {
         volume = itemBGMVal.value;
+
+        audioSource.volume = itemBGMVal.value;
+        gameManager.Volume = itemBGMVal.value;
+        Debug.Log(itemBGMVal.value);
     }
     //private void OnEnable()
     //{

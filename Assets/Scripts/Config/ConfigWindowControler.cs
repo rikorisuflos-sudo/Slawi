@@ -31,8 +31,8 @@ public class ConfigWindowController : MonoBehaviour
     //€–Úİ’è‚ğ•Û‘¶
     private void OnConfirmClicked()
     {
-        if (systemManager != null) systemManager.SaveSettings();
-        if (audioManager != null) audioManager.SaveSettings();
+        //if (systemManager != null) systemManager.SaveSettings();
+        //if (audioManager != null) audioManager.SaveSettings();
         //if (keyConfigManager != null) keyConfigManager.SaveKeyBinds();
 
         PlayerPrefs.Save();
@@ -51,8 +51,8 @@ public class ConfigWindowController : MonoBehaviour
     //€–Ú‚Ìİ’è‚ğ‘S‚Ä‰Šú‰»
     private void OnResetClicked()
     {
-        if (systemManager != null) systemManager.ResetToDefault();
-        if (audioManager != null) audioManager.ResetToDefault();
+        //if (systemManager != null) systemManager.ResetToDefault();
+        //if (audioManager != null) audioManager.ResetToDefault();
         
         //if (keyConfigManager != null) keyConfigManager.ResetToDefault();
     }

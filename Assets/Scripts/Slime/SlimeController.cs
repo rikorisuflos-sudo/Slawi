@@ -164,14 +164,17 @@ public class SlimeController : MonoBehaviour
 
     void OnNormalAttack(InputAction.CallbackContext context)
     {
-        if (!isAttacking && normalAttack.activeSelf) return;
+        if (isAttacking) return;
+        //if (normalAttack.activeSelf) return;
         normalAttack.SetActive(true); // オブジェクトを有効化
         normalAttackScript.StartAttack();
     }
 
     void OnAbsorbAttack(InputAction.CallbackContext context)
     {
-        if (!isAttacking && absorbAttack.activeSelf) return;
+
+        if (isAttacking) return;
+        //if (!isAttacking && absorbAttack.activeSelf) return;
         absorbAttack.SetActive(true); // オブジェクトを有効化
         absorbAttackScript.StartAttack();
     }
