@@ -58,6 +58,7 @@ public class SlimeController : MonoBehaviour
         set
         {
             absorbSkill = value;
+            if (absorbSkill == AbsorbSkill.None) return;
             absorbSlider.maxValue = absorbDelay;
             absorbSlider.value = absorbTimer;
             absorbImage.sprite = fireBallSprite;

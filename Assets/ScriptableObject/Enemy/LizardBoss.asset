@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1e35acf3cab5c4c8ca1e770511c2f8, type: 3}
+  m_Name: LizardBoss
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  enemyName: Lizard
+  repop: 1
+  hp: 80
+  attackPower: 7
+  defensePower: 5
+  walkForce: 2
+  viewDistance: 10
+  viewAngle: 60
+  attackDistance: 10
+  attackAngle: 60
+  exp: 50
+  absorbSkill: 0

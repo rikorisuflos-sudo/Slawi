@@ -18,7 +18,7 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
     // 非表示にしたいレイヤー名
     [SerializeField] LayerMask layerName;
 
-    float volume;
+    float volume = 0.5f;
     bool indication;
 
     public float Volume { set { volume = value; } }
@@ -39,10 +39,12 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
         GameStart();
         //volume = audioManager.Volume;
         //indication = systemManager.IsOn;
-    }
+        Debug.Log(volume);
+     }
     private void Start()
     {
         config.SetActive(false);
+
         
     }
     /// <summary>
@@ -55,33 +57,35 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
         // ゲーム起動時に行いたい処理
         ChangeVolume();
         SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.activeSceneChanged += OnSceneLoaded;
     }
 
     /// <summary>
     /// 任意のタイミングで1回だけ実行
     /// </summary>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //void OnSceneLoaded(Scene scene, Scene nextScene)
     {
-        if (isExecuted)
-        {
-            return;
-        }
+        //if (isExecuted)
+        //{
+        //    return;
+        //}
 
         isExecuted = true;
 
         Debug.Log("任意のタイミングで1回だけ実行");
 
-        config.SetActive(false);
+        //config.SetActive(false);
 
         // 任意のタイミングで行いたい処理
         audioSource = FindFirstObjectByType<AudioSource>();
-
+        Debug.Log(volume);
         ChangeVolume();
     }
 
     void ChangeVolume()
     {
-        audioSource.Play();
+        //audioSource.Play();
         audioSource.volume = volume;
     }
 }

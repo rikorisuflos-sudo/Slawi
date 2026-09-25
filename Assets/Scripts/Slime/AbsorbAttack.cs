@@ -76,7 +76,7 @@ public class AbsorbAttack : MonoBehaviour
         {
             isHit = true;
             IAbsorble absorble = collision.gameObject.GetComponent<IAbsorble>();
-            Debug.Log("IAbsorbleを検出：" + absorble.GetType().Name);
+            //Debug.Log("IAbsorbleを検出：" + absorble.GetType().Name);
             if (absorble != null) absorble.Absorb();
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null) damageable.Damage(Mathf.FloorToInt(playerStatus.AttackPower * 0.7f));
