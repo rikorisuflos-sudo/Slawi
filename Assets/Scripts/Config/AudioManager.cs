@@ -14,8 +14,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] GameManager gameManager;
     [SerializeField] AudioSource audioSource;
 
-    float volume;
-    public float Volume{get{ return volume; }}
+    //float volume;
+    //public float Volume{get{ return volume; }}
 
     //[SerializeField] private Slider itemMasterVal;
     [SerializeField] private Slider itemBGMVal;
@@ -23,19 +23,22 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("èâä˙âª");
+        if(gameManager == null) gameManager = FindFirstObjectByType<GameManager>();
+
         itemBGMVal.maxValue = MaxVolume;
         itemBGMVal.minValue = MinVolume;
-        itemBGMVal.value = DefaultVolume;
+        itemBGMVal.value = gameManager.Volume;
 
-        audioSource.volume = itemBGMVal.value;
-        gameManager.Volume = itemBGMVal.value;
+        //audioSource.volume = itemBGMVal.value;
+        //gameManager.Volume = itemBGMVal.value;
     }
 
     public void OnValueChanged(float value)
     {
-        volume = itemBGMVal.value;
+        //volume = itemBGMVal.value;
 
-        audioSource.volume = itemBGMVal.value;
+        //audioSource.volume = itemBGMVal.value;
         gameManager.Volume = itemBGMVal.value;
         Debug.Log(itemBGMVal.value);
     }
