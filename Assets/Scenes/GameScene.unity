@@ -35936,6 +35936,7 @@ GameObject:
   - component: {fileID: 2054674705}
   - component: {fileID: 2054674709}
   - component: {fileID: 2054674710}
+  - component: {fileID: 2054674711}
   m_Layer: 0
   m_Name: FireBallShot
   m_TagString: Untagged
@@ -35950,7 +35951,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054674704}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb91f4e8fd7586a40b16add5b51b84b0, type: 3}
   m_Name: 
@@ -36072,7 +36073,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054674704}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a1be961aac67714a840d88097aa1e45, type: 3}
   m_Name: 
@@ -36107,6 +36108,29 @@ MonoBehaviour:
   - {fileID: 2054674709}
   enemyStatus: {fileID: 11400000, guid: 8a66e21382c23ed45b329dd640ca84bc, type: 2}
   playerTr: {fileID: 387031428}
+--- !u!114 &2054674711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054674704}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87dbe768f0788c142be4381b19178b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossFireBallShot
+  enemyStatus: {fileID: 11400000, guid: 8a66e21382c23ed45b329dd640ca84bc, type: 2}
+  animator: {fileID: 2054674707}
+  move: {fileID: 719418187}
+  fireBall: {fileID: 8804492111596663323, guid: abeb94cbef5859e4f94c4e2e9768f806, type: 3}
+  playerTr: {fileID: 387031428}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &2066767162
 GameObject:
   m_ObjectHideFlags: 0

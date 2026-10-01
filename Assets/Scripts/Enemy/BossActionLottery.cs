@@ -36,11 +36,7 @@ public class BossActionLottery : MonoBehaviour
     {
         //エネミーが今向いている方向
         enemyDir = Mathf.Sign(transform.parent.localScale.x);
-        Debug.Log(
-        $"【BossActionLottery OnEnable】" +
-        $"isAttacking={isAttacking}, " +
-        $"HasActiveAttack={HasActiveAttack()}"
-    );
+      
         if (!HasActiveAttack())
         {
             IsAttacking = false;
