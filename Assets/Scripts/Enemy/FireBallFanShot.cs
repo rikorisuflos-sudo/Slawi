@@ -13,13 +13,9 @@ public class FireBallFanShot : MonoBehaviour
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
     float angle = 50.0f;
-    float quantity;
 
     [SerializeField] Transform playerTr;//プレイヤートランスフォーム
     [SerializeField] LayerMask tagetLayer;
-
-    float attackDistance;//攻撃範囲
-    float attackAngle;//攻撃範囲
 
     float enemyDir;//エネミーの向き
     [SerializeField] LayerMask groundLayer;//地面レイヤー
@@ -40,8 +36,8 @@ public class FireBallFanShot : MonoBehaviour
 
     private void OnDisable()
     {
-        animator.SetBool("Shot", false);
         move.SetActive(true);
+        animator.SetBool("Shot", false);
     }
 
     void FixedUpdate()
@@ -68,7 +64,7 @@ public class FireBallFanShot : MonoBehaviour
         while (count < 5)
         {
             //FireBall生成
-            Debug.Log("火の玉" + count);
+            //Debug.Log("火の玉" + count);
             GameObject newFireBoal = Instantiate(fireBall, new Vector3(parentTr.position.x + (0.2f * enemyDir), parentTr.position.y, -1), Quaternion.Euler(-enemyDir, 0, angle * enemyDir));
 
             //FireBallSc初期化

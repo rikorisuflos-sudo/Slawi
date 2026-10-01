@@ -30,7 +30,7 @@ public class BossDirecter : MonoBehaviour, IDamageable
     {
         //スクリプタブルオブジェクトで初期化
         enemyHp = enemyStatus.Hp;
-        Debug.Log(enemyHp);
+        //Debug.Log(enemyHp);
 
         //Hpバーの初期化
         if (hpSlider != null)
@@ -61,7 +61,7 @@ public class BossDirecter : MonoBehaviour, IDamageable
         enemyHp -= Mathf.FloorToInt(attackPower - enemyStatus.DefensePower);
         hpSlider.value = enemyHp;
         ColorChange();
-        Debug.Log("敵：" + enemyHp);
+        //Debug.Log("敵：" + enemyHp);
 
         //死亡判定
         if (enemyHp <= 0)

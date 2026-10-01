@@ -15,7 +15,6 @@ public class PlayerTracking : MonoBehaviour
     [SerializeField] float followDistance; // ‚±‚Ì‹——£‚æ‚è—£‚ê‚½‚ç’Ç‚¤
     [SerializeField] float stopDistance;   // ‚±‚Ì‹——£‚Ü‚Å—ˆ‚½‚ç~‚Ü‚é
     [SerializeField] float warpDistance; // ‚±‚Ì‹——£‚æ‚è—£‚ê‚½‚ç’Ç‚¤
-    [SerializeField] float smooth = 5f;           // ‚Ê‚é‚Á‚Æ‹ï‡
 
     [SerializeField] float wallCheckDistance;//•ÇŒŸ’m”ÍˆÍ
     [SerializeField] LayerMask groundLayer;
@@ -29,7 +28,6 @@ public class PlayerTracking : MonoBehaviour
 
     BoundedQueue<Vector3> vector3s = new BoundedQueue<Vector3>(20);
     Vector3 plaerPos = Vector3.zero;
-    [SerializeField] float recordInterval = 0.2f;
 
 
     void Start()

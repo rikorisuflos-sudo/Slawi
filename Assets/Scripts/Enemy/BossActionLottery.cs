@@ -16,7 +16,12 @@ public class BossActionLottery : MonoBehaviour
     bool isAttacking = false;
     public bool IsAttacking
     {
-        set { isAttacking = value; }
+        get => isAttacking;
+        set
+        {
+            Debug.Log($"IsAttacking: {isAttacking} → {value}");
+            isAttacking = value;
+        }
     }
     void Start()
     {
@@ -29,11 +34,18 @@ public class BossActionLottery : MonoBehaviour
     }
     private void OnEnable()
     {
-        //���˕������擾
+        //エネミーが今向いている方向
         enemyDir = Mathf.Sign(transform.parent.localScale.x);
-        isAttacking = false;
-
-        ActivateRandomScript();
+        Debug.Log(
+        $"【BossActionLottery OnEnable】" +
+        $"isAttacking={isAttacking}, " +
+        $"HasActiveAttack={HasActiveAttack()}"
+    );
+        if (!HasActiveAttack())
+        {
+            IsAttacking = false;
+            ActivateRandomScript();
+        }
     }
 
     private void FixedUpdate()
@@ -42,50 +54,72 @@ public class BossActionLottery : MonoBehaviour
 
         if (!callAttack)
         {
+            Debug.Log("攻撃範囲外 → BossActionLottery停止");
             gameObject.SetActive(false);
             return;
         }
+
         if (!isAttacking)
         {
+            Debug.Log("攻撃可能 → ランダム攻撃選択");
             ActivateRandomScript();
         }
     }
 
+    bool HasActiveAttack()
+    {
+        foreach (MonoBehaviour script in scriptList)
+        {
+            if (script != null && script.enabled)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void ActivateRandomScript()
     {
-        // ���X�g����̏ꍇ�͏������Ȃ�
-        if (scriptList == null || scriptList.Count == 0) return;
+        if (scriptList == null || scriptList.Count == 0)
+            return;
 
-        // 2. �����_���ȃC���f�b�N�X��1����
+        // まず全攻撃を無効化
+        //foreach (MonoBehaviour script in scriptList)
+        //{
+        //    if (script != null)
+        //    {
+        //        script.enabled = false;
+        //    }
+        //}
+
+        // ランダムに1つ選択
         int randomIndex = Random.Range(0, scriptList.Count);
 
-        // 3. �I�΂ꂽ�X�N���v�g�����o���ėL����
         MonoBehaviour chosenScript = scriptList[randomIndex];
+
         if (chosenScript != null)
         {
             isAttacking = true;
             chosenScript.enabled = true;
-            Debug.Log($"{chosenScript.GetType().Name} ��L�������܂����B");
+
+            Debug.Log($"{chosenScript.GetType().Name} を有効にしました。");
         }
     }
 
     bool CallAttack()
     {
-        //�v���C���[�̕������擾
-        Vector2 direction = (playerTr.position - transform.parent.position);
-        //�v���C���[�܂ł̋������Z�o
+        Vector2 direction = playerTr.position - transform.parent.position;
         float distance = direction.magnitude;
-        //  �����`�F�b�N
+
         if (distance > attackDistance)
         {
             return false;
         }
 
-        //�G�l�~�[�̕����擾
         Vector2 facingDir = new Vector2(enemyDir, 0);
-        //  �v���C���[�̈ʒu�ƃG�l�~�[�̈ʒu�̊p�x��
         float angle = Vector2.Angle(facingDir, direction);
-        //angle������p���Ɏ��܂邩�ǂ���
+
         if (angle > attackAngle / 2f)
         {
             return false;

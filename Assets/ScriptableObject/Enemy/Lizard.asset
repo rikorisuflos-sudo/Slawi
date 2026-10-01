@@ -16,7 +16,7 @@ MonoBehaviour:
   repop: 1
   hp: 35
   attackPower: 7
-  defensePower: 5
+  defensePower: 4
   walkForce: 2
   viewDistance: 10
   viewAngle: 60

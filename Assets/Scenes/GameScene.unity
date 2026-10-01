@@ -14800,6 +14800,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   moveArea: {fileID: 1215960233}
+  _actionRef: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!50 &387031431
 Rigidbody2D:
   serializedVersion: 5
@@ -25825,12 +25826,10 @@ MonoBehaviour:
   followDistance: 2.5
   stopDistance: 2.5
   warpDistance: 15
-  smooth: 5
   wallCheckDistance: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  recordInterval: 0.2
 --- !u!95 &1346896675
 Animator:
   serializedVersion: 7
@@ -35956,7 +35955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb91f4e8fd7586a40b16add5b51b84b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBallFanShot
-  enemyStatus: {fileID: 11400000, guid: 960ebc9598696364f86e6ee0fda72570, type: 2}
+  enemyStatus: {fileID: 11400000, guid: 8a66e21382c23ed45b329dd640ca84bc, type: 2}
   parentTr: {fileID: 263219574}
   animator: {fileID: 2054674707}
   move: {fileID: 719418187}
@@ -36078,7 +36077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1be961aac67714a840d88097aa1e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBallRandomShot
-  enemyStatus: {fileID: 11400000, guid: 960ebc9598696364f86e6ee0fda72570, type: 2}
+  enemyStatus: {fileID: 11400000, guid: 8a66e21382c23ed45b329dd640ca84bc, type: 2}
   animator: {fileID: 2054674707}
   move: {fileID: 719418187}
   bossActionLottery: {fileID: 2054674710}
@@ -36106,7 +36105,7 @@ MonoBehaviour:
   scriptList:
   - {fileID: 2054674705}
   - {fileID: 2054674709}
-  enemyStatus: {fileID: 11400000, guid: 960ebc9598696364f86e6ee0fda72570, type: 2}
+  enemyStatus: {fileID: 11400000, guid: 8a66e21382c23ed45b329dd640ca84bc, type: 2}
   playerTr: {fileID: 387031428}
 --- !u!1 &2066767162
 GameObject:

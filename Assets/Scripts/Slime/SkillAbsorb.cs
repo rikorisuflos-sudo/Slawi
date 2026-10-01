@@ -100,7 +100,7 @@ public class SkillAbsorb : MonoBehaviour
 
             //É_ÉÅÅ[ÉWèàóù
             fireBallSc = newFireBoal.GetComponent<FireBall>();
-            fireBallSc.SetParameter(Mathf.FloorToInt(playerStatus.AttackPower * 1.5f), Angle ,dir,tagetLayer);
+            fireBallSc.SetParameter(Mathf.FloorToInt(playerStatus.AttackPower * 1.7f), Angle ,dir,tagetLayer);
 
         currentState = State.Recovery;
     }

@@ -15,16 +15,12 @@ public class FireBallRandomShot : MonoBehaviour
     [SerializeField] GameObject fireBall;//ファイアボールプレハブ
     [SerializeField] FireBall fireBallSc;//ファイアボールスクリプト
     float angle = 50.0f;
-    float quantity;
     int count = 0;
     float timer = 0.0f;
     bool isShooting = false;
 
     [SerializeField] Transform playerTr;//プレイヤートランスフォーム
     [SerializeField] LayerMask tagetLayer;
-
-    float attackDistance;//攻撃範囲
-    float attackAngle;//攻撃範囲
 
     float enemyDir;//エネミーの向き
     [SerializeField] LayerMask groundLayer;//地面レイヤー
@@ -33,24 +29,15 @@ public class FireBallRandomShot : MonoBehaviour
     {
         //発射方向を取得
         enemyDir = Mathf.Sign(transform.parent.localScale.x);
+
         bossActionLottery.IsAttacking = true;
         animator.SetBool("Shot", true);
     }
 
-    void Start()
-    {
-        ////初期化
-        //if (enemyStatus != null)
-        //{
-        //    this.attackDistance = enemyStatus.AttackDistance;
-        //    this.attackAngle = enemyStatus.AttackAngle;
-        //}
-    }
-
     private void OnDisable()
     {
-        animator.SetBool("Shot", false);
         move.SetActive(true);
+        animator.SetBool("Shot", false);
     }
 
     void FixedUpdate()
@@ -100,7 +87,7 @@ public class FireBallRandomShot : MonoBehaviour
     {
         angle = Random.Range(-5, 6) * 5;
 
-        Debug.Log("火の玉 " + count + " 角度：" + angle);
+        //Debug.Log("火の玉 " + count + " 角度：" + angle);
 
         GameObject newFireBoal = Instantiate(
             fireBall,

@@ -96,17 +96,18 @@ public class ConfigKeyConfigManager : MonoBehaviour
     }
 
     // 上書きされた情報をリセットする
+
     public void ResetOverrides()
     {
-        // Bindingの上書きを全て解除する
         _action?.RemoveAllBindingOverrides();
 
-        // 保存しているOverrideも削除
         PlayerPrefs.DeleteKey(RebindSaveKey);
         PlayerPrefs.Save();
 
         RefreshDisplay();
     }
+
+
 
     private void SaveBindingOverrides()
     {
@@ -117,6 +118,8 @@ public class ConfigKeyConfigManager : MonoBehaviour
 
         PlayerPrefs.SetString(RebindSaveKey, json);
         PlayerPrefs.Save();
+
+
     }
 
     private void LoadBindingOverrides()

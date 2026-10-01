@@ -22,7 +22,7 @@ public class EnemyDirecter : MonoBehaviour, IDamageable, IAbsorble
     {
         //スクリプタブルオブジェクトで初期化
         enemyHp = enemyStatus.Hp;
-        Debug.Log(enemyHp);
+        //Debug.Log(enemyHp);
 
         //Hpバーの初期化
         if (hpSlider != null)

@@ -47,7 +47,7 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
         GameStart();
         //volume = audioManager.Volume;
         //indication = systemManager.IsOn;
-        Debug.Log(volume);
+        //Debug.Log(volume);
      }
     private void Start()
     {
@@ -60,7 +60,7 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
     /// </summary>
     private void GameStart()
     {
-        Debug.Log("ゲーム起動時の処理");
+        //Debug.Log("ゲーム起動時の処理");
 
         // ゲーム起動時に行いたい処理
         ChangeVolume();
@@ -74,21 +74,15 @@ public class GameManager : SingletoMonoBehaviour<GameManager>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     //void OnSceneLoaded(Scene scene, Scene nextScene)
     {
-        //if (isExecuted)
-        //{
-        //    return;
-        //}
 
-        //isExecuted = true;
-
-        Debug.Log("任意のタイミングで1回だけ実行");
+        //Debug.Log("任意のタイミングで1回だけ実行");
 
         //config.SetActive(false);
 
         // 任意のタイミングで行いたい処理
         audioSource = FindFirstObjectByType<AudioSource>();
         
-        Debug.Log(volume);
+        //Debug.Log(volume);
         ChangeVolume();
     }
 

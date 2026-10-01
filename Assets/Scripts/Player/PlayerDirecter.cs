@@ -87,7 +87,6 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
         {
             fillImage = GetComponent<Image>();
         }
-        Debug.Log(hp);
     }
 
 
@@ -97,7 +96,7 @@ public class PlayerDirecter : MonoBehaviour, IDamageable
         hp -= Mathf.FloorToInt(attackPower - defensePower);
         hpSlider.value = hp;
         ColorChange();
-        Debug.Log("プレイヤー:" + hp);
+        //Debug.Log("プレイヤー:" + hp);
 
         //死亡判定
         if (hp <= 0)

@@ -34,6 +34,8 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] Collider2D moveArea;//移動制限用コライダー
 
+    [SerializeField] private InputActionReference _actionRef;
+    private InputAction _action;
     private InputSystem_Actions _controls;
 
     Keyboard keyboard;
@@ -48,6 +50,8 @@ public class PlayerMove : MonoBehaviour
         keyboard = Keyboard.current;
 
         _controls = new InputSystem_Actions();
+
+        _action = _actionRef.action;
 
         LoadBindingOverrides();
     }
@@ -118,40 +122,20 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    //void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    //地面から離れたかどうか
-    //    if (((1 << collision.gameObject.layer) & groundLayer) != 0)
-    //    {
-    //        foreach (ContactPoint2D contact in collision.contacts)//接触点の取得
-    //        {
-    //            // 下から接触 → 地面
-    //            if (contact.normal.y > GroundCatch)
-    //            {
-    //                isGrounded = true;
-    //            }
-    //        }
-    //    }
-
-    //}
-    //void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    //地面から離れたかどうか
-    //    if (((1 << collision.gameObject.layer) & groundLayer) != 0)
-    //    {
-    //        isGrounded = false;
-    //    }
-    //}
 
     public void LoadBindingOverrides()
     {
         if (PlayerPrefs.HasKey(RebindSaveKey))
         {
             string json = PlayerPrefs.GetString(RebindSaveKey);
-
             _controls.asset.LoadBindingOverridesFromJson(json);
         }
-    }
+        else
+        {
+            // 保存された設定がない場合は、全て初期状態に戻す
+            _controls.asset.RemoveAllBindingOverrides();
+        }
+}
 
     private void OnMove(InputAction.CallbackContext context)
     {
@@ -175,7 +159,6 @@ public class PlayerMove : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(
             transform.position,new Vector2(0, -1), groundCheckDistance,groundLayer);
         if(hit.collider != null) { 
-        Debug.Log("ジャンプ");
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             //DebugLogger.Log("ジャンプ");
         }

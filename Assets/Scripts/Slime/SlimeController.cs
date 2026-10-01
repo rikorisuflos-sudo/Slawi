@@ -161,6 +161,11 @@ public class SlimeController : MonoBehaviour
             string json = PlayerPrefs.GetString(RebindSaveKey);
             _controls.asset.LoadBindingOverridesFromJson(json);
         }
+        else
+        {
+            // •Û‘¶‚³‚ê‚½İ’è‚ª‚È‚¢ê‡‚ÍA‘S‚Ä‰Šúó‘Ô‚É–ß‚·
+            _controls.asset.RemoveAllBindingOverrides();
+        }
     }
 
     void OnNormalAttack(InputAction.CallbackContext context)
