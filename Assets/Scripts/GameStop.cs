@@ -12,6 +12,11 @@ public class GameStop : MonoBehaviour
 
     private InputSystem_Actions _controls;
     private const string RebindSaveKey = "KeyConfig";
+
+    //private void Awake()
+    //{
+    //    _controls = new InputSystem_Actions();
+    //}
     public void OnClick()
     {
         canvas.SetActive(true);
@@ -25,14 +30,14 @@ public class GameStop : MonoBehaviour
         canvas.SetActive(false);
         button.SetActive(true);
         Time.timeScale = 1;
-        LoadBindingOverrides();
+        //LoadBindingOverrides();
     }
-    private void LoadBindingOverrides()
-    {
-        if (PlayerPrefs.HasKey(RebindSaveKey))
-        {
-            string json = PlayerPrefs.GetString(RebindSaveKey);
-            _controls.asset.LoadBindingOverridesFromJson(json);
-        }
-    }
+    //private void LoadBindingOverrides()
+    //{
+    //    if (PlayerPrefs.HasKey(RebindSaveKey))
+    //    {
+    //        string json = PlayerPrefs.GetString(RebindSaveKey);
+    //        _controls.asset.LoadBindingOverridesFromJson(json);
+    //    }
+    //}
 }

@@ -143,7 +143,7 @@ public class PlayerMove : MonoBehaviour
     //    }
     //}
 
-    private void LoadBindingOverrides()
+    public void LoadBindingOverrides()
     {
         if (PlayerPrefs.HasKey(RebindSaveKey))
         {

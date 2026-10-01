@@ -154,7 +154,7 @@ public class SlimeController : MonoBehaviour
         absorbSlider.value = absorbTimer;
     }
 
-    private void LoadBindingOverrides()
+    public void LoadBindingOverrides()
     {
         if (PlayerPrefs.HasKey(RebindSaveKey))
         {
